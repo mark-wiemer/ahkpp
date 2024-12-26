@@ -17,13 +17,13 @@
         "ahk v2",
         "ahk v1"
     ],
-    "homepage": "https://github.com/mark-wiemer-org/ahkpp/blob/main/readme.md",
+    "homepage": "https://github.com/mark-wiemer/ahkpp/blob/main/readme.md",
     "bugs": {
-        "url": "https://github.com/mark-wiemer-org/ahkpp/issues"
+        "url": "https://github.com/mark-wiemer/ahkpp/issues"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/mark-wiemer-org/ahkpp.git"
+        "url": "https://github.com/mark-wiemer/ahkpp.git"
     },
     "license": "See license.md",
     "publisher": "mark-wiemer",
@@ -284,7 +284,7 @@
                 },
                 "AHK++.v1.file": {
                     "type": "object",
-                    "markdownDescription": "[Learn more about the template snippet](https://github.com/mark-wiemer-org/ahkpp/tree/main/docs/TemplateSnippet.md)",
+                    "markdownDescription": "[Learn more about the template snippet](https://github.com/mark-wiemer/ahkpp/tree/main/docs/TemplateSnippet.md)",
                     "properties": {
                         "compileBaseFile": {
                             "type": "string",

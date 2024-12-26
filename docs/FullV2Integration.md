@@ -118,7 +118,7 @@ New, added:
 
 These issues will be backlogged and resolved after a full release
 
--   Exclude setting doesn't work, ref [issue #488](https://github.com/mark-wiemer-org/ahkpp/issues/488)
+-   Exclude setting doesn't work, ref [issue #488](https://github.com/mark-wiemer/ahkpp/issues/488)
 -   No newline at end of file when formatting (inconsistent with v1 and industry standards)
 -   Issue with custom folding and comment blocks (see v2/settings.ahk2)
 -   Cleanup `indentString` to be "spaces" vs "tabs" with a `tabSize` option as well

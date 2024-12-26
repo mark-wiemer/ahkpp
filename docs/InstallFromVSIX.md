@@ -2,7 +2,7 @@
 
 Some IDEs support installing extensions directly from your local machine. This can be faster and more private than downloading from a registry.
 
-All releases are published to https://github.com/mark-wiemer-org/ahkpp/releases as vsix files.
+All releases are published to https://github.com/mark-wiemer/ahkpp/releases as vsix files.
 
 Once you have the file downloaded, you can open your IDE, go to the extensions view, and select "Install from VSIX..."
 
