@@ -53,6 +53,7 @@ export const updateConfig = async <T>(
 /**
  * Adds the provided snippetText at the current selection of the editor
  * and adds a newline to minimize syntax errors.
+ *
  * Waits after selecting so callers don't have to.
  */
 export const addAndSelectSnippet = async (
@@ -79,4 +80,29 @@ export const getCompletionSuggestionLabels = async (
         );
     const labels = completionItems?.items.map((i) => i.label);
     return labels;
+};
+
+export const goToDefinition = async (): Promise<void> => {
+    await vscode.commands.executeCommand('editor.action.revealDefinition');
+};
+
+/**
+ * Move the seleciton to the 1-based line number.
+ *
+ * Optionally provide the 1-based column number: The selection will be placed before this column.
+ * Provide 0 for the start of the line.
+ *
+ * `columnNumber` defaults to 0
+ */
+export const goToLine = (
+    editor: vscode.TextEditor,
+    lineNumber: number,
+    columnNumber: number = 0,
+): void => {
+    const pos = new vscode.Position(lineNumber - 1, columnNumber);
+    editor.selection = new vscode.Selection(pos, pos);
+};
+
+export const getActiveEditor = (): vscode.TextEditor => {
+    return vscode.window.activeTextEditor;
 };
