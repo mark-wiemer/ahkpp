@@ -11,10 +11,10 @@ import {
     sleep,
     updateConfig,
 } from './utils';
-import { resolve } from 'path';
 import { ConfigKey, LibIncludeType, ShowOutput } from '../common/global';
 import { suite, before, test } from 'mocha';
 
+/** Currently in `/out/src/test`, want to get to `/` */
 const rootPath = path.join(__dirname, '..', '..', '..');
 
 // Currently in `out` folder, need to get back to main `src` folder
@@ -88,7 +88,7 @@ suite('exclude', () => {
             if (version === 1) {
                 await updateConfig<string[]>(ConfigKey.exclude, exclude);
             }
-            const filePath = resolve(rootPath, `./e2e/main.ahk${version}`);
+            const filePath = path.resolve(rootPath, `./e2e/main.ahk${version}`);
             const doc = await getDocument(filePath);
             const editor = await showDocument(doc);
             await sleep(1_000); // todo only these tests are extra flaky
@@ -105,7 +105,7 @@ suite('v2.general.librarySuggestions', () => {
     let editor: vscode.TextEditor;
     before(async () => {
         await updateConfig<string[]>(ConfigKey.exclude, []);
-        const filePath = resolve(rootPath, './e2e/main.ahk2');
+        const filePath = path.resolve(rootPath, './e2e/main.ahk2');
         const doc = await getDocument(filePath);
         editor = await showDocument(doc);
         await sleep(1_000);

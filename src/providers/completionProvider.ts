@@ -92,7 +92,7 @@ export const provideCompletionItemsInner = (
 ): vscode.CompletionItem[] =>
     methods
         .map((m) => completionItemsForMethod(m, uriString, lineNumber))
-        .reduce((a, b) => a.concat(b), [])
+        .reduce((a, b) => a.concat(b), []) // reduce from 2D array to 1D array
         .concat(variables.map(completionItemForVariable));
 
 export class CompletionProvider implements vscode.CompletionItemProvider {

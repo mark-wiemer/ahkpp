@@ -4,6 +4,7 @@ SendMode, Input
 SetBatchLines, -1
 SetWorkingDir, %A_ScriptDir%
 
+; Hi from included.ahk1
 MyDefProviderFunc() {
     MsgBox % "Hi from MyDefProviderFunc"
 }
