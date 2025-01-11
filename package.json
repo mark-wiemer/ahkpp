@@ -542,13 +542,13 @@
                             "type": "boolean",
                             "default": false
                         },
-                        "indentString": {
-                            "type": "string",
-                            "default": "    "
-                        },
                         "indentBetweenHotIfDirectives": {
                             "type": "boolean",
                             "default": false
+                        },
+                        "indentString": {
+                            "type": "string",
+                            "default": "    "
                         },
                         "keywordStartWithUppercase": {
                             "type": "boolean",
@@ -571,11 +571,11 @@
                             "type": "boolean",
                             "default": true
                         },
-                        "spaceBeforeConditional": {
+                        "spaceAfterDoubleColon": {
                             "type": "boolean",
                             "default": true
                         },
-                        "spaceAfterDoubleColon": {
+                        "spaceBeforeConditional": {
                             "type": "boolean",
                             "default": true
                         },
@@ -616,14 +616,14 @@
                         "braceStyle": "One True Brace",
                         "breakChainedMethods": false,
                         "ignoreComment": false,
-                        "indentString": "    ",
                         "indentBetweenHotIfDirectives": false,
+                        "indentString": "    ",
                         "keywordStartWithUppercase": false,
                         "maxPreserveNewlines": 2,
                         "objectStyle": "none",
                         "preserveNewlines": true,
-                        "spaceBeforeConditional": true,
                         "spaceAfterDoubleColon": true,
+                        "spaceBeforeConditional": true,
                         "spaceInEmptyParen": false,
                         "spaceInOther": true,
                         "spaceInParen": false,
