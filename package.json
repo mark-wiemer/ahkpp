@@ -309,12 +309,12 @@
                         "interpreterPath": {
                             "type": "string",
                             "default": "C:/Program Files/AutoHotkey/AutoHotkeyU64.exe",
-                            "description": "%ahk++.config.v1.interpreterPath%"
+                            "description": "%ahk++.config.v1.file.interpreterPath%"
                         },
                         "templateSnippetName": {
                             "type": "string",
                             "default": "AhkTemplateV1",
-                            "description": "%ahk++.config.v1.templateSnippetName%"
+                            "description": "%ahk++.config.v1.file.templateSnippetName%"
                         }
                     },
                     "default": {
@@ -334,22 +334,22 @@
                             "type": "integer",
                             "default": 1,
                             "minimum": -1,
-                            "description": "Allowed number of empty lines.\n- -1: Ignore empty lines.\n- 0: No empty lines."
+                            "description": "%ahk++.config.v1.formatter.allowedNumberOfEmptyLines%"
                         },
                         "indentCodeAfterIfDirective": {
                             "type": "boolean",
                             "default": true,
-                            "description": "Indent code after a directive that creates context-sensitive hotkeys or hotstrings (#If, #IfWinActive, #IfWinNotActive, #IfWinExist, #IfWinNotExist)."
+                            "description": "%ahk++.config.v1.formatter.indentCodeAfterIfDirective%"
                         },
                         "indentCodeAfterLabel": {
                             "type": "boolean",
                             "default": true,
-                            "description": "Indent code after hotkeys and labels in top-level code blocks."
+                            "description": "%ahk++.config.v1.formatter.indentCodeAfterLabel%"
                         },
                         "preserveIndent": {
                             "type": "boolean",
                             "default": false,
-                            "description": "Preserve indentation on empty line."
+                            "description": "%ahk++.config.v1.formatter.preserveIndent%"
                         },
                         "trimExtraSpaces": {
                             "type": "boolean",
@@ -370,7 +370,7 @@
                 },
                 "AHK++.v1.intellisense": {
                     "type": "object",
-                    "markdownDescription": "Number of lines to parse each AHK file for IntelliSense.\n- -1: Unlimited parsing\n- 0: No parsing\n\nChanges take effect after restart.",
+                    "markdownDescription": "%ahk++.config.v1.intellisense%",
                     "properties": {
                         "maximumParseLength": {
                             "type": "number",
@@ -519,7 +519,8 @@
                                 "expand",
                                 "none"
                             ],
-                            "default": "none"
+                            "default": "none",
+                            "description": "%ahk++.config.v2.formatter.arrayStyle%"
                         },
                         "braceStyle": {
                             "type": "string",
@@ -532,31 +533,38 @@
                                 "if 1 {\n} else {\n}",
                                 "if 1\n{\n}\nelse\n{\n}",
                                 "if 1 {\n}\nelse {\n}"
-                            ]
+                            ],
+                            "description": "%ahk++.config.v2.formatter.braceStyle%"
                         },
                         "breakChainedMethods": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.breakChainedMethods%"
                         },
                         "ignoreComment": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.ignoreComment%"
                         },
                         "indentBetweenHotIfDirectives": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.indentBetweenHotIfDirectives%"
                         },
                         "indentString": {
                             "type": "string",
-                            "default": "    "
+                            "default": "    ",
+                            "description": "%ahk++.config.v2.formatter.indentString%"
                         },
                         "keywordStartWithUppercase": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.keywordStartWithUppercase%"
                         },
                         "maxPreserveNewlines": {
                             "type": "number",
-                            "default": 2
+                            "default": 2,
+                            "description": "%ahk++.config.v2.formatter.maxPreserveNewlines%"
                         },
                         "objectStyle": {
                             "type": "string",
@@ -565,47 +573,57 @@
                                 "expand",
                                 "none"
                             ],
-                            "default": "none"
+                            "default": "none",
+                            "description": "%ahk++.config.v2.formatter.objectStyle%"
                         },
                         "preserveNewlines": {
                             "type": "boolean",
-                            "default": true
+                            "default": true,
+                            "description": "%ahk++.config.v2.formatter.preserveNewlines%"
                         },
                         "spaceAfterDoubleColon": {
                             "type": "boolean",
-                            "default": true
+                            "default": true,
+                            "description": "%ahk++.config.v2.formatter.spaceAfterDoubleColon%"
                         },
                         "spaceBeforeConditional": {
                             "type": "boolean",
-                            "default": true
+                            "default": true,
+                            "description": "%ahk++.config.v2.formatter.spaceBeforeConditional%"
                         },
                         "spaceInEmptyParen": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.spaceInEmptyParen%"
                         },
                         "spaceInOther": {
                             "type": "boolean",
-                            "default": true
+                            "default": true,
+                            "description": "%ahk++.config.v2.formatter.spaceInOther%"
                         },
                         "spaceInParen": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.spaceInParen%"
                         },
                         "switchCaseAlignment": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.switchCaseAlignment%"
                         },
                         "symbolWithSameCase": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.symbolWithSameCase%"
                         },
                         "whitespaceBeforeInlineComment": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "%ahk++.config.v2.formatter.whitespaceBeforeInlineComment%"
                         },
                         "wrapLineLength": {
                             "type": "number",
-                            "default": 0,
-                            "description": "0 to disable wrapping"
+                            "default": 120,
+                            "description": "%ahk++.config.v2.formatter.wrapLineLength%"
                         }
                     },
                     "additionalProperties": {
