@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.4.3 - 2025-01-11 🎆
+
+-   Fix IniWrite IntelliSense ([#590](https://github.com/mark-wiemer/ahkpp/issues/590))
+
 ## 6.4.2 - 2024-12-16 🎄
 
 -   Reduce required VS Code version to 1.68 (#574)
