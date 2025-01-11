@@ -20,5 +20,5 @@ jobs:
           # https://github.com/settings/tokens
           # https://github.com/mark-wiemer/ahkpp/settings/secrets/actions
           # Saved locally as "Add to project PAT"
-          project-url: https://github.com/orgs/mark-wiemer/projects/1
+          project-url: https://github.com/users/mark-wiemer/projects/1
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
