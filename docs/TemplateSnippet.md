@@ -30,7 +30,7 @@ You can customize the template snippet to fit your needs:
 
 1. Update your VS Code settings for AHK > File > "Template snippet name" to the name of your snippet (`CustomAhkTemplate`)
 
-To test, just create a new file! If you have any issues, please [open a discussion](https://github.com/mark-wiemer-org/ahkpp/discussions).
+To test, just create a new file! If you have any issues, please [open a discussion](https://github.com/mark-wiemer/ahkpp/discussions).
 
 ## Troubleshooting
 

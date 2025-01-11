@@ -1,4 +1,4 @@
-; [Issue #161](https://github.com/mark-wiemer-org/ahkpp/issues/161)
+; [Issue #161](https://github.com/mark-wiemer/ahkpp/issues/161)
 str = text:
 MsgBox % str
 Invalid label:

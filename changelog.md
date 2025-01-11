@@ -9,18 +9,18 @@
 
 ### Known issues
 
--   If your AHK v2 interpreter is not recognized and you try to debug an AHK v2 script, an "AutoHotkey execute bin not found: ..." output log will appear and take focus in the AHK++ (v1) output channel (open issue [#570](https://github.com/mark-wiemer-org/ahkpp/issues/570))
--   The "Select AHK v2 interpreter" command does not work, instead please try to run (not debug) an AHK v2 script and use the quick pick from the "... does not exist" error message (open issue [#571](https://github.com/mark-wiemer-org/ahkpp/issues/571))
+-   If your AHK v2 interpreter is not recognized and you try to debug an AHK v2 script, an "AutoHotkey execute bin not found: ..." output log will appear and take focus in the AHK++ (v1) output channel (open issue [#570](https://github.com/mark-wiemer/ahkpp/issues/570))
+-   The "Select AHK v2 interpreter" command does not work, instead please try to run (not debug) an AHK v2 script and use the quick pick from the "... does not exist" error message (open issue [#571](https://github.com/mark-wiemer/ahkpp/issues/571))
 
 ### Fixes
 
 -   Add [troubleshooting guide](docs/Troubleshooting.md)
--   Fix go to definition in AHK v1 files ([#559](https://github.com/mark-wiemer-org/ahkpp/issues/559))
--   Remove unnecessary error message "Couldn't resolve AHK v2 interpreter" ([#493](https://github.com/mark-wiemer-org/ahkpp/issues/493))
+-   Fix go to definition in AHK v1 files ([#559](https://github.com/mark-wiemer/ahkpp/issues/559))
+-   Remove unnecessary error message "Couldn't resolve AHK v2 interpreter" ([#493](https://github.com/mark-wiemer/ahkpp/issues/493))
     -   This has been moved to a output log visible in the AHK++ (v2) output channel
     -   A "... does not exist" error message will still appear when trying to run an AHK v2 script with an unrecognized interpreter path
--   Fix quick pick for "... does not exist" error message on run AHK v2 script ([PR #569](https://github.com/mark-wiemer-org/ahkpp/issues/569))
-    > Note: this fix copies your config into your workspace settings. If you don't like this, please manually enter the path via the settings, and don't use the quick pick. Learn more at [PR #569](https://github.com/mark-wiemer-org/ahkpp/issues/569).
+-   Fix quick pick for "... does not exist" error message on run AHK v2 script ([PR #569](https://github.com/mark-wiemer/ahkpp/issues/569))
+    > Note: this fix copies your config into your workspace settings. If you don't like this, please manually enter the path via the settings, and don't use the quick pick. Learn more at [PR #569](https://github.com/mark-wiemer/ahkpp/issues/569).
 
 ## 6.4.0 - 2024-11-02 🗳️
 
@@ -41,8 +41,8 @@
 
 ### New features
 
--   Rewrite AutoHotkey v2 definition files using [GroggyOtter](https://github.com/GroggyOtter/ahkv2_definition_rewrite)'s syntaxes ([#521](https://github.com/mark-wiemer-org/ahkpp/issues/521))
--   Add exclude setting ([#488](https://github.com/mark-wiemer-org/ahkpp/issues/488))
+-   Rewrite AutoHotkey v2 definition files using [GroggyOtter](https://github.com/GroggyOtter/ahkv2_definition_rewrite)'s syntaxes ([#521](https://github.com/mark-wiemer/ahkpp/issues/521))
+-   Add exclude setting ([#488](https://github.com/mark-wiemer/ahkpp/issues/488))
     -   Excluded files are not included in IntelliSense completion suggestions, even when they're added via `#include`
     -   Changed `v2.exclude` setting to `exclude`
     -   One setting works for both v1 and v2
@@ -52,8 +52,8 @@
 
 ### Fixes
 
--   Fix v1 formatter removing extra spaces in strings ([#411](https://github.com/mark-wiemer-org/ahkpp/issues/411))
--   Fix v2 formatter moving closing brackets/braces when `arrayStyle` or `objectStyle` were set to "none" (the default) ([#499](https://github.com/mark-wiemer-org/ahkpp/issues/499))
+-   Fix v1 formatter removing extra spaces in strings ([#411](https://github.com/mark-wiemer/ahkpp/issues/411))
+-   Fix v2 formatter moving closing brackets/braces when `arrayStyle` or `objectStyle` were set to "none" (the default) ([#499](https://github.com/mark-wiemer/ahkpp/issues/499))
 -   Fixup output channel names: "AHK++ (v1)" and "AHK++ (v2)" instead of "AHK" and "AHK++" respectively
 -   Fix duplicate output channels (the "AHK" channel used to be created twice)
 
@@ -64,7 +64,7 @@
 
 ## 6.2.3 - 2024-10-08 📖
 
--   Restore readme to marketplaces once again ([#537](https://github.com/mark-wiemer-org/ahkpp/issues/537))
+-   Restore readme to marketplaces once again ([#537](https://github.com/mark-wiemer/ahkpp/issues/537))
 -   Link to external licenses for better context
 
 ### Developer changes
@@ -74,11 +74,11 @@
 
 ## 6.2.2 - 2024-10-07 🤏
 
--   Reduce extension size on marketplaces by ~100x (yes, really) ([#533](https://github.com/mark-wiemer-org/ahkpp/issues/533))
+-   Reduce extension size on marketplaces by ~100x (yes, really) ([#533](https://github.com/mark-wiemer/ahkpp/issues/533))
 
 ## 6.2.1 - 2024-10-07 📚
 
--   Restore readme to marketplaces (lost due to [auto-publish error](https://github.com/mark-wiemer-org/ahkpp/actions/runs/11225795502/job/31205122158))
+-   Restore readme to marketplaces (lost due to [auto-publish error](https://github.com/mark-wiemer/ahkpp/actions/runs/11225795502/job/31205122158))
 
 ### Developer changes
 
@@ -129,8 +129,8 @@ Although the settings name changed, the extension name did not change until 6.3.
 
 ## 6.1.0 - 2024-09-22 🫙
 
--   Add `General > showOutput` setting to toggle automatically showing the output view when running a script ([#492](https://github.com/mark-wiemer-org/ahkpp/issues/492))
--   Fix quick help when selecting quoted strings ([#376](https://github.com/mark-wiemer-org/ahkpp/issues/376))
+-   Add `General > showOutput` setting to toggle automatically showing the output view when running a script ([#492](https://github.com/mark-wiemer/ahkpp/issues/492))
+-   Fix quick help when selecting quoted strings ([#376](https://github.com/mark-wiemer/ahkpp/issues/376))
 -   Fix description for `V2 > General > actionWhenV1Detected` setting key
 -   Fix `V2 > Syntaxes` setting
 
@@ -197,7 +197,7 @@ Settings are now organized into flat objects for a better user experience. Unfor
         "classNonDynamicMemberCheck": true,
         "paramsCheck": true
     },
-    // ⚠️ Not yet supported, ref [issue #488](https://github.com/mark-wiemer-org/ahkpp/issues/488)
+    // ⚠️ Not yet supported, ref [issue #488](https://github.com/mark-wiemer/ahkpp/issues/488)
     "AHK++.v2.exclude": [],
     "AHK++.v2.file": {
         "compileBaseFile": "",
@@ -331,7 +331,7 @@ Fixup new command names and IDs:
 
 > 🧪 means this is a [pre-release](https://code.visualstudio.com/updates/v1_63#_pre-release-extensions)!
 
--   Fix global function recognition ([#472](https://github.com/mark-wiemer-org/ahkpp/issues/472))
+-   Fix global function recognition ([#472](https://github.com/mark-wiemer/ahkpp/issues/472))
 
 </details>
 
@@ -347,7 +347,7 @@ This is a very early pre-release, expect significant issues. Commands may not wo
 
 For [technical reasons](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#prerelease-extensions), this is tagged with `5.1.0`, but it may be a breaking release and the full release will be tagged `6.0.0`
 
--   I haven't found any yet! Please [🐛 report any issues](https://github.com/mark-wiemer-org/ahkpp/issues/new/choose) you find 🤓
+-   I haven't found any yet! Please [🐛 report any issues](https://github.com/mark-wiemer/ahkpp/issues/new/choose) you find 🤓
 
 ### Other changes
 
@@ -369,35 +369,35 @@ Changes to the marketplace page require a new version. This version has no user-
 -   Update package description to clarify v2 support is in preview
 -   Update readme to clarify v2 support is in preview
 
-Full v2 support (IntelliSense, debugging, formatting) is coming later this month! ([Issue #453](https://github.com/mark-wiemer-org/ahkpp/issues/453))
+Full v2 support (IntelliSense, debugging, formatting) is coming later this month! ([Issue #453](https://github.com/mark-wiemer/ahkpp/issues/453))
 
 ## 5.0.5 - 2024-05-24 🏝️
 
--   Fix formatter in single line hotkey fall-through scenario ([#440](https://github.com/mark-wiemer-org/ahkpp/issues/440), [#442](https://github.com/mark-wiemer-org/ahkpp/issues/442))
--   Fix outline showing invalid labels ([#438](https://github.com/mark-wiemer-org/ahkpp/issues/438))
+-   Fix formatter in single line hotkey fall-through scenario ([#440](https://github.com/mark-wiemer/ahkpp/issues/440), [#442](https://github.com/mark-wiemer/ahkpp/issues/442))
+-   Fix outline showing invalid labels ([#438](https://github.com/mark-wiemer/ahkpp/issues/438))
 
 ## 5.0.4 - 2024-05-23 😎
 
--   Add "PixelSearch" to V1 snippets ([PR #427](https://github.com/mark-wiemer-org/ahkpp/pull/427))
--   Fix two minor formatting issues ([Issue #432](https://github.com/mark-wiemer-org/ahkpp/issues/432), [#429](https://github.com/mark-wiemer-org/ahkpp/issues/429))
--   Update internal dependencies for security ([PR #435](https://github.com/mark-wiemer-org/ahkpp/pull/435))
+-   Add "PixelSearch" to V1 snippets ([PR #427](https://github.com/mark-wiemer/ahkpp/pull/427))
+-   Fix two minor formatting issues ([Issue #432](https://github.com/mark-wiemer/ahkpp/issues/432), [#429](https://github.com/mark-wiemer/ahkpp/issues/429))
+-   Update internal dependencies for security ([PR #435](https://github.com/mark-wiemer/ahkpp/pull/435))
 
 ## 5.0.3 - 2023-08-21 🏄
 
--   Fix extension crash when switching to a nullish editor ([Issue #398](https://github.com/mark-wiemer-org/ahkpp/issues/398))
+-   Fix extension crash when switching to a nullish editor ([Issue #398](https://github.com/mark-wiemer/ahkpp/issues/398))
 
 ## 5.0.2 - 2023-08-10 🐈
 
--   Fix language mode resetting when VS Code restarts ([Issue #392](https://github.com/mark-wiemer-org/ahkpp/issues/392))
+-   Fix language mode resetting when VS Code restarts ([Issue #392](https://github.com/mark-wiemer/ahkpp/issues/392))
 
 ## 5.0.1 - 2023-08-08 😶‍🌫️
 
--   `ahk++.file.interpreterPathV2` now defaults to `C:/Program Files/AutoHotkey/v2/AutoHotkey64.exe` ([Issue #387](https://github.com/mark-wiemer-org/ahkpp/issues/387))
--   Add breakpoint support for AHK v2 files ([Issue #384](https://github.com/mark-wiemer-org/ahkpp/issues/384))
+-   `ahk++.file.interpreterPathV2` now defaults to `C:/Program Files/AutoHotkey/v2/AutoHotkey64.exe` ([Issue #387](https://github.com/mark-wiemer/ahkpp/issues/387))
+-   Add breakpoint support for AHK v2 files ([Issue #384](https://github.com/mark-wiemer/ahkpp/issues/384))
 
 ## 5.0.0 - 2023-08-07 ✌️
 
-AutoHotkey v2 support now in preview! Please test it out and [report any issues](https://github.com/mark-wiemer-org/ahkpp/issues/new?assignees=mark-wiemer&labels=AHK+v2&projects=&template=v2.md&title=%5Bv2%5D+), you'll help the community of 120,000+ users of this extension!
+AutoHotkey v2 support now in preview! Please test it out and [report any issues](https://github.com/mark-wiemer/ahkpp/issues/new?assignees=mark-wiemer&labels=AHK+v2&projects=&template=v2.md&title=%5Bv2%5D+), you'll help the community of 120,000+ users of this extension!
 
 Be sure to go to the settings and update the new `V2` settings in case the defaults aren't correct 😊
 
@@ -412,9 +412,9 @@ Be sure to go to the settings and update the new `V2` settings in case the defau
 
 ### Other changes
 
--   Allow `.ahk1` and `.ah1` extensions for v1 scripts, `.ahk2` and `.ah2` for v2 scripts. `.ahk` and `.ext` can be used for either version, but default to AHK v2 ([Issue #396](https://github.com/mark-wiemer-org/ahkpp/issues/396))
+-   Allow `.ahk1` and `.ah1` extensions for v1 scripts, `.ahk2` and `.ah2` for v2 scripts. `.ahk` and `.ext` can be used for either version, but default to AHK v2 ([Issue #396](https://github.com/mark-wiemer/ahkpp/issues/396))
     -   The original changelog entry mentioned that the shared file extensions defaulted to AHK v1--this was incorrect
-    -   You can add a `#Requires AutoHotkey v1` directive to the top of an of `.ahk` file to have it automatically load in AHK v1 independent of VS Code settings ([Issue #392](https://github.com/mark-wiemer-org/ahkpp/issues/392))
+    -   You can add a `#Requires AutoHotkey v1` directive to the top of an of `.ahk` file to have it automatically load in AHK v1 independent of VS Code settings ([Issue #392](https://github.com/mark-wiemer/ahkpp/issues/392))
     -   The same can be done with `#Requires AutoHotkey v2`
     -   Alternatively, you can follow the below steps to associate all `.ahk` files with AHK v1:
         1. Open a `.ahk` file
@@ -434,8 +434,8 @@ Be sure to go to the settings and update the new `V2` settings in case the defau
 Some features are not added to this initial preview release, but will be coming soon!
 
 -   Missing features for AHK v2:
-    -   Formatting ([Issue #381](https://github.com/mark-wiemer-org/ahkpp/issues/381))
-    -   Snippets ([Issue #382](https://github.com/mark-wiemer-org/ahkpp/issues/382))
+    -   Formatting ([Issue #381](https://github.com/mark-wiemer/ahkpp/issues/381))
+    -   Snippets ([Issue #382](https://github.com/mark-wiemer/ahkpp/issues/382))
 
 ### Thank you!
 
@@ -445,7 +445,7 @@ This update relies heavily on open-source code from [thqby](https://github.com/t
 
 -   Add quick help, adapted from thqby's AutoHotkey v2 Language Support
     -   Selected text (or word at cursor) is now searched within the help documentation
-    -   Known limitation: if selected text would cause a syntax error when injected into a script, help is activated but no search is made. [Issue #376](https://github.com/mark-wiemer-org/ahkpp/issues/376)
+    -   Known limitation: if selected text would cause a syntax error when injected into a script, help is activated but no search is made. [Issue #376](https://github.com/mark-wiemer/ahkpp/issues/376)
 -   Update file icon to match [official AHK repository](https://github.com/AutoHotkey/AutoHotkey/blob/446829bc730aa002635d3d36bfd17e892b6981c0/source/resources/icons.svg)
 
 ## 4.0.0 - 2023-07-29 🍀
@@ -459,7 +459,7 @@ This update relies heavily on open-source code from [thqby](https://github.com/t
 
 ### Other changes
 
--   IntelliSense no longer suggests words when a user presses space ([Issue #110](https://github.com/mark-wiemer-org/ahkpp/issues/110))
+-   IntelliSense no longer suggests words when a user presses space ([Issue #110](https://github.com/mark-wiemer/ahkpp/issues/110))
 -   IntelliSense now suggests `foo(p1, p2)` instead of `foo (p1,p2)`
 -   Improved descriptions of settings
 
@@ -469,52 +469,52 @@ This update relies heavily on open-source code from [thqby](https://github.com/t
 
 ## 3.3.2 - 2023-06-21 🪲
 
--   Revert changes in 3.3.1. This release is the same as 3.3.0. Ref [Issue #369](https://github.com/mark-wiemer-org/ahkpp/issues/369)
+-   Revert changes in 3.3.1. This release is the same as 3.3.0. Ref [Issue #369](https://github.com/mark-wiemer/ahkpp/issues/369)
 
 ## 3.3.1 (yanked) - 2023-06-20 🌞
 
 > This release has been yanked, meaning it's not supported. Use 3.3.3 instead.
 
--   Various syntax highlighting improvements ([PR #354](https://github.com/mark-wiemer-org/ahkpp/pull/354), [PR #358](https://github.com/mark-wiemer-org/ahkpp/pull/358))
--   Running `Open help` while `tutorial` text is selected now opens the Tutorial page ([PR #348](https://github.com/mark-wiemer-org/ahkpp/pull/348))
+-   Various syntax highlighting improvements ([PR #354](https://github.com/mark-wiemer/ahkpp/pull/354), [PR #358](https://github.com/mark-wiemer/ahkpp/pull/358))
+-   Running `Open help` while `tutorial` text is selected now opens the Tutorial page ([PR #348](https://github.com/mark-wiemer/ahkpp/pull/348))
 -   Unexpected change: Break debugger.
 
 ## 3.3.0 - 2023-03-11 🪴
 
--   Add `ahk++.file.maximumParseLength` setting to support unlimited file size ([Issue #117](https://github.com/mark-wiemer-org/ahkpp/issues/117))
+-   Add `ahk++.file.maximumParseLength` setting to support unlimited file size ([Issue #117](https://github.com/mark-wiemer/ahkpp/issues/117))
 
 Fixes:
 
--   Fix several syntax highlighting issues ([#85](https://github.com/mark-wiemer-org/ahkpp/issues/85), [#318](https://github.com/mark-wiemer-org/ahkpp/issues/318))
--   Fix minor debugger issues introduced in 3.1.0 ([#279](https://github.com/mark-wiemer-org/ahkpp/issues/279))
--   Fix debugging a file with a space in its name ([#134](https://github.com/mark-wiemer-org/ahkpp/issues/134))
--   Fix formatting for some bad labels (two colons) ([PR #325](https://github.com/mark-wiemer-org/ahkpp/pull/325))
+-   Fix several syntax highlighting issues ([#85](https://github.com/mark-wiemer/ahkpp/issues/85), [#318](https://github.com/mark-wiemer/ahkpp/issues/318))
+-   Fix minor debugger issues introduced in 3.1.0 ([#279](https://github.com/mark-wiemer/ahkpp/issues/279))
+-   Fix debugging a file with a space in its name ([#134](https://github.com/mark-wiemer/ahkpp/issues/134))
+-   Fix formatting for some bad labels (two colons) ([PR #325](https://github.com/mark-wiemer/ahkpp/pull/325))
 
 ## 3.2.0 - 2023-01-29 ❄️
 
 -   Debug keyboard shortcut is now `Ctrl + Alt + F9` (was `F9`) to avoid conflicts with VS Code default shortcuts.
 -   New setting: Snippet template name. Create your own template for new AHK files, including no template at all.
--   [Moving lines of code via commands](https://code.visualstudio.com/docs/getstarted/keybindings#_basic-editing) now (almost) correctly indents ([PR #306](https://github.com/mark-wiemer-org/ahkpp/pull/306), issue [#319](https://github.com/mark-wiemer-org/ahkpp/issues/319))
--   Snippets and keywords updated to AutoHotkey v1.1.36.0 ([PR #288](https://github.com/mark-wiemer-org/ahkpp/pull/288), [PR #298](https://github.com/mark-wiemer-org/ahkpp/pull/298))
+-   [Moving lines of code via commands](https://code.visualstudio.com/docs/getstarted/keybindings#_basic-editing) now (almost) correctly indents ([PR #306](https://github.com/mark-wiemer/ahkpp/pull/306), issue [#319](https://github.com/mark-wiemer/ahkpp/issues/319))
+-   Snippets and keywords updated to AutoHotkey v1.1.36.0 ([PR #288](https://github.com/mark-wiemer/ahkpp/pull/288), [PR #298](https://github.com/mark-wiemer/ahkpp/pull/298))
 
 Fixes:
 
 -   Fix syntax highlighting for:
 
-    -   strings with double colons in them ([PR #278](https://github.com/mark-wiemer-org/ahkpp/pull/278))
-    -   conditional directives ([#69](https://github.com/mark-wiemer-org/ahkpp/issues/69))
-    -   #Include and #IncludeAgain ([#86](https://github.com/mark-wiemer-org/ahkpp/issues/86))
-    -   semi-colons without a preceding space (usually meant to be comments) ([#295](https://github.com/mark-wiemer-org/ahkpp/issues/295))
+    -   strings with double colons in them ([PR #278](https://github.com/mark-wiemer/ahkpp/pull/278))
+    -   conditional directives ([#69](https://github.com/mark-wiemer/ahkpp/issues/69))
+    -   #Include and #IncludeAgain ([#86](https://github.com/mark-wiemer/ahkpp/issues/86))
+    -   semi-colons without a preceding space (usually meant to be comments) ([#295](https://github.com/mark-wiemer/ahkpp/issues/295))
 
 -   Fix formatting for:
 
-    -   comments at the beginning of a code block ([#291](https://github.com/mark-wiemer-org/ahkpp/issues/291))
-    -   `IfMsgBox` ([#290](https://github.com/mark-wiemer-org/ahkpp/issues/290))
-    -   complex hotkeys ([#303](https://github.com/mark-wiemer-org/ahkpp/issues/303))
-    -   object assignment within unbraced code blocks ([#316](https://github.com/mark-wiemer-org/ahkpp/issues/316))
-    -   nested, unbraced code blocks ([PR #287](https://github.com/mark-wiemer-org/ahkpp/pull/287))
+    -   comments at the beginning of a code block ([#291](https://github.com/mark-wiemer/ahkpp/issues/291))
+    -   `IfMsgBox` ([#290](https://github.com/mark-wiemer/ahkpp/issues/290))
+    -   complex hotkeys ([#303](https://github.com/mark-wiemer/ahkpp/issues/303))
+    -   object assignment within unbraced code blocks ([#316](https://github.com/mark-wiemer/ahkpp/issues/316))
+    -   nested, unbraced code blocks ([PR #287](https://github.com/mark-wiemer/ahkpp/pull/287))
 
--   Fix hover message for doc comments to always be trimmed ([PR #308](https://github.com/mark-wiemer-org/ahkpp/pull/308))
+-   Fix hover message for doc comments to always be trimmed ([PR #308](https://github.com/mark-wiemer/ahkpp/pull/308))
 
 ## 3.1.0 - 2022-11-21 🦃
 
@@ -523,9 +523,9 @@ Fixes:
 -   New compiler options in settings: Choose base file, file icon, and "use [MPRESS](https://www.autohotkey.com/mpress/mpress_web.htm)"
 -   Add "Compiler GUI" command in context menu to use the AHK GUI when compiling
 
-**Snippets**: Update snippets for AHK 1.1.35.00 and fix broken `InStr()` snippet ([#263](https://github.com/mark-wiemer-org/ahkpp/issues/263))
+**Snippets**: Update snippets for AHK 1.1.35.00 and fix broken `InStr()` snippet ([#263](https://github.com/mark-wiemer/ahkpp/issues/263))
 
-**Grammar**: Fix `#Requires` not being recognized ([#268](https://github.com/mark-wiemer-org/ahkpp/issues/268))
+**Grammar**: Fix `#Requires` not being recognized ([#268](https://github.com/mark-wiemer/ahkpp/issues/268))
 
 **Editor**: New AHK file icon (green square with white H)
 
@@ -533,8 +533,8 @@ Fixes:
 
 **Formatter**: Close the following bugs:
 
--   Formatter incorrectly indents object literals ([#184](https://github.com/mark-wiemer-org/ahkpp/issues/184), [#222](https://github.com/mark-wiemer-org/ahkpp/issues/222))
--   Nested one command code flow control ([#255](https://github.com/mark-wiemer-org/ahkpp/issues/255))
+-   Formatter incorrectly indents object literals ([#184](https://github.com/mark-wiemer/ahkpp/issues/184), [#222](https://github.com/mark-wiemer/ahkpp/issues/222))
+-   Nested one command code flow control ([#255](https://github.com/mark-wiemer/ahkpp/issues/255))
 
 **Miscellaneous**: Extension should start up faster
 
@@ -544,26 +544,26 @@ This is "The Kyklish Release" because Kyklish wrote most of this code. Thank you
 
 ### ⛓️‍💥 Breaking changes
 
--   Update file template: Add `#NoEnv` and `SetBatchLines, -1` ([PR #202](https://github.com/mark-wiemer-org/ahkpp/pull/202))
+-   Update file template: Add `#NoEnv` and `SetBatchLines, -1` ([PR #202](https://github.com/mark-wiemer/ahkpp/pull/202))
 
-> Formatter bugfixes may be considered breaking if you wanted the old behaviors. If you want the old behavior, please [open an issue](https://github.com/mark-wiemer-org/ahkpp/issues/new?assignees=mark-wiemer&labels=bug%2C+formatter&template=formatting-bug.md&title=).
+> Formatter bugfixes may be considered breaking if you wanted the old behaviors. If you want the old behavior, please [open an issue](https://github.com/mark-wiemer/ahkpp/issues/new?assignees=mark-wiemer&labels=bug%2C+formatter&template=formatting-bug.md&title=).
 
 ### Features
 
--   Add [formatter directive](./readme.md#formatter-directives) for "Format Block Comment" ([PR #164](https://github.com/mark-wiemer-org/ahkpp/pull/164))
--   Add "allowed number of empty lines" setting to preserve any number of lines. Defaults to `1`, `-1` means "preserve all empty lines" ([PR #194](https://github.com/mark-wiemer-org/ahkpp/pull/194))
--   Add "preserve indent" setting to preserve spaces before a comment. Defaults to `false`. ([PR #192](https://github.com/mark-wiemer-org/ahkpp/pull/192))
--   Add "trim extra spaces" to trim spaces between words. Defaults to `true`. ([PR #191](https://github.com/mark-wiemer-org/ahkpp/pull/191))
--   Trim end of line when formatting ([PR #190](https://github.com/mark-wiemer-org/ahkpp/pull/190))
+-   Add [formatter directive](./readme.md#formatter-directives) for "Format Block Comment" ([PR #164](https://github.com/mark-wiemer/ahkpp/pull/164))
+-   Add "allowed number of empty lines" setting to preserve any number of lines. Defaults to `1`, `-1` means "preserve all empty lines" ([PR #194](https://github.com/mark-wiemer/ahkpp/pull/194))
+-   Add "preserve indent" setting to preserve spaces before a comment. Defaults to `false`. ([PR #192](https://github.com/mark-wiemer/ahkpp/pull/192))
+-   Add "trim extra spaces" to trim spaces between words. Defaults to `true`. ([PR #191](https://github.com/mark-wiemer/ahkpp/pull/191))
+-   Trim end of line when formatting ([PR #190](https://github.com/mark-wiemer/ahkpp/pull/190))
 
 ### Fixes
 
--   Fix some snippets ([PR #138](https://github.com/mark-wiemer-org/ahkpp/pull/138), [PR #201](https://github.com/mark-wiemer-org/ahkpp/pull/201), [PR #210](https://github.com/mark-wiemer-org/ahkpp/pull/210))
--   Fix formatting bugs with semi-colon as part of a string ([PR #159](https://github.com/mark-wiemer-org/ahkpp/pull/159))
--   Fix some formatting bugs with `if`, `else`, etc. without braces ([PR #181](https://github.com/mark-wiemer-org/ahkpp/pull/181))
--   Fix formatter issue with non-label colon at end of line ([PR #162](https://github.com/mark-wiemer-org/ahkpp/pull/162))
--   Even more formatter fixes ([PR #164](https://github.com/mark-wiemer-org/ahkpp/pull/164))
--   Use default debug icon (was yanked in 2.8.3, now it returns!) ([PR #149](https://github.com/mark-wiemer-org/ahkpp/pull/149))
+-   Fix some snippets ([PR #138](https://github.com/mark-wiemer/ahkpp/pull/138), [PR #201](https://github.com/mark-wiemer/ahkpp/pull/201), [PR #210](https://github.com/mark-wiemer/ahkpp/pull/210))
+-   Fix formatting bugs with semi-colon as part of a string ([PR #159](https://github.com/mark-wiemer/ahkpp/pull/159))
+-   Fix some formatting bugs with `if`, `else`, etc. without braces ([PR #181](https://github.com/mark-wiemer/ahkpp/pull/181))
+-   Fix formatter issue with non-label colon at end of line ([PR #162](https://github.com/mark-wiemer/ahkpp/pull/162))
+-   Even more formatter fixes ([PR #164](https://github.com/mark-wiemer/ahkpp/pull/164))
+-   Use default debug icon (was yanked in 2.8.3, now it returns!) ([PR #149](https://github.com/mark-wiemer/ahkpp/pull/149))
 
 ## 2.8.4 - 2022-07-07
 
@@ -573,7 +573,7 @@ This is "The Kyklish Release" because Kyklish wrote most of this code. Thank you
 
 > This release has been yanked, meaning it's not supported. Use 2.8.4 instead.
 
--   Change to use default debug icon ([#100](https://github.com/mark-wiemer-org/ahkpp/issues/100))
+-   Change to use default debug icon ([#100](https://github.com/mark-wiemer/ahkpp/issues/100))
 
 -   ⛓️‍💥 Unexpected breaking change: Break "step into" function of debugger.
 
@@ -586,37 +586,37 @@ This is "The Kyklish Release" because Kyklish wrote most of this code. Thank you
 
 ## 2.8.1 - 2021-05-09
 
--   Fix indentation with `(::` ([#72](https://github.com/mark-wiemer-org/ahkpp/issues/72))
+-   Fix indentation with `(::` ([#72](https://github.com/mark-wiemer/ahkpp/issues/72))
 
 ## 2.8.0 - 2021-03-14
 
--   Add setting to toggle debug button in editor title menu ([#10](https://github.com/mark-wiemer-org/ahkpp/issues/10))
+-   Add setting to toggle debug button in editor title menu ([#10](https://github.com/mark-wiemer/ahkpp/issues/10))
 
 ## 2.7.2 - 2021-03-02
 
--   Fix indentation with parentheses again (sorry!) ([#58](https://github.com/mark-wiemer-org/ahkpp/issues/58))
+-   Fix indentation with parentheses again (sorry!) ([#58](https://github.com/mark-wiemer/ahkpp/issues/58))
 
 ## 2.7.1 - 2021-02-28
 
--   Fix indentation with parentheses ([#25](https://github.com/mark-wiemer-org/ahkpp/issues/25))
+-   Fix indentation with parentheses ([#25](https://github.com/mark-wiemer/ahkpp/issues/25))
 
 ## 2.7.0 - 2021-02-21
 
--   Respect user choice to indent with either tabs or spaces ([#49](https://github.com/mark-wiemer-org/ahkpp/issues/49))
+-   Respect user choice to indent with either tabs or spaces ([#49](https://github.com/mark-wiemer/ahkpp/issues/49))
 
 ## 2.6.3 - 2021-02-20
 
--   Fix IntelliSense ([#48](https://github.com/mark-wiemer-org/ahkpp/issues/48))
+-   Fix IntelliSense ([#48](https://github.com/mark-wiemer/ahkpp/issues/48))
 -   Move `Run Selection` command to same category as all other commands (Thanks [@fade2gray](https://github.com/fade2gray)!)
 
 ## 2.6.2 - 2021-01-30
 
--   Fix formatting after ternary operator ([#18](https://github.com/mark-wiemer-org/ahkpp/issues/18))
--   Fix formatting after multiple close braces on one line ([#26](https://github.com/mark-wiemer-org/ahkpp/issues/26))
+-   Fix formatting after ternary operator ([#18](https://github.com/mark-wiemer/ahkpp/issues/18))
+-   Fix formatting after multiple close braces on one line ([#26](https://github.com/mark-wiemer/ahkpp/issues/26))
 
 ## 2.6.1 - 2021-01-23
 
--   Fix hover provider ([#16](https://github.com/mark-wiemer-org/ahkpp/issues/16))
+-   Fix hover provider ([#16](https://github.com/mark-wiemer/ahkpp/issues/16))
 
 ## 2.6.0 - 2021-01-18
 
@@ -629,7 +629,7 @@ This is "The Kyklish Release" because Kyklish wrote most of this code. Thank you
 ### Fixes
 
 -   Improve formatting for using `ExitApp` to end subroutines
--   Fix function coloring for functions whose names were also keywords ([#11](https://github.com/mark-wiemer-org/ahkpp/issues/11))
+-   Fix function coloring for functions whose names were also keywords ([#11](https://github.com/mark-wiemer/ahkpp/issues/11))
 -   Fix function coloring for calls with a space before the parentheses (e.g. `foo ()`)
 -   Fix detection of labels indented with a tab
 -   Remove confusing deprecation warning from `StrSplit` function

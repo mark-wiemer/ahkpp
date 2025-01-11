@@ -27,7 +27,7 @@ jobs:
       - name: Publish to Visual Studio Marketplace
         uses: HaaLeo/publish-vscode-extension@v1
         with:
-          # https://github.com/mark-wiemer-org/ahkpp/settings/secrets/actions
+          # https://github.com/mark-wiemer/ahkpp/settings/secrets/actions
           # https://dev.azure.com/markwiemer/_usersSettings/tokens
           # Saved locally as "CI VS Code Marketplace Publish Token"
           pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}

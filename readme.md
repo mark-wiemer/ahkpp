@@ -8,14 +8,14 @@
     <div>Quick help</div>
     <div>...and more</div>
     <br />
-    <div><a href="docs/Troubleshooting.md">Troubleshooting</a> | <a href="https://github.com/mark-wiemer-org/ahkpp/issues/new/choose">Open a bug</a> | <a href="https://marketplace.visualstudio.com/items?itemName=mark-wiemer.vscode-autohotkey-plus-plus&ssr=false#review-details">Leave a review</a></div>
+    <div><a href="docs/Troubleshooting.md">Troubleshooting</a> | <a href="https://github.com/mark-wiemer/ahkpp/issues/new/choose">Open a bug</a> | <a href="https://marketplace.visualstudio.com/items?itemName=mark-wiemer.vscode-autohotkey-plus-plus&ssr=false#review-details">Leave a review</a></div>
 </div>
 
 ## Install
 
-AHK++ is available for: [VS Code](https://code.visualstudio.com) | [Theia IDE](https://theia-ide.org) | [VSCodium](https://vscodium.com) | [any other IDE that supports \*.vsix extensions](https://github.com/mark-wiemer-org/ahkpp/releases)
+AHK++ is available for: [VS Code](https://code.visualstudio.com) | [Theia IDE](https://theia-ide.org) | [VSCodium](https://vscodium.com) | [any other IDE that supports \*.vsix extensions](https://github.com/mark-wiemer/ahkpp/releases)
 
-Download from a trusted source: [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=mark-wiemer.vscode-autohotkey-plus-plus) | [Open VSX Registry](https://open-vsx.org/extension/mark-wiemer/vscode-autohotkey-plus-plus) | [GitHub releases](https://github.com/mark-wiemer-org/ahkpp/releases)
+Download from a trusted source: [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=mark-wiemer.vscode-autohotkey-plus-plus) | [Open VSX Registry](https://open-vsx.org/extension/mark-wiemer/vscode-autohotkey-plus-plus) | [GitHub releases](https://github.com/mark-wiemer/ahkpp/releases)
 
 ## AHK v2 full support is here! 🥂
 
@@ -30,7 +30,7 @@ AHK++ 6 incorporates [AutoHotkey v2 Language Support by thqby](https://marketpla
 
 For all changes, including breaking changes, see [the changelog](./changelog.md#600---2024-09-01-)
 
-As always, please [🐛 report any issues](https://github.com/mark-wiemer-org/ahkpp/issues/new/choose)
+As always, please [🐛 report any issues](https://github.com/mark-wiemer/ahkpp/issues/new/choose)
 
 💚 Special thanks again to [thqby](https://github.com/thqby), as this would not have been possible without thqby's open-source [AutoHotkey v2 Language Support](https://marketplace.visualstudio.com/items?itemName=thqby.vscode-autohotkey2-lsp)!
 
@@ -49,7 +49,7 @@ With AHK++, you can compile, debug, and run your scripts with keyboard shortcuts
 
 ## Debug
 
-> There are some [known issues with the debugger](https://github.com/mark-wiemer-org/ahkpp/issues?q=is%3Aopen+is%3Aissue+label%3Adebugger). If you need an advanced setup, we recommend [zero-plusplus.vscode-autohotkey-debug](https://marketplace.visualstudio.com/items?itemName=zero-plusplus.vscode-autohotkey-debug) for now. Please [open an issue](https://github.com/mark-wiemer-org/ahkpp/issues/new/choose) if the built-in debugger does not support your needs. As `zero-plusplus.vscode-autohotkey-debug` is [closed-source](https://github.com/zero-plusplus/vscode-autohotkey-debug/discussions/332), we will be working to introduce advanced debugger features to ensure an open-source, collaborative, complete extension is available to the AHK community 🙂
+> There are some [known issues with the debugger](https://github.com/mark-wiemer/ahkpp/issues?q=is%3Aopen+is%3Aissue+label%3Adebugger). If you need an advanced setup, we recommend [zero-plusplus.vscode-autohotkey-debug](https://marketplace.visualstudio.com/items?itemName=zero-plusplus.vscode-autohotkey-debug) for now. Please [open an issue](https://github.com/mark-wiemer/ahkpp/issues/new/choose) if the built-in debugger does not support your needs. As `zero-plusplus.vscode-autohotkey-debug` is [closed-source](https://github.com/zero-plusplus/vscode-autohotkey-debug/discussions/332), we will be working to introduce advanced debugger features to ensure an open-source, collaborative, complete extension is available to the AHK community 🙂
 
 1. Click the debug button in the editor title menu (at the top right of the editor) or press `Ctrl + Alt + F9`.
 2. The debugger supports breakpoints, stack tracing, and variable watching
@@ -149,7 +149,7 @@ This extension relies heavily on open-source code. A huge thank you to all these
 
 -   [AutoHotkey Plus by cweijan](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-autohotkey-plus): AHK++ is a fork of AutoHotkey Plus by cweijan (Weijan Chen)
 -   [AutoHotkey v2 Language Support extension by thqby](https://marketplace.visualstudio.com/items?itemName=thqby.vscode-autohotkey2-lsp): The source of the v2 grammar and other great contributions
--   [Contributions to AHK++ by kyklish](https://github.com/mark-wiemer-org/ahkpp/commits/main?author=kyklish): Greatly improved formatting and snippets by both fixing bugs and adding features
+-   [Contributions to AHK++ by kyklish](https://github.com/mark-wiemer/ahkpp/commits/main?author=kyklish): Greatly improved formatting and snippets by both fixing bugs and adding features
 -   [AutoHotkey v2 definition files by GroggyOtter](https://github.com/GroggyOtter/ahkv2_definition_rewrite)
 -   [AHK version selection by Lexikos](https://github.com/Lexikos/vscode-auto-select): The core code for automatically switching AHK versions
 -   [AutoHotkey by stef-levesque](https://marketplace.visualstudio.com/items?itemName=slevesque.vscode-autohotkey): AutoHotkey Plus is a fork of stef-levesque's original AutoHotkey extension, which provided the original grammar and snippets for AHK
@@ -157,5 +157,5 @@ This extension relies heavily on open-source code. A huge thank you to all these
 
 ## Links
 
--   [GitHub repo](https://github.com/mark-wiemer-org/ahkpp): View code, file bugs, and join discussions
+-   [GitHub repo](https://github.com/mark-wiemer/ahkpp): View code, file bugs, and join discussions
 -   [Reviews on VS Marketplace](https://marketplace.visualstudio.com/items?itemName=mark-wiemer.vscode-autohotkey-plus-plus&ssr=false#review-details): Help others discover AHK++ by leaving a review

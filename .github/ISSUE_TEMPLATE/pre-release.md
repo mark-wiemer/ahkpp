@@ -6,7 +6,7 @@ labels: pre-release
 assignees: mark-wiemer
 ---
 
--   [ ] My issue is different from [other reported pre-release issues](https://github.com/mark-wiemer-org/ahkpp/issues?q=sort%3Aupdated-desc+label%3Apre-release+is%3Aopen)
+-   [ ] My issue is different from [other reported pre-release issues](https://github.com/mark-wiemer/ahkpp/issues?q=sort%3Aupdated-desc+label%3Apre-release+is%3Aopen)
 
 **Is your issue related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]

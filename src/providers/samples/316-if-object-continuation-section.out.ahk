@@ -1,4 +1,4 @@
-; [Issue #316](https://github.com/mark-wiemer-org/ahkpp/issues/316)
+; [Issue #316](https://github.com/mark-wiemer/ahkpp/issues/316)
 {
     if (expression)
         obj := { 0:""
