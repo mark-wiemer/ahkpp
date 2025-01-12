@@ -214,6 +214,7 @@
             "title": "AHK++ (AutoHotkey Plus Plus)",
             "properties": {
                 "AHK++.compiler": {
+                    "markdownDescription": "%ahk++.config.compiler%",
                     "type": "object",
                     "properties": {
                         "compileIcon": {
@@ -239,8 +240,7 @@
                         "compileIcon": "",
                         "compilerPath": "C:/Program Files/AutoHotkey/Compiler/Ahk2Exe.exe",
                         "useMpress": false
-                    },
-                    "markdownDescription": "Learn more about [MPRESS](https://www.autohotkey.com/mpress/mpress_web.htm)"
+                    }
                 },
                 "AHK++.exclude": {
                     "scope": "window",
@@ -293,8 +293,8 @@
                     }
                 },
                 "AHK++.v1.file": {
+                    "markdownDescription": "%ahk++.config.v1.file%",
                     "type": "object",
-                    "markdownDescription": "[Learn more about the template snippet](https://github.com/mark-wiemer/ahkpp/tree/main/docs/TemplateSnippet.md)",
                     "properties": {
                         "compileBaseFile": {
                             "type": "string",
@@ -473,12 +473,12 @@
                         "compileBaseFile": {
                             "type": "string",
                             "default": "",
-                            "description": "Base file path for compiling v2 scripts (optional)."
+                            "description": "%ahk++.config.v2.file.compileBaseFile%"
                         },
                         "helpPath": {
                             "type": "string",
                             "default": "C:/Program Files/AutoHotkey/v2/AutoHotkey.chm",
-                            "description": "Path to the AHK v2 help document."
+                            "description": "%ahk++.config.v2.file.helpPath%"
                         },
                         "interpreterPath": {
                             "type": "string",
@@ -494,7 +494,7 @@
                         "templateSnippetName": {
                             "type": "string",
                             "default": "AhkTemplateV2",
-                            "description": "The name of the snippet to populate new AHK v2 files. If blank, no snippet will be applied."
+                            "description": "%ahk++.config.v2.file.templateSnippetName%"
                         }
                     },
                     "default": {
@@ -666,17 +666,17 @@
                                 "SwitchToV1",
                                 "SkipLine"
                             ],
-                            "description": "%ahk++.config.v2.actionWhenV1Detected%"
+                            "description": "%ahk++.config.v2.general.actionWhenV1Detected%"
                         },
                         "commentTagRegex": {
                             "type": "string",
                             "default": "^;;\\s*(?<tag>.+)",
-                            "description": "%ahk++.config.v2.commentTagRegex%"
+                            "description": "%ahk++.config.v2.general.commentTagRegex%"
                         },
                         "completeFunctionCalls": {
                             "type": "boolean",
                             "default": false,
-                            "description": "%ahk++.config.v2.completeFunctionCalls%"
+                            "description": "%ahk++.config.v2.general.completeFunctionCalls%"
                         },
                         "librarySuggestions": {
                             "scope": "window",
@@ -688,19 +688,19 @@
                                 "All"
                             ],
                             "default": "Disabled",
-                            "description": "%ahk++.config.v2.librarySuggestions%"
+                            "description": "%ahk++.config.v2.general.librarySuggestions%"
                         },
                         "symbolFoldingFromOpenBrace": {
                             "scope": "window",
                             "type": "boolean",
                             "default": false,
-                            "description": "%ahk++.config.v2.symbolFoldingFromOpenBrace%"
+                            "description": "%ahk++.config.v2.general.symbolFoldingFromOpenBrace%"
                         },
                         "syntaxes": {
                             "scope": "window",
                             "type": "string",
                             "default": "",
-                            "description": "%ahk++.config.v2.syntaxes%"
+                            "description": "%ahk++.config.v2.general.syntaxes%"
                         }
                     },
                     "default": {
@@ -714,16 +714,6 @@
                     "additionalProperties": {
                         "type": "string"
                     }
-                },
-                "AHK++.v2.workingDirectories": {
-                    "scope": "window",
-                    "type": "array",
-                    "default": [],
-                    "items": {
-                        "type": "string"
-                    },
-                    "uniqueItems": true,
-                    "description": "%ahk++.config.v2.workingDirectories%"
                 },
                 "AHK++.v2.warn": {
                     "type": "object",
@@ -760,6 +750,16 @@
                     "additionalProperties": {
                         "type": "string"
                     }
+                },
+                "AHK++.v2.workingDirectories": {
+                    "scope": "window",
+                    "type": "array",
+                    "default": [],
+                    "items": {
+                        "type": "string"
+                    },
+                    "uniqueItems": true,
+                    "description": "%ahk++.config.v2.workingDirectories%"
                 }
             }
         },
