@@ -63,11 +63,12 @@
     "ahk++.config.v2.general.actionWhenV1Detected": "Action when v1 script is detected",
     "ahk++.config.v2.general.commentTagRegex": "The regular expression for custom symbols to appear in the breadcrumb and elsewhere. Default matches any line that starts with `;;`. Changes take effect after restart.",
     "ahk++.config.v2.general.completeFunctionCalls": "Whether to automatically add parentheses when calling a function",
-    "ahk++.config.v2.general.librarySuggestions": "Which libraries to suggest functions from, if any. In case of issues, restart your IDE.",
+    "ahk++.config.v2.general.librarySuggestions": "Which libraries to suggest functions from, if any. In case of issues, please restart your IDE.",
     "ahk++.config.v2.general.symbolFoldingFromOpenBrace": "Fold parameter lists separately from definitions.",
     "ahk++.config.v2.general.syntaxes": "Path to the folder containing ahk2.json, ahk2.d.ahk, and *.snippet.json files used by IntelliSense.",
-    "ahk++.config.v2.warn.callWithoutParentheses": "Display warnings for each function or method call without parentheses. Changes take effect after restart.",
-    "ahk++.config.v2.warn.localSameAsGlobal": "Display warnings for each undeclared local variable that has the same name as a global variable. Changes take effect after restart.",
-    "ahk++.config.v2.warn.varUnset": "Display a warning when referencing an unassigned variable. Changes take effect after restart.",
-    "ahk++.config.v2.workingDirectories": "The directories containing referenced AHK files"
+    "ahk++.config.v2.warn": "Display warnings for common issues in AHK v2 scripts. Changes take effect after restart.",
+    "ahk++.config.v2.warn.callWithoutParentheses": "Display warnings for each function or method call without parentheses.",
+    "ahk++.config.v2.warn.localSameAsGlobal": "Display warnings for each undeclared local variable that has the same name as a global variable.",
+    "ahk++.config.v2.warn.varUnset": "Display a warning when referencing an unassigned variable.",
+    "ahk++.config.v2.workingDirectories": "Additional directories containing referenced AHK files, separate from the [script library folders](https://www.autohotkey.com/docs/v2/Scripts.htm#lib)."
 }

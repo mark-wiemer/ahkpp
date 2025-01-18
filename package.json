@@ -759,7 +759,7 @@
                         "type": "string"
                     },
                     "uniqueItems": true,
-                    "description": "%ahk++.config.v2.workingDirectories%"
+                    "markdownDescription": "%ahk++.config.v2.workingDirectories%"
                 }
             }
         },
