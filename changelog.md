@@ -1,8 +1,9 @@
 # Changelog
 
-## 6.4.3 - 2025-01-11 🎆
+## 6.4.3 - 2025-01-18 🎆
 
 -   Fix IniWrite IntelliSense ([#590](https://github.com/mark-wiemer/ahkpp/issues/590))
+-   Add [comprehensive settings reference](./docs/settings.md) in Markdown and improve docs within the settings editor as well ([#581](<(https://github.com/mark-wiemer/ahkpp/issues/581)>))
 
 ## 6.4.2 - 2024-12-16 🎄
 
