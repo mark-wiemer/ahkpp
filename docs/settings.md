@@ -1,12 +1,22 @@
 # AHK++ settings reference
 
-AHK++ has a lot of configuration options, and they can be hard to understand within VS Code's default settings editor. This page covers every setting in detail. If you have any questions, feel free to [start a discussion](https://github.com/mark-wiemer/ahkpp/discussions/new?category=q-a) 🤓
+AHK++ has a lot of configuration options, and they can be hard to understand
+within VS Code's default settings editor. This page covers every setting in
+detail. If you have any questions, feel free to
+[start a discussion](https://github.com/mark-wiemer/ahkpp/discussions/new?category=q-a)
+🤓
 
-For advanced users, all settings can be found in [package.json](../package.json), under the `contributes.configuration` and `contributes.configurationDefault` sections. A description of each property is in [package.nls.json](../package.nls.json). This page aggregates all that information while removing the fluff :)
+For advanced users, all settings can be found in
+[package.json](../package.json), under the `contributes.configuration` and
+`contributes.configurationDefault` sections. A description of each property is
+in [package.nls.json](../package.nls.json). This page aggregates all that
+information while removing the fluff :)
 
 All settings, alphabetically by section ID:
 
 <!-- Values are user-facing from VS Code's settings editor, hence `v1: File` instead of `v1.file`. Note that users do see camelCase property names ! -->
+
+<!-- prettier-ignore-start -->
 
 | Section                          | Property                      | Type                                                 | Default                                             | Description                                                                                                                                                                                                                                                            |
 | -------------------------------- | ----------------------------- | ---------------------------------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -66,6 +76,8 @@ All settings, alphabetically by section ID:
 | v2: Warn                         | varUnset                      | boolean                                              | true                                                | Display a warning when referencing an unassigned variable. Changes take effect after restart.                                                                                                                                                                          |
 | v2: Working directories          | (n/a)                         | string array                                         | (empty array)                                       | The directories containing referenced AHK files                                                                                                                                                                                                                        |
 
+<!-- prettier-ignore-end -->
+
 Note 1: Default `AHK++.v2.debugConfiguration`:
 
 ```json
@@ -84,7 +96,7 @@ Note 1: Default `AHK++.v2.debugConfiguration`:
 - [x] Check for correct nls names
 - [x] Check for alphabetical order of nls names
 - [x] Check for correct descriptions in nls values
-- [ ] Translate nls to Chinese
+- [x] Translate nls to Chinese
 - [ ] Check for alphabetical order in this table
 - [ ] Check for correct rows in this table
 - [ ] Fixup the "note 1" semantics (superscript with link to correct section, like Wikipedia)
