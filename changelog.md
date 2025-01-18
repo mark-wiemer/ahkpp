@@ -8,8 +8,8 @@
 
 ## 6.4.2 - 2024-12-16 🎄
 
--   Reduce required VS Code version to 1.68 (#574)
--   Update internal dependencies for security (#577)
+-   Reduce required VS Code version to 1.68 ([#574](https://github.com/mark-wiemer/ahkpp/issues/574))
+-   Update internal dependencies for security ([#577](https://github.com/mark-wiemer/ahkpp/issues/577))
 
 ## 6.4.1 - 2024-11-09 🛠️
 
