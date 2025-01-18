@@ -717,6 +717,7 @@
                 },
                 "AHK++.v2.warn": {
                     "type": "object",
+                    "markdownDescription": "%ahk++.config.v2.warn%",
                     "properties": {
                         "callWithoutParentheses": {
                             "scope": "window",
@@ -752,14 +753,14 @@
                     }
                 },
                 "AHK++.v2.workingDirectories": {
+                    "markdownDescription": "%ahk++.config.v2.workingDirectories%",
                     "scope": "window",
                     "type": "array",
                     "default": [],
                     "items": {
                         "type": "string"
                     },
-                    "uniqueItems": true,
-                    "markdownDescription": "%ahk++.config.v2.workingDirectories%"
+                    "uniqueItems": true
                 }
             }
         },
