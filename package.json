@@ -214,22 +214,23 @@
             "title": "AHK++ (AutoHotkey Plus Plus)",
             "properties": {
                 "AHK++.compiler": {
+                    "markdownDescription": "%ahk++.config.compiler%",
                     "type": "object",
                     "properties": {
                         "compileIcon": {
                             "type": "string",
                             "default": "",
-                            "description": "Icon path for the compiled AHK file (optional)."
-                        },
-                        "useMpress": {
-                            "type": "boolean",
-                            "default": false,
-                            "markdownDescription": "Use MPRESS (if available) to compress the resulting executable."
+                            "description": "%ahk++.config.compiler.compileIcon%"
                         },
                         "compilerPath": {
                             "type": "string",
                             "default": "C:/Program Files/AutoHotkey/Compiler/Ahk2Exe.exe",
-                            "description": "Path to the AHK compiler. This is the same for both v1 and v2."
+                            "description": "%ahk++.config.compiler.compilerPath%"
+                        },
+                        "useMpress": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": "%ahk++.config.compiler.useMPress%"
                         }
                     },
                     "additionalProperties": {
@@ -239,8 +240,17 @@
                         "compileIcon": "",
                         "compilerPath": "C:/Program Files/AutoHotkey/Compiler/Ahk2Exe.exe",
                         "useMpress": false
+                    }
+                },
+                "AHK++.exclude": {
+                    "scope": "window",
+                    "type": "array",
+                    "default": [],
+                    "items": {
+                        "type": "string"
                     },
-                    "markdownDescription": "Learn more about [MPRESS](https://www.autohotkey.com/mpress/mpress_web.htm)"
+                    "uniqueItems": true,
+                    "markdownDescription": "%ahk++.config.exclude%"
                 },
                 "AHK++.general": {
                     "type": "object",
@@ -272,7 +282,7 @@
                         "showDebugButton": {
                             "type": "boolean",
                             "default": true,
-                            "description": "Show the debug buttons in the editor title menu."
+                            "description": "%ahk++.config.menu.showDebugButton%"
                         }
                     },
                     "default": {
@@ -283,28 +293,28 @@
                     }
                 },
                 "AHK++.v1.file": {
+                    "markdownDescription": "%ahk++.config.v1.file%",
                     "type": "object",
-                    "markdownDescription": "[Learn more about the template snippet](https://github.com/mark-wiemer/ahkpp/tree/main/docs/TemplateSnippet.md)",
                     "properties": {
                         "compileBaseFile": {
                             "type": "string",
                             "default": "",
-                            "description": "Base file path for compiling v1 scripts (optional)."
+                            "description": "%ahk++.config.v1.file.compileBaseFile%"
                         },
                         "helpPath": {
                             "type": "string",
                             "default": "C:/Program Files/AutoHotkey/AutoHotkey.chm",
-                            "description": "Path to the AHK v1 help document."
+                            "description": "%ahk++.config.v1.file.helpPath%"
                         },
                         "interpreterPath": {
                             "type": "string",
                             "default": "C:/Program Files/AutoHotkey/AutoHotkeyU64.exe",
-                            "description": "Path to the AHK v1 interpreter."
+                            "description": "%ahk++.config.v1.file.interpreterPath%"
                         },
                         "templateSnippetName": {
                             "type": "string",
                             "default": "AhkTemplateV1",
-                            "description": "The name of the snippet to populate new AHK v1 files. If blank, no snippet will be applied."
+                            "description": "%ahk++.config.v1.file.templateSnippetName%"
                         }
                     },
                     "default": {
@@ -324,22 +334,22 @@
                             "type": "integer",
                             "default": 1,
                             "minimum": -1,
-                            "description": "Allowed number of empty lines.\n- -1: Ignore empty lines.\n- 0: No empty lines."
+                            "description": "%ahk++.config.v1.formatter.allowedNumberOfEmptyLines%"
                         },
                         "indentCodeAfterIfDirective": {
                             "type": "boolean",
                             "default": true,
-                            "description": "Indent code after a directive that creates context-sensitive hotkeys or hotstrings (#If, #IfWinActive, #IfWinNotActive, #IfWinExist, #IfWinNotExist)."
+                            "description": "%ahk++.config.v1.formatter.indentCodeAfterIfDirective%"
                         },
                         "indentCodeAfterLabel": {
                             "type": "boolean",
                             "default": true,
-                            "description": "Indent code after hotkeys and labels in top-level code blocks."
+                            "description": "%ahk++.config.v1.formatter.indentCodeAfterLabel%"
                         },
                         "preserveIndent": {
                             "type": "boolean",
                             "default": false,
-                            "description": "Preserve indentation on empty line."
+                            "description": "%ahk++.config.v1.formatter.preserveIndent%"
                         },
                         "trimExtraSpaces": {
                             "type": "boolean",
@@ -360,7 +370,7 @@
                 },
                 "AHK++.v1.intellisense": {
                     "type": "object",
-                    "markdownDescription": "Number of lines to parse each AHK file for IntelliSense.\n- -1: Unlimited parsing\n- 0: No parsing\n\nChanges take effect after restart.",
+                    "markdownDescription": "%ahk++.config.v1.intellisense%",
                     "properties": {
                         "maximumParseLength": {
                             "type": "number",
@@ -457,28 +467,18 @@
                         "type": "string"
                     }
                 },
-                "AHK++.exclude": {
-                    "scope": "window",
-                    "type": "array",
-                    "default": [],
-                    "items": {
-                        "type": "string"
-                    },
-                    "uniqueItems": true,
-                    "markdownDescription": "%ahk++.config.exclude%"
-                },
                 "AHK++.v2.file": {
                     "type": "object",
                     "properties": {
                         "compileBaseFile": {
                             "type": "string",
                             "default": "",
-                            "description": "Base file path for compiling v2 scripts (optional)."
+                            "description": "%ahk++.config.v2.file.compileBaseFile%"
                         },
                         "helpPath": {
                             "type": "string",
                             "default": "C:/Program Files/AutoHotkey/v2/AutoHotkey.chm",
-                            "description": "Path to the AHK v2 help document."
+                            "description": "%ahk++.config.v2.file.helpPath%"
                         },
                         "interpreterPath": {
                             "type": "string",
@@ -494,7 +494,7 @@
                         "templateSnippetName": {
                             "type": "string",
                             "default": "AhkTemplateV2",
-                            "description": "The name of the snippet to populate new AHK v2 files. If blank, no snippet will be applied."
+                            "description": "%ahk++.config.v2.file.templateSnippetName%"
                         }
                     },
                     "default": {
@@ -519,7 +519,8 @@
                                 "expand",
                                 "none"
                             ],
-                            "default": "none"
+                            "default": "none",
+                            "description": "%ahk++.config.v2.formatter.arrayStyle%"
                         },
                         "braceStyle": {
                             "type": "string",
@@ -532,31 +533,38 @@
                                 "if 1 {\n} else {\n}",
                                 "if 1\n{\n}\nelse\n{\n}",
                                 "if 1 {\n}\nelse {\n}"
-                            ]
+                            ],
+                            "description": "%ahk++.config.v2.formatter.braceStyle%"
                         },
                         "breakChainedMethods": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.breakChainedMethods%"
                         },
                         "ignoreComment": {
                             "type": "boolean",
-                            "default": false
-                        },
-                        "indentString": {
-                            "type": "string",
-                            "default": "    "
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.ignoreComment%"
                         },
                         "indentBetweenHotIfDirectives": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.indentBetweenHotIfDirectives%"
+                        },
+                        "indentString": {
+                            "type": "string",
+                            "default": "    ",
+                            "description": "%ahk++.config.v2.formatter.indentString%"
                         },
                         "keywordStartWithUppercase": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.keywordStartWithUppercase%"
                         },
                         "maxPreserveNewlines": {
                             "type": "number",
-                            "default": 2
+                            "default": 2,
+                            "description": "%ahk++.config.v2.formatter.maxPreserveNewlines%"
                         },
                         "objectStyle": {
                             "type": "string",
@@ -565,47 +573,57 @@
                                 "expand",
                                 "none"
                             ],
-                            "default": "none"
+                            "default": "none",
+                            "description": "%ahk++.config.v2.formatter.objectStyle%"
                         },
                         "preserveNewlines": {
                             "type": "boolean",
-                            "default": true
-                        },
-                        "spaceBeforeConditional": {
-                            "type": "boolean",
-                            "default": true
+                            "default": true,
+                            "description": "%ahk++.config.v2.formatter.preserveNewlines%"
                         },
                         "spaceAfterDoubleColon": {
                             "type": "boolean",
-                            "default": true
+                            "default": true,
+                            "description": "%ahk++.config.v2.formatter.spaceAfterDoubleColon%"
+                        },
+                        "spaceBeforeConditional": {
+                            "type": "boolean",
+                            "default": true,
+                            "description": "%ahk++.config.v2.formatter.spaceBeforeConditional%"
                         },
                         "spaceInEmptyParen": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.spaceInEmptyParen%"
                         },
                         "spaceInOther": {
                             "type": "boolean",
-                            "default": true
+                            "default": true,
+                            "description": "%ahk++.config.v2.formatter.spaceInOther%"
                         },
                         "spaceInParen": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.spaceInParen%"
                         },
                         "switchCaseAlignment": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.switchCaseAlignment%"
                         },
                         "symbolWithSameCase": {
                             "type": "boolean",
-                            "default": false
+                            "default": false,
+                            "description": "%ahk++.config.v2.formatter.symbolWithSameCase%"
                         },
                         "whitespaceBeforeInlineComment": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "%ahk++.config.v2.formatter.whitespaceBeforeInlineComment%"
                         },
                         "wrapLineLength": {
                             "type": "number",
-                            "default": 0,
-                            "description": "0 to disable wrapping"
+                            "default": 120,
+                            "description": "%ahk++.config.v2.formatter.wrapLineLength%"
                         }
                     },
                     "additionalProperties": {
@@ -616,14 +634,14 @@
                         "braceStyle": "One True Brace",
                         "breakChainedMethods": false,
                         "ignoreComment": false,
-                        "indentString": "    ",
                         "indentBetweenHotIfDirectives": false,
+                        "indentString": "    ",
                         "keywordStartWithUppercase": false,
                         "maxPreserveNewlines": 2,
                         "objectStyle": "none",
                         "preserveNewlines": true,
-                        "spaceBeforeConditional": true,
                         "spaceAfterDoubleColon": true,
+                        "spaceBeforeConditional": true,
                         "spaceInEmptyParen": false,
                         "spaceInOther": true,
                         "spaceInParen": false,
@@ -648,17 +666,17 @@
                                 "SwitchToV1",
                                 "SkipLine"
                             ],
-                            "description": "%ahk++.config.v2.actionWhenV1Detected%"
+                            "description": "%ahk++.config.v2.general.actionWhenV1Detected%"
                         },
                         "commentTagRegex": {
                             "type": "string",
                             "default": "^;;\\s*(?<tag>.+)",
-                            "description": "%ahk++.config.v2.commentTagRegex%"
+                            "description": "%ahk++.config.v2.general.commentTagRegex%"
                         },
                         "completeFunctionCalls": {
                             "type": "boolean",
                             "default": false,
-                            "description": "%ahk++.config.v2.completeFunctionCalls%"
+                            "description": "%ahk++.config.v2.general.completeFunctionCalls%"
                         },
                         "librarySuggestions": {
                             "scope": "window",
@@ -670,19 +688,19 @@
                                 "All"
                             ],
                             "default": "Disabled",
-                            "description": "%ahk++.config.v2.librarySuggestions%"
+                            "description": "%ahk++.config.v2.general.librarySuggestions%"
                         },
                         "symbolFoldingFromOpenBrace": {
                             "scope": "window",
                             "type": "boolean",
                             "default": false,
-                            "description": "%ahk++.config.v2.symbolFoldingFromOpenBrace%"
+                            "description": "%ahk++.config.v2.general.symbolFoldingFromOpenBrace%"
                         },
                         "syntaxes": {
                             "scope": "window",
                             "type": "string",
                             "default": "",
-                            "description": "%ahk++.config.v2.syntaxes%"
+                            "description": "%ahk++.config.v2.general.syntaxes%"
                         }
                     },
                     "default": {
@@ -697,18 +715,9 @@
                         "type": "string"
                     }
                 },
-                "AHK++.v2.workingDirectories": {
-                    "scope": "window",
-                    "type": "array",
-                    "default": [],
-                    "items": {
-                        "type": "string"
-                    },
-                    "uniqueItems": true,
-                    "description": "%ahk++.config.v2.workingDirectories%"
-                },
                 "AHK++.v2.warn": {
                     "type": "object",
+                    "markdownDescription": "%ahk++.config.v2.warn%",
                     "properties": {
                         "callWithoutParentheses": {
                             "scope": "window",
@@ -742,6 +751,16 @@
                     "additionalProperties": {
                         "type": "string"
                     }
+                },
+                "AHK++.v2.workingDirectories": {
+                    "markdownDescription": "%ahk++.config.v2.workingDirectories%",
+                    "scope": "window",
+                    "type": "array",
+                    "default": [],
+                    "items": {
+                        "type": "string"
+                    },
+                    "uniqueItems": true
                 }
             }
         },
