@@ -4,9 +4,7 @@ AHK++ has a lot of configuration options, and they can be hard to understand wit
 
 For advanced users, all settings can be found at [package.json](../package.json), under the `contributes.configuration` and `contributes.configurationDefault` sections. The descriptions of each property are in [package.nls.json](../package.nls.json)
 
-The settings are listed alphabetically by section ID:
-
-<!-- TODO some prop types and default values are incorrect--see the rows with default values that have double quotes in them -->
+All settings alphabetically by section ID:
 
 | Section                          | Property                      | Type                                                 | Default                                             | Description                                                                                                                                                                                                                                                            |
 | -------------------------------- | ----------------------------- | ---------------------------------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -77,3 +75,16 @@ Note 1: Default `AHK++.v2.debugConfiguration`:
     "usePerfTips": true
 }
 ```
+
+<!-- todo
+
+1. Check for alphabetical order in settings.json
+1. Check for correct nls names
+1. Check for alphabetical order of nls names
+1. Check for correct descriptions in nls values
+1. Translate nls to Chinese
+1. Check for alphabetical order in this table
+1. Check for correct rows in this table
+1. Fixup the "note 1" semantics (superscript with link to correct section, like Wikipedia)
+
+-->
