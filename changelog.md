@@ -3,8 +3,8 @@
 ## 6.4.3 - 2025-01-18 🎆
 
 -   Fix IniWrite IntelliSense ([#590](https://github.com/mark-wiemer/ahkpp/issues/590))
--   Add [comprehensive settings reference](./docs/settings.md) in Markdown and improve docs within the settings editor ([#581](<(https://github.com/mark-wiemer/ahkpp/issues/581)>))
--   Update internal dependencies to Node 22, npm 11, and Mocha 11 to improve developer security and developer experience ([PR #593](https://github.com/mark-wiemer/ahkpp/pull/593))
+-   Add [comprehensive settings reference](./docs/settings.md) in Markdown and improve docs within the settings editor ([#581](https://github.com/mark-wiemer/ahkpp/issues/581))
+-   Update internal dependencies to Node 22, npm 11, and Mocha 11 to improve developer security and developer experience ([#583](https://github.com/mark-wiemer/ahkpp/issues/583))
 
 ## 6.4.2 - 2024-12-16 🎄
 
