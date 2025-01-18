@@ -37,7 +37,6 @@
     "ahk++.config.v2.diagnostics.paramsCheck": "Check that the function call has the correct number of arguments",
     "ahk++.config.v2.file.compileBaseFile": "Base file path for compiling v2 scripts (optional).",
     "ahk++.config.v2.file.helpPath": "Path to the AHK v2 help document.",
-    "checking below": "Checking below",
     "ahk++.config.v2.file.interpreterPath": "Path to the AHK v2 interpreter.",
     "ahk++.config.v2.file.maxScanDepth": "Depth of folders to scan for IntelliSense. Negative values mean infinite depth.",
     "ahk++.config.v2.file.templateSnippetName": "The name of the snippet to populate new AHK v2 files. If blank, no snippet will be applied.",
