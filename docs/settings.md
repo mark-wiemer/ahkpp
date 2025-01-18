@@ -2,9 +2,11 @@
 
 AHK++ has a lot of configuration options, and they can be hard to understand within VS Code's default settings editor. This page covers every setting in detail. If you have any questions, feel free to [start a discussion](https://github.com/mark-wiemer/ahkpp/discussions/new?category=q-a) 🤓
 
-For advanced users, all settings can be found at [package.json](../package.json), under the `contributes.configuration` and `contributes.configurationDefault` sections. The descriptions of each property are in [package.nls.json](../package.nls.json)
+For advanced users, all settings can be found in [package.json](../package.json), under the `contributes.configuration` and `contributes.configurationDefault` sections. A description of each property is in [package.nls.json](../package.nls.json). This page aggregates all that information while removing the fluff :)
 
-All settings alphabetically by section ID:
+All settings, alphabetically by section ID:
+
+<!-- Values are user-facing from VS Code's settings editor, hence `v1: File` instead of `v1.file`. Note that users do see camelCase property names ! -->
 
 | Section                          | Property                      | Type                                                 | Default                                             | Description                                                                                                                                                                                                                                                            |
 | -------------------------------- | ----------------------------- | ---------------------------------------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -78,13 +80,13 @@ Note 1: Default `AHK++.v2.debugConfiguration`:
 
 <!-- todo
 
-1. Check for alphabetical order in settings.json
-1. Check for correct nls names
-1. Check for alphabetical order of nls names
-1. Check for correct descriptions in nls values
-1. Translate nls to Chinese
-1. Check for alphabetical order in this table
-1. Check for correct rows in this table
-1. Fixup the "note 1" semantics (superscript with link to correct section, like Wikipedia)
+- [x] Check for alphabetical order in settings.json
+- [x] Check for correct nls names
+- [x] Check for alphabetical order of nls names
+- [x] Check for correct descriptions in nls values
+- [ ] Translate nls to Chinese
+- [ ] Check for alphabetical order in this table
+- [ ] Check for correct rows in this table
+- [ ] Fixup the "note 1" semantics (superscript with link to correct section, like Wikipedia)
 
 -->
