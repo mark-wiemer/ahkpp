@@ -1,4 +1,4 @@
-# AHK++ settings reference
+# AHK++ settings
 
 AHK++ has a lot of configuration options, and they can be hard to understand
 within VS Code's default settings editor. This page covers every setting in
@@ -11,6 +11,8 @@ For advanced users, all settings can be found in
 `contributes.configurationDefault` sections. A description of each property is
 in [package.nls.json](../package.nls.json). This page aggregates all that
 information while removing the fluff :)
+
+## AHK++ settings reference
 
 All settings, alphabetically by section ID:
 
@@ -106,3 +108,13 @@ Note 4: Possible values of v2: General `librarySuggestions`:
 -   Local
 -   User and Standard
 -   All
+
+## Other IDE settings
+
+It's always good to explore your IDE! There are a million settings to learn,
+here are some VS Code favorites picked by the community:
+
+-   `editor.parameterHints.enabled`: Whether to show a pop-up that shows
+    parameter documentation and type information as you type.
+-   `editor.hover.enabled`: Whether the hover is shown. The hover suggests
+    autocompletion for symbol names.
