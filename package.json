@@ -1187,7 +1187,7 @@
         "@vscode/test-electron": "^2.3.10",
         "@vscode/vsce": "^3.2.1",
         "del-cli": "^6.0.0",
-        "esbuild": "0.24.0",
+        "esbuild": "0.25.0",
         "eslint": "^9.9.0",
         "js-yaml": "^4.1.0",
         "mocha": "11.1.0",
