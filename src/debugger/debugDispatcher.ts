@@ -34,11 +34,18 @@ export class DebugDispatcher extends EventEmitter {
 
     /** Start executing the given program. */
     public async start(args: LaunchRequestArguments) {
+        Out.debug(`DebugDispatcher.start#args`);
+        Out.debug(JSON.stringify(args));
         const interpreterPathKey = isV1()
             ? ConfigKey.interpreterPathV1
             : ConfigKey.interpreterPathV2;
-        const runtime: string =
-            args.runtime ?? Global.getConfig(interpreterPathKey);
+        Out.debug(`DebugDispatcher.start#interpreterPathKey`);
+        Out.debug(interpreterPathKey);
+        const runtime: string = args.runtime
+            ? args.runtime
+            : Global.getConfig(interpreterPathKey);
+        Out.debug(`DebugDispatcher.start#runtime`);
+        Out.debug(runtime);
         const dbgpSettings = args.dbgpSettings ?? {};
         const { maxChildren, maxData }: LaunchRequestArguments['dbgpSettings'] =
             {
@@ -46,7 +53,6 @@ export class DebugDispatcher extends EventEmitter {
                 maxData: 131072,
                 ...dbgpSettings,
             };
-
         this.breakPointHandler = new BreakPointHandler();
         this.stackHandler = new StackHandler();
         this.variableHandler = new VariableHandler();
