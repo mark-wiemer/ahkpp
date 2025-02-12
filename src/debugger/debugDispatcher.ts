@@ -17,7 +17,6 @@ import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { Out } from '../common/out';
 import { Global, ConfigKey } from '../common/global';
-import { isV1 } from '../common/codeUtil';
 
 /** An AHK runtime debugger, ref https://xdebug.org/docs/dbgp */
 export class DebugDispatcher extends EventEmitter {
@@ -35,17 +34,19 @@ export class DebugDispatcher extends EventEmitter {
     /** Start executing the given program. */
     public async start(args: LaunchRequestArguments) {
         Out.debug(`DebugDispatcher.start#args`);
-        Out.debug(JSON.stringify(args));
-        const interpreterPathKey = isV1()
-            ? ConfigKey.interpreterPathV1
-            : ConfigKey.interpreterPathV2;
+        Out.debug(`\t${JSON.stringify(args)}`);
+        /** Default to AHK v1 if type not provided */
+        const interpreterPathKey =
+            args.type === 'ahk2'
+                ? ConfigKey.interpreterPathV2
+                : ConfigKey.interpreterPathV1;
         Out.debug(`DebugDispatcher.start#interpreterPathKey`);
-        Out.debug(interpreterPathKey);
+        Out.debug(`\t${interpreterPathKey}`);
         const runtime: string = args.runtime
             ? args.runtime
             : Global.getConfig(interpreterPathKey);
         Out.debug(`DebugDispatcher.start#runtime`);
-        Out.debug(runtime);
+        Out.debug(`\t${runtime}`);
         const dbgpSettings = args.dbgpSettings ?? {};
         const { maxChildren, maxData }: LaunchRequestArguments['dbgpSettings'] =
             {

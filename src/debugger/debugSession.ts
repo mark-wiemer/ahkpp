@@ -20,6 +20,8 @@ import { VscodeScope } from './struct/scope';
  */
 export interface LaunchRequestArguments
     extends DebugProtocol.LaunchRequestArguments {
+    /** AHK v1 or AHK v2 */
+    type?: 'ahk' | 'ahk2';
     /** An absolute path to the "program" to debug. */
     program: string;
     /** An absolute path to the AutoHotkey.exe. */
