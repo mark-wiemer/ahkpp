@@ -114,6 +114,7 @@ Note 4: Possible values of v2: General `librarySuggestions`:
 It's always good to explore your IDE! There are a million settings to learn,
 here are some VS Code favorites picked by the community:
 
+-   `editor.quickSuggestions`: Whether to show inline suggestions as you type.
 -   `editor.parameterHints.enabled`: Whether to show a pop-up that shows
     parameter documentation and type information as you type.
 -   `editor.hover.enabled`: Whether the hover is shown. The hover suggests
