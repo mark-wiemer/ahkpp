@@ -20,7 +20,7 @@
 
 ### Fixes
 
--   Add [troubleshooting guide](docs/Troubleshooting.md)
+-   Add [troubleshooting guide](docs/troubleshooting.md)
 -   Fix go to definition in AHK v1 files ([#559](https://github.com/mark-wiemer/ahkpp/issues/559))
 -   Remove unnecessary error message "Couldn't resolve AHK v2 interpreter" ([#493](https://github.com/mark-wiemer/ahkpp/issues/493))
     -   This has been moved to a output log visible in the AHK++ (v2) output channel
@@ -279,7 +279,7 @@ Settings are now organized into flat objects for a better user experience. Unfor
 -   Add recommended VS Code extensions for working in this codebase
 -   Simplify launch configurations
 -   Improve manual tests and add manual tests for new AHK v2 capabilities
--   Add [full v2 integration docs](docs/FullV2Integration.md)
+-   Add [full v2 integration docs](docs/full-v2-integration.md)
 -   Clarify [license](license.md): even more open-source than before!
 
 ### 💚 Thank you!
@@ -360,7 +360,7 @@ For [technical reasons](https://code.visualstudio.com/api/working-with-extension
 -   Add full v2 support via [thqby's AutoHotkey v2 Language Support](https://marketplace.visualstudio.com/items?itemName=thqby.vscode-autohotkey2-lsp)
     -   No need to install that extension, all features are bundled into this extension
     -   Future work will de-dupe commands like "debug", "run selection", and "open help"
-    -   Known issues and all new features are documented at [full v2 integration](docs/FullV2Integration.md)
+    -   Known issues and all new features are documented at [full v2 integration](docs/full-v2-integration.md)
 
 </details>
 

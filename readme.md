@@ -8,7 +8,7 @@
     <div>Quick help</div>
     <div>...and more</div>
     <br />
-    <div><a href="docs/Troubleshooting.md">Troubleshooting</a> | <a href="https://github.com/mark-wiemer/ahkpp/issues/new/choose">Open a bug</a> | <a href="https://marketplace.visualstudio.com/items?itemName=mark-wiemer.vscode-autohotkey-plus-plus&ssr=false#review-details">Leave a review</a></div>
+    <div><a href="docs/troubleshooting.md">Troubleshooting</a> | <a href="https://github.com/mark-wiemer/ahkpp/issues/new/choose">Open a bug</a> | <a href="https://marketplace.visualstudio.com/items?itemName=mark-wiemer.vscode-autohotkey-plus-plus&ssr=false#review-details">Leave a review</a></div>
 </div>
 
 ## Install
