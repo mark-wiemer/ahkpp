@@ -4,7 +4,7 @@ You can use AHK++ as a [debugger](https://en.wikipedia.org/wiki/Debugger) for AH
 
 ## Via keyboard shortcut
 
-When an AHK file is open, use the `Ctrl+Alt+F9` keyboard shortcut to start debugging
+When an AHK file is open, press `Ctrl+Alt+F9` to start debugging.
 
 ## Via title bar
 
