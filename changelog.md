@@ -156,7 +156,7 @@ More changes are listed below the breaking changes...
 
 ### ⛓️‍💥 Breaking changes
 
-Settings are now organized into flat objects for a better user experience. Unfortunately, this means settings will have to be replaced when upgrading to AHK++ 6. This is a one-time fixup. Below are sample settings matching the new schema and default values of AHK++. You can learn more about the settings via VS Code's settings UI (`Ctrl + ,`)
+Settings are now organized into flat objects for a better user experience. Unfortunately, this means settings will have to be replaced when upgrading to AHK++ 6. This is a one-time fixup. Below are sample settings matching the new schema and default values of AHK++. You can learn more about the settings via VS Code's settings UI (`Ctrl+,`)
 
 <details open><summary>Default AHK++ settings</summary>
 
@@ -255,10 +255,10 @@ Settings are now organized into flat objects for a better user experience. Unfor
 ### New commands
 
 -   Debug AHK and Attach: Debug and attach to the debug session for advanced use-cases. Requires zero-plusplus.vscode-autohotkey-debug.
--   Debug AHK with Params (`Ctrl + F5`): Debug and add user-provided command-line arguments to the debugger for advanced use-cases. Requires zero-plusplus.vscode-autohotkey-debug.
+-   Debug AHK with Params (`Ctrl+F5`): Debug and add user-provided command-line arguments to the debugger for advanced use-cases. Requires zero-plusplus.vscode-autohotkey-debug.
 -   Run AHK++ Diagnostic: Effectively restart the AHK v2 features of the app.
 -   Export AHK Symbols: Export application functions and classes to a new file. Only for AHK v2.
--   Stop AHK Script (`Ctrl + F6`): Stop an AHK script of user choice ran via `Run AHK Script` or any of the `Debug AHK ...` commands. If only one script is running, stop that without asking for confirmation.
+-   Stop AHK Script (`Ctrl+F6`): Stop an AHK script of user choice ran via `Run AHK Script` or any of the `Debug AHK ...` commands. If only one script is running, stop that without asking for confirmation.
 -   Add Doc Comment: Add a function header comment for the current function. Only for AHK v2.
 -   Update File Version Info: Add or update a file header comment
 -   Switch AHK Version: Change between AHK v1 and v2 for the current file
@@ -429,7 +429,7 @@ Be sure to go to the settings and update the new `V2` settings in case the defau
         1. "AutoHotkey v1"
 -   Automatically change AHK version to match the `#Requires` directive near the top of any script the first time that script is opened
 -   Allow running and debugging v1 or v2 scripts without changing settings
--   "Open help" (Ctrl + F1) now opens version-specific help
+-   "Open help" (Ctrl+F1) now opens version-specific help
 -   Add full syntax highlighting for v2 scripts thanks to [AutoHotkey v2 Language Support by thqby](https://marketplace.visualstudio.com/items?itemName=thqby.vscode-autohotkey2-lsp)
 -   Update icons (found next to a script's name in the explorer)
     -   v2 scripts will have official green icons, while v1 scripts now have modified blue icons
@@ -498,7 +498,7 @@ Fixes:
 
 ## 3.2.0 - 2023-01-29 ❄️
 
--   Debug keyboard shortcut is now `Ctrl + Alt + F9` (was `F9`) to avoid conflicts with VS Code default shortcuts.
+-   Debug keyboard shortcut is now `Ctrl+Alt+F9` (was `F9`) to avoid conflicts with VS Code default shortcuts.
 -   New setting: Snippet template name. Create your own template for new AHK files, including no template at all.
 -   [Moving lines of code via commands](https://code.visualstudio.com/docs/getstarted/keybindings#_basic-editing) now (almost) correctly indents ([PR #306](https://github.com/mark-wiemer/ahkpp/pull/306), issue [#319](https://github.com/mark-wiemer/ahkpp/issues/319))
 -   Snippets and keywords updated to AutoHotkey v1.1.36.0 ([PR #288](https://github.com/mark-wiemer/ahkpp/pull/288), [PR #298](https://github.com/mark-wiemer/ahkpp/pull/298))
