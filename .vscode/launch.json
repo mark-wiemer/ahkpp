@@ -22,6 +22,18 @@
                 "--extensionDevelopmentPath=${workspaceFolder}"
             ],
             "testConfiguration": "${workspaceFolder}/.vscode-test.mjs"
+        },
+        {
+            "name": "AHK v1 debugger (for manual tests)",
+            "type": "ahk",
+            "request": "launch",
+            "program": "${workspaceFolder}\\demos\\manualTests\\debugger.ahk1"
+        },
+        {
+            "name": "AHK v2 debugger (for manual tests)",
+            "type": "ahk2",
+            "request": "launch",
+            "program": "${workspaceFolder}\\demos\\manualTests\\debugger.ahk2"
         }
     ]
 }
