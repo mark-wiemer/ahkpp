@@ -1,4 +1,4 @@
-# AHK++ settings
+# Settings
 
 AHK++ has a lot of configuration options, and they can be hard to understand
 within VS Code's default settings editor. This page covers every setting in
