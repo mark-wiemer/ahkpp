@@ -8,7 +8,7 @@
     <div>Quick help</div>
     <div>...and more</div>
     <br />
-    <div><a href="docs/Troubleshooting.md">Troubleshooting</a> | <a href="https://github.com/mark-wiemer/ahkpp/issues/new/choose">Open a bug</a> | <a href="https://marketplace.visualstudio.com/items?itemName=mark-wiemer.vscode-autohotkey-plus-plus&ssr=false#review-details">Leave a review</a></div>
+    <div><a href="docs/troubleshooting.md">Troubleshooting</a> | <a href="https://github.com/mark-wiemer/ahkpp/issues/new/choose">Open a bug</a> | <a href="https://marketplace.visualstudio.com/items?itemName=mark-wiemer.vscode-autohotkey-plus-plus&ssr=false#review-details">Leave a review</a></div>
 </div>
 
 ## Install
@@ -23,7 +23,7 @@ AHK++ 6 incorporates [AutoHotkey v2 Language Support by thqby](https://marketpla
 
 -   Running, debugging, and stopping v1 and v2 scripts without changing settings
 -   Full syntax highlighting for v2 scripts
--   "Open help" (`Ctrl + F1`) opens language-specific help (and includes your text selection)
+-   "Open help" (`Ctrl+F1`) opens language-specific help (and includes your text selection)
 -   Unique icons for AHK v1 (blue) and v2 (green)
 -   Rich IntelliSense support with snippets, hover text, and suggestions
 -   Formatting files with many customized options
@@ -40,18 +40,18 @@ As always, please [🐛 report any issues](https://github.com/mark-wiemer/ahkpp/
 
 With AHK++, you can compile, debug, and run your scripts with keyboard shortcuts. You can also run a selection as a standalone script.
 
--   Compile: `Ctrl + Shift + F9`
--   Debug: `Ctrl + Alt + F9`
--   Open help: `Ctrl + F1`
--   Run: `Ctrl + F9`
--   Run selection: `Ctrl + F8`
--   Stop: `Ctrl + F6`
+-   Compile: `Ctrl+Shift+F9`
+-   Debug: `Ctrl+Alt+F9`
+-   Open help: `Ctrl+F1`
+-   Run: `Ctrl+F9`
+-   Run selection: `Ctrl+F8`
+-   Stop: `Ctrl+F6`
 
 ## Debug
 
 > There are some [known issues with the debugger](https://github.com/mark-wiemer/ahkpp/issues?q=is%3Aopen+is%3Aissue+label%3Adebugger). If you need an advanced setup, we recommend [zero-plusplus.vscode-autohotkey-debug](https://marketplace.visualstudio.com/items?itemName=zero-plusplus.vscode-autohotkey-debug) for now. Please [open an issue](https://github.com/mark-wiemer/ahkpp/issues/new/choose) if the built-in debugger does not support your needs. As `zero-plusplus.vscode-autohotkey-debug` is [closed-source](https://github.com/zero-plusplus/vscode-autohotkey-debug/discussions/332), we will be working to introduce advanced debugger features to ensure an open-source, collaborative, complete extension is available to the AHK community 🙂
 
-1. Click the debug button in the editor title menu (at the top right of the editor) or press `Ctrl + Alt + F9`.
+1. Click the debug button in the editor title menu (at the top right of the editor) or press `Ctrl+Alt+F9`.
 2. The debugger supports breakpoints, stack tracing, and variable watching
 
     ![Debug](image/debug.gif)
@@ -82,7 +82,7 @@ This extension provides basic debugging functions. If you need more debugging fu
 Select a symbol, then:
 
 -   Right-click and select `Find All References`.
--   Or press `Shift + F12`.
+-   Or press `Shift+F12`.
 
 ### Hover tip
 
