@@ -19,9 +19,11 @@ AHK++ adds run and debug buttons to the editor's title bar whenever an AHK file 
 
 ## Via launch.json
 
-VS Code supports debug configurations definitions in `.vscode/launch.json`. This can be a useful way to run your `main.ahk` script from wherever you are in your workspace with a single keystroke.
+🟦 launch.json currently works for AHK v1 only.
 
 ⚠️ There are some known issues with AHK++ support for debug configurations, refer to [#603](https://github.com/mark-wiemer/ahkpp/issues/603) for details.
+
+VS Code supports debug configurations definitions in `.vscode/launch.json`. This can be a useful way to run your `main.ahk` script from wherever you are in your workspace with a single keystroke.
 
 1. Create `.vscode/launch.json` in your workspace
 1. Populate it with whatever launch config you prefer, for example:
@@ -31,7 +33,7 @@ VS Code supports debug configurations definitions in `.vscode/launch.json`. This
         "version": "0.2.0",
         "configurations": [
             {
-                "type": "ahk", // or ahk2
+                "type": "ahk",
                 "request": "launch",
                 "name": "AutoHotkey debugger",
                 "program": "${workspaceFolder}\\main.ahk1", // requires backslashes for now
