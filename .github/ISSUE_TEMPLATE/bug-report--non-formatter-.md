@@ -8,7 +8,7 @@ labels: bug
 assignees: mark-wiemer
 ---
 
-For troubleshooting assistance, refer to the [troubleshooting guide](https://github.com/mark-wiemer/ahkpp/blob/main/docs/Troubleshooting.md)
+For troubleshooting assistance, refer to the [troubleshooting guide](https://github.com/mark-wiemer/ahkpp/blob/main/docs/troubleshooting.md)
 
 ## Description
 

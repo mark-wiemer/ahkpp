@@ -24,7 +24,7 @@ This doc covers all the new features as a result of integrating with thqby's AHK
 -   Switch AHK Version (`ahk++.switchAhkVersion`): Change between AHK v1 and v2 for the current file
 -   Select AHK Syntaxes (`ahk++.selectSyntaxes`): Select custom AHK v2 syntax files for advanced use-cases. PRs are welcomed if the default syntaxes aren't sufficient!
 -   Set A_ScriptDir Here (`ahk++.setAScriptDir`): Set [`A_ScriptDir`](https://www.autohotkey.com/docs/v2/Variables.htm#ScriptDir) to the path of the current file. Only for AHK v2.
--   Set AHK v2 Interpreter (`ahk++.setV2Interpreter`): Open a quick pick to change the AHK v2 intepreter for all scripts.
+-   Set AHK v2 Interpreter (`ahk++.setV2Interpreter`): Open a quick pick to change the AHK v2 interpreter for all scripts.
 
 ### New settings
 
@@ -33,7 +33,7 @@ All new settings are in the `V2` settings category
 -   Action When V1 Detected: Action when v1 script is detected
 -   Library Suggestions: Whether to suggest functions included in library files
 -   Comment Tag Regex: The regular expression for custom symbols to appear in the breadcrumb and elsewhere. Default matches any line that starts with `;;`
--   Complete Function Calls: Whether to automatically add parenetheses when calling a function
+-   Complete Function Calls: Whether to automatically add parentheses when calling a function
 -   Completion Commit Characters: Characters which commit auto-completion
 -   Debug Configuration: The [launch configuration](https://code.visualstudio.com/docs/editor/debugging#_launch-configurations) to use when debugging
 -   Diagnostics

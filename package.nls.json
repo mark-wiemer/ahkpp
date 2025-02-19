@@ -20,7 +20,7 @@
     "ahk++.config.general.showOutput.always": "Always open the output view when running a script",
     "ahk++.config.general.showOutput.never": "Never automatically show the output view",
     "ahk++.config.menu.showDebugButton": "Show the debug buttons in the editor title menu.",
-    "ahk++.config.v1.file": "[Learn more about the template snippet](https://github.com/mark-wiemer/ahkpp/tree/main/docs/TemplateSnippet.md)",
+    "ahk++.config.v1.file": "[Learn more about the template snippet](https://github.com/mark-wiemer/ahkpp/tree/main/docs/template-snippet.md)",
     "ahk++.config.v1.file.compileBaseFile": "Base file path for compiling v1 scripts (optional).",
     "ahk++.config.v1.file.helpPath": "Path to the AHK v1 help document.",
     "ahk++.config.v1.file.interpreterPath": "Path to the AHK v1 interpreter.",

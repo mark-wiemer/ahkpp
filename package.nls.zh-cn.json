@@ -23,7 +23,7 @@
     "ahk++.config.general.showOutput.always": "运行脚本时始终打开输出视图",
     "ahk++.config.general.showOutput.never": "从不自动显示输出视图",
     "ahk++.config.menu.showDebugButton": "在编辑器标题菜单中显示调试按钮。",
-    "ahk++.config.v1.file": "[了解有关模板片段的更多信息](https://github.com/mark-wiemer/ahkpp/tree/main/docs/TemplateSnippet.md)",
+    "ahk++.config.v1.file": "[了解有关模板片段的更多信息](https://github.com/mark-wiemer/ahkpp/tree/main/docs/template-snippet.md)",
     "ahk++.config.v1.file.compileBaseFile": "用于编译 v1 脚本的基本文件路径（可选）。",
     "ahk++.config.v1.file.helpPath": "AHK v1 帮助文档的路径。",
     "ahk++.config.v1.file.interpreterPath": "AHK v1 解释器的路径。",
