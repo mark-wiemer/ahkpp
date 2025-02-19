@@ -782,7 +782,6 @@
                     "ahk"
                 ],
                 "program": "./out/debugger/DebugAdapter.js",
-                "runtime": "\"C:\\Program Files\\AutoHotkey\\AutoHotkeyU64.exe\"",
                 "configurationAttributes": {
                     "launch": {
                         "required": [
@@ -793,11 +792,6 @@
                                 "type": "string",
                                 "description": "Absolute path to the AHK v1 script to debug.",
                                 "default": "${file}"
-                            },
-                            "runtime": {
-                                "type": "string",
-                                "description": "Absolute path to an AutoHotkey v1 interpreter.",
-                                "default": "C:\\Program Files\\AutoHotkey\\AutoHotkeyU64.exe"
                             },
                             "stopOnEntry": {
                                 "type": "boolean",
@@ -858,7 +852,6 @@
                     "ahk2"
                 ],
                 "program": "./out/debugger/DebugAdapter.js",
-                "runtime": "\"C:\\Program Files\\AutoHotkey\\v2\\AutoHotkey64.exe\"",
                 "configurationAttributes": {
                     "launch": {
                         "required": [
@@ -869,11 +862,6 @@
                                 "type": "string",
                                 "description": "Absolute path to the AHK v2 script to debug.",
                                 "default": "${file}"
-                            },
-                            "runtime": {
-                                "type": "string",
-                                "description": "Absolute path to an AutoHotkey v2 interpreter.",
-                                "default": "C:\\Program Files\\AutoHotkey\\v2\\AutoHotkey64.exe"
                             },
                             "stopOnEntry": {
                                 "type": "boolean",

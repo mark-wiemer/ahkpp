@@ -11,7 +11,7 @@
 x := 1
 y := 2 ; Breakpoint here
 z := 3
-MsgBox % "Hello from AHK v1"
+MsgBox, 0, % "AHK v1", % "Hello from AHK v1", 1
 
-; With this file open, try to debug the AHK v2 file using the launch config
-; With this file open, try to debug this file using the launch config
+; With this file open, try to debug the AHK v2 file using each launch config
+; With this file open, try to debug this file using any launch config

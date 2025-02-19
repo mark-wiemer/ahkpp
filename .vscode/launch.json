@@ -23,17 +23,42 @@
             ],
             "testConfiguration": "${workspaceFolder}/.vscode-test.mjs"
         },
+        // below configs are just for manual tests, not for debugging this project
         {
-            "name": "AHK v1 debugger (for manual tests)",
+            "name": "AHK v1 \\",
             "type": "ahk",
             "request": "launch",
             "program": "${workspaceFolder}\\demos\\manualTests\\debugger.ahk1"
         },
         {
-            "name": "AHK v2 debugger (for manual tests)",
+            "name": "AHK v2 \\",
             "type": "ahk2",
             "request": "launch",
             "program": "${workspaceFolder}\\demos\\manualTests\\debugger.ahk2"
+        },
+        {
+            "name": "AHK v1 /",
+            "type": "ahk",
+            "request": "launch",
+            "program": "${workspaceFolder}/demos/manualTests/debugger.ahk1"
+        },
+        {
+            "name": "AHK v2 /",
+            "type": "ahk2",
+            "request": "launch",
+            "program": "${workspaceFolder}/demos/manualTests/debugger.ahk2"
+        },
+        {
+            "name": "AHK v1 mixed",
+            "type": "ahk",
+            "request": "launch",
+            "program": "${workspaceFolder}/demos\\manualTests/debugger.ahk1"
+        },
+        {
+            "name": "AHK v2 mixed",
+            "type": "ahk2",
+            "request": "launch",
+            "program": "${workspaceFolder}/demos\\manualTests/debugger.ahk2"
         }
     ]
 }

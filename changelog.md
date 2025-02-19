@@ -1,5 +1,14 @@
 # Changelog
 
+## 6.5.0 - unreleased 💞
+
+-   Add [docs/debugging.md](./docs/debugging.md) and [docs/\_welcome.md](./docs/_welcome.md)
+-   Fix `.vscode/launch.json` support for AHK v1 ([#603](https://github.com/mark-wiemer/ahkpp/issues/603))
+-   Add `.vscode/launch.json` support for AHK v2 (todo PR)
+-   Change "AutoHotkey execute bin not found: ..." to "AutoHotkey interpreter not found" with a preceding message showing the interpreter path. (todo PR)
+-   Remove the `runtime` argument from `launch.json` support due to issues with cross-version debugging (todo PR)
+    -   We are not considering this a breaking change as this behavior didn't work before. If you'd like to use different AHK interpreters across different workspaces, use IDE workspace settings. Please [open a discussion](https://github.com/mark-wiemer/ahkpp/discussions/new/choose) if you'd like to use different AHK interpreters within a single workspace.
+
 ## 6.4.3 - 2025-01-18 🎆
 
 -   Fix IniWrite IntelliSense ([#590](https://github.com/mark-wiemer/ahkpp/issues/590))
