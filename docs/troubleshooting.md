@@ -23,7 +23,7 @@ Interpreter not found:
 
 Some settings changes only take effect after restart. Other issues may arise that are mitigated with a restart.
 
-To restart all extensions, press F1 to open the command palette and enter "Developer: Restart Extension Host". Extensions should restart within a few seconds.
+To restart all extensions, press `F1` to open the command palette and enter "Developer: Restart Extension Host". Extensions should restart within a few seconds.
 
 If you're able to consistently reproduce the issue, please [open a bug](https://github.com/mark-wiemer/ahkpp/issues/new/choose).
 
@@ -49,4 +49,4 @@ These steps shouldn't be necessary for most issues, and may be difficult to exec
 
 ### Debug logs
 
-Using Ctrl+Shift+U to open the output view, you can select either of the AHK++ channels to see all debug logs. You're welcome to map these logs to `Output.debug` and `console.log` calls in the source code. Please include your findings if you [open a bug](https://github.com/mark-wiemer/ahkpp/issues/new/choose).
+Using `Ctrl+Shift+U` to open the output view, you can select either of the AHK++ channels to see all debug logs. You're welcome to map these logs to `Output.debug` and `console.log` calls in the source code. Please include your findings if you [open a bug](https://github.com/mark-wiemer/ahkpp/issues/new/choose).

@@ -11,6 +11,7 @@ import { DebugProtocol } from '@vscode/debugprotocol';
 import { DebugDispatcher } from './debugDispatcher';
 import { Continue } from './struct/command';
 import { VscodeScope } from './struct/scope';
+import { Out } from 'src/common/out';
 
 /**
  * This interface describes the mock-debug specific launch attributes
@@ -20,10 +21,10 @@ import { VscodeScope } from './struct/scope';
  */
 export interface LaunchRequestArguments
     extends DebugProtocol.LaunchRequestArguments {
+    /** AHK v1 or AHK v2 */
+    type?: 'ahk' | 'ahk2';
     /** An absolute path to the "program" to debug. */
     program: string;
-    /** An absolute path to the AutoHotkey.exe. */
-    runtime: string;
     dbgpSettings: {
         maxChildren: number;
         maxData: number;
@@ -38,6 +39,7 @@ export class DebugSession extends LoggingDebugSession {
     private dispatcher: DebugDispatcher;
 
     public constructor() {
+        Out.debug('DebugSession.constructor');
         super();
 
         // this debugger uses zero-based lines and columns

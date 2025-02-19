@@ -10,14 +10,12 @@ import { StackHandler } from './handler/StackHandler';
 import { VariableHandler } from './handler/variableHandler';
 import { DbgpResponse } from './struct/dbgpResponse';
 import { VarScope } from './struct/scope';
-
 import getPort from 'get-port';
 import { spawn } from 'child_process';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { Out } from '../common/out';
 import { Global, ConfigKey } from '../common/global';
-import { isV1 } from '../common/codeUtil';
 
 /** An AHK runtime debugger, ref https://xdebug.org/docs/dbgp */
 export class DebugDispatcher extends EventEmitter {
@@ -34,11 +32,27 @@ export class DebugDispatcher extends EventEmitter {
 
     /** Start executing the given program. */
     public async start(args: LaunchRequestArguments) {
-        const interpreterPathKey = isV1()
-            ? ConfigKey.interpreterPathV1
-            : ConfigKey.interpreterPathV2;
-        const runtime: string =
-            args.runtime ?? Global.getConfig(interpreterPathKey);
+        Out.debug(`DebugDispatcher.start#args`);
+        Out.debug(`\t${JSON.stringify(args)}`);
+        /** Default to AHK v1 if type not provided */
+        const isAhk2 = args.type === 'ahk2';
+        const interpreterPathKey = isAhk2
+            ? ConfigKey.interpreterPathV2
+            : ConfigKey.interpreterPathV1;
+        const runtime = Global.getConfig<string>(interpreterPathKey);
+        Out.debug(`DebugDispatcher.start#args.runtime`);
+        Out.debug(`\t${runtime}`);
+        if (!existsSync(runtime)) {
+            // Exact text is referenced in changelog, update changelog when updating this value
+            Out.log(`AutoHotkey interpreter not found`);
+            Out.debug(
+                `Please update v${isAhk2 ? 2 : 1}: File > interpreterPath`,
+            );
+            this.end();
+            return;
+        }
+
+        // #region misc settings
         const dbgpSettings = args.dbgpSettings ?? {};
         const { maxChildren, maxData }: LaunchRequestArguments['dbgpSettings'] =
             {
@@ -46,7 +60,6 @@ export class DebugDispatcher extends EventEmitter {
                 maxData: 131072,
                 ...dbgpSettings,
             };
-
         this.breakPointHandler = new BreakPointHandler();
         this.stackHandler = new StackHandler();
         this.variableHandler = new VariableHandler();
@@ -58,7 +71,7 @@ export class DebugDispatcher extends EventEmitter {
             .start()
             .on('init', () => {
                 this.breakPointHandler.loopPoints((bp) => {
-                    this.setBreakPonit(bp);
+                    this.setBreakpoint(bp);
                 });
                 this.sendCommand(
                     `feature_set -n max_children -v ${maxChildren}`,
@@ -94,19 +107,18 @@ export class DebugDispatcher extends EventEmitter {
                     }
                 }
             });
+        // #endregion
+
+        //* Setup program path
         if (!args.program) {
             args.program = await RunnerService.getPathByActive();
         }
-
         const programName = getFileNameOnly(args.program);
+        Out.debug(`DebugDispatcher.start#programName`);
+        Out.debug(`\t${programName}`);
 
-        if (!existsSync(runtime)) {
-            // Exact text is referenced in docs, update docs when updating this value
-            Out.log(`AutoHotkey execute bin not found: ${runtime}`);
-            this.end();
-            return;
-        }
-
+        //* Spawn AHK process
+        Out.debug(`DebugDispatcher.start: Spawning process`);
         const ahkProcess = spawn(
             runtime,
             ['/ErrorStdOut', `/debug=localhost:${port}`, programName],
@@ -295,7 +307,7 @@ export class DebugDispatcher extends EventEmitter {
         return this.stackHandler.handle(args, response);
     }
 
-    private async setBreakPonit(bp: DebugProtocol.Breakpoint) {
+    private async setBreakpoint(bp: DebugProtocol.Breakpoint) {
         if (this.debugServer && bp.verified) {
             const res = await this.sendCommand(
                 `breakpoint_set -t line -f ${bp.source.path} -n ${bp.line}`,
@@ -313,7 +325,7 @@ export class DebugDispatcher extends EventEmitter {
             path,
             sourceBreakpoints,
             (bp) => {
-                this.setBreakPonit(bp);
+                this.setBreakpoint(bp);
             },
         );
     }
@@ -346,11 +358,11 @@ export class DebugDispatcher extends EventEmitter {
 
 /**
  * Returns the user-friendly "name" of the file instead of its path
- * @param path backslash-delimited path
+ * @param path slash-delimited path (backslash, forward slash, or mixed)
  * @returns last segment of the path
  * @example ('c:\\Users\\mark\\myScript.ahk') => 'myScript.ahk'
  */
 const getFileNameOnly = (path: string): string => {
-    const splitPath = path.split('\\');
+    const splitPath = path.split(/\\\\|\//);
     return splitPath[splitPath.length - 1];
 };
