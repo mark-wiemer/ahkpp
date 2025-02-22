@@ -49,7 +49,7 @@ These steps shouldn't be necessary for most issues, and may be difficult to exec
 
 ### Debug logs
 
-Using `Ctrl+Shift+U` to open the output view, you can select either of the AHK++ channels to see all debug logs. You're welcome to map these logs to `Output.debug` and `console.log` calls in the source code. Please include your findings if you [open a bug](https://github.com/mark-wiemer/ahkpp/issues/new/choose).
+Using `Ctrl+Shift+U` to open the output view, you can select either of the AHK++ channels to see all debug logs. You're welcome to map these logs to `Out.debug` and `console.log` calls in the source code. Please include your findings if you [open a bug](https://github.com/mark-wiemer/ahkpp/issues/new/choose).
 
 ### Full uninstall and reinstall
 

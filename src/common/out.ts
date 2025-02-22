@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 
 /** Logs messages to IDE output channel */
+// Name of this class is referenced in docs, update if changed
 export class Out {
     private static outputChannel: vscode.OutputChannel;
 
@@ -8,6 +9,7 @@ export class Out {
      * Logs the given value without focusing the output view.
      * Prepends all logs with `new Date().toISOString()`.
      */
+    // Name of this func is referenced in docs, update if changed
     public static debug(value: Error | string) {
         Out.log(value, false);
     }
