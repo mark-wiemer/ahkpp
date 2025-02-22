@@ -1,0 +1,26 @@
+#Requires AutoHotkey v2.0
+
+class MyHook extends InputHook {
+    __New() {
+        super.__New("L1")
+    }
+}
+
+class MyClipboardAll extends ClipboardAll {
+    __New() {
+        super.__New()
+    }
+}
+
+class MyClass extends Class {
+    __New() {
+        super.__New()
+    }
+}
+
+class MyInteger extends Integer {
+    __New() {
+        ;* Should be the only warning on this file
+        super.__New()
+    }
+}
