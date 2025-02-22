@@ -29,7 +29,10 @@ export const makeCompileCommand = (
     return `"${compilerPath}" ${guiCommand} /in "${scriptPath}" /out "${exePath}" ${compileIconCommand} ${compileBaseFileCommand} ${compileMpressCommand}`;
 };
 
-/** Debugs and compiles AHK. Run is now located in ahk2 submodule. */
+/**
+ * Debugs and compiles AHK v1 and AHK v2 scripts.
+ * Running scripts is now located in ahk2 submodule.
+ */
 export class RunnerService {
     /** Start debug session */
     public static async startDebugger(script?: string) {
@@ -37,17 +40,14 @@ export class RunnerService {
             ? vscode.Uri.file(script)
             : vscode.window.activeTextEditor.document.uri;
         script = script ? script : await this.getPathByActive();
-        const debugPlusExists = !!vscode.extensions.getExtension(
+        const zppExists = !!vscode.extensions.getExtension(
             'zero-plusplus.vscode-autohotkey-debug',
         );
-        const interpreterPathKey = isV1()
-            ? ConfigKey.interpreterPathV1
-            : ConfigKey.interpreterPathV2;
+        const debugType = zppExists ? 'autohotkey' : isV1() ? 'ahk' : 'ahk2';
         vscode.debug.startDebugging(vscode.workspace.getWorkspaceFolder(cwd), {
-            type: debugPlusExists ? 'autohotkey' : 'ahk',
+            type: debugType,
             request: 'launch',
             name: 'AutoHotkey Debugger',
-            runtime: Global.getConfig<string>(interpreterPathKey),
             program: script,
         });
     }
