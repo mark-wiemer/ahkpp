@@ -50,3 +50,11 @@ These steps shouldn't be necessary for most issues, and may be difficult to exec
 ### Debug logs
 
 Using `Ctrl+Shift+U` to open the output view, you can select either of the AHK++ channels to see all debug logs. You're welcome to map these logs to `Output.debug` and `console.log` calls in the source code. Please include your findings if you [open a bug](https://github.com/mark-wiemer/ahkpp/issues/new/choose).
+
+### Full uninstall and reinstall
+
+VS Code automatically caches your extensions, even when uninstalled. You can use an app called [Everything](https://www.voidtools.com/downloads/) to quickly find and delete any cached versions, or navigate to them however you like. The default cache location is `~\AppData\Roaming\Code\CachedExtensionVSIXs\mark-wiemer.vscode-autohotkey-plus-plus`, where `~` is the path to your home folder, like `C:\Users\mark`, so the absolute path would start with `C:\Users\mark\AppData\...`.
+
+After deleting these cache locations and restarting VS Code, you should be able to get a fully fresh installation from the registry. This should resolve any issues if you believe your installed extension files got corrupted.
+
+![Everything search results showing two cached versions of AHK++](../image/cached-extensions-everything.png)
