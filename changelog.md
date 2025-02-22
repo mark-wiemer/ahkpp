@@ -2,12 +2,18 @@
 
 ## 6.5.0 - unreleased 💞
 
+### Debugger
+
 -   Add [docs/debugging.md](./docs/debugging.md) and [docs/\_welcome.md](./docs/_welcome.md)
 -   Fix `.vscode/launch.json` support for AHK v1 ([Issue #603](https://github.com/mark-wiemer/ahkpp/issues/603))
 -   Add `.vscode/launch.json` support for AHK v2 ([PR #606](https://github.com/mark-wiemer/ahkpp/issues/603))
 -   Change "AutoHotkey execute bin not found: ..." to "AutoHotkey interpreter not found" with a preceding message showing the interpreter path. ([PR #606](https://github.com/mark-wiemer/ahkpp/issues/603))
--   Remove the `runtime` argument from `launch.json` support due to issues with cross-version debugging ([PR #606](https://github.com/mark-wiemer/ahkpp/issues/603))
-    -   We are not considering this a breaking change as this behavior didn't work before. If you'd like to use different AHK interpreters across different workspaces, use IDE workspace settings. If you'd like to use different AHK interpreters within a single workspace, please [open a discussion](https://github.com/mark-wiemer/ahkpp/discussions/new/choose)
+-   Remove the `runtime` argument from `launch.json` for both AHK v1 and AHK v2 due to issues with cross-version debugging ([PR #606](https://github.com/mark-wiemer/ahkpp/issues/603))
+    -   We are not considering this a breaking change as this behavior didn't work before. If you'd like to use different AHK interpreters across different workspaces, use IDE workspace settings. If you'd like to use different AHK interpreters within a single workspace, please [open a discussion](https://github.com/mark-wiemer/ahkpp/discussions/new/choose) and we'll be happy to help.
+
+### IntelliSense
+
+-   Add detailed `__New` docs for `InputHook` and basic `__New` docs for all `Object` descendants that didn't have it([#586](https://github.com/mark-wiemer/ahkpp/issues/586))
 
 ## 6.4.3 - 2025-01-18 🎆
 

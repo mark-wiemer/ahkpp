@@ -18,3 +18,4 @@ language/*.tmLanguage.json
 *.log
 *.txt
 *.zip
+notes.md
