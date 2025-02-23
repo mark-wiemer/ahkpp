@@ -40,7 +40,7 @@ export class DebugDispatcher extends EventEmitter {
             ? ConfigKey.interpreterPathV2
             : ConfigKey.interpreterPathV1;
         const runtime = Global.getConfig<string>(interpreterPathKey);
-        Out.debug(`DebugDispatcher.start#args.runtime`);
+        Out.debug(`DebugDispatcher.start#runtime`);
         Out.debug(`\t${runtime}`);
         if (!existsSync(runtime)) {
             // Exact text is referenced in changelog, update changelog when updating this value
