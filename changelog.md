@@ -1,6 +1,6 @@
 # Changelog
 
-## 6.5.0 - unreleased 💞
+## 6.5.0 - 2025-02-23 💞
 
 ### Debugger
 
