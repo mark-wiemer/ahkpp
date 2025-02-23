@@ -32,7 +32,7 @@ Unless otherwise specified, commit messages don't matter.
 1. Bump the version in `package.json`
 1. Run `npm i` to update `package-lock.json`
 1. Commit the changes.
-1. Open a PR. For style, the title of the PR should be e.g. `1.2.3 - 2020-12-31 ❄️`. The PR description should contain the changelog entry, including the heading for this version.
+1. Open a PR. For consistency, the title of the PR should be e.g. `1.2.3 - 2020-12-31 ❄️`. The PR description should contain the changelog entry, including the heading for this version.
 1. Fix any remaining issues with the PR.
 1. Merge the PR. Commit message should be the changelog heading + PR number, e.g. `1.2.3 - 2020-12-31 ❄️ (#456)`
 1. `git checkout main && git pull && npm run package`
