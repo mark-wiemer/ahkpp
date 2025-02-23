@@ -13,7 +13,7 @@
 
 ### IntelliSense
 
--   Add detailed `__New` docs for `InputHook` and basic `__New` docs for all `Object` descendants that didn't have it([#586](https://github.com/mark-wiemer/ahkpp/issues/586))
+-   Add detailed `__New` docs for `InputHook` and basic `__New` docs for all `Object` descendants that didn't have it ([Issue #586](https://github.com/mark-wiemer/ahkpp/issues/586))
 
 ## 6.4.3 - 2025-01-18 🎆
 
