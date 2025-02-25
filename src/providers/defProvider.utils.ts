@@ -61,7 +61,7 @@ export const resolveIncludedPath = (
     ahkLine: string,
 ): string | undefined => {
     const includedPath = getIncludedPath(ahkLine);
-    if (!includedPath) return undefined;
+    if (!includedPath || includedPath.startsWith('<')) return undefined;
 
     /** @example 'c:/path/to' */
     const parentGoodPath = basePath.substring(1, basePath.lastIndexOf('/'));

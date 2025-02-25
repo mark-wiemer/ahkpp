@@ -104,7 +104,7 @@ export class DefProvider implements vscode.DefinitionProvider {
 
 /**
  * If the position is on an `#Include` line
- * and the included path* is an existing file,
+ * and the included path* is an existing file (not a directory or library include),
  * returns a Location at the beginning of the included file.
  *
  * Otherwise returns undefined.
@@ -113,7 +113,7 @@ export class DefProvider implements vscode.DefinitionProvider {
  * - A_WorkingDir === A_ScriptDir
  * - No previous `#Include Directory` lines changing the "include working directory"
  *
- * todo remove tryGetFileLink assumptions
+ * todo remove tryGetFileLink assumptions listed above
  */
 export async function tryGetFileLink(
     /**
