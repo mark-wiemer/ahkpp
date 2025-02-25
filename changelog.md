@@ -15,6 +15,10 @@
 
 -   Add detailed `__New` docs for `InputHook` and basic `__New` docs for all `Object` descendants that didn't have it ([Issue #586](https://github.com/mark-wiemer/ahkpp/issues/586))
 
+### Other changes
+
+-   "Set AHK v2 Interpreter" command now works ([#571](https://github.com/mark-wiemer/ahkpp/issues/571))
+
 ## 6.4.3 - 2025-01-18 🎆
 
 -   Fix IniWrite IntelliSense ([#590](https://github.com/mark-wiemer/ahkpp/issues/590))
