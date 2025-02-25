@@ -56,6 +56,14 @@ export class Parser {
         options: BuildScriptOptions = {},
     ): Promise<Script> {
         const funcName = 'buildScript';
+        const lang = document.languageId;
+        if (lang !== 'ahk' && lang !== 'ahk1') {
+            Out.debug(
+                `${funcName} skipping ${lang} doc at ${document.uri.path}`,
+            );
+            return undefined;
+        }
+
         const cachedDocument = documentCache.get(document.uri.path);
         if (options.usingCache && cachedDocument) {
             return cachedDocument;
