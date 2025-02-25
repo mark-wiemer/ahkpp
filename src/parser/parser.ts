@@ -6,6 +6,7 @@ import { pathsToBuild } from './parser.utils';
 import { Out } from '../common/out';
 
 const startBlockComment = / *\/\*/;
+// todo does endBlockComment work on lines like `; */` ?
 const endBlockComment = / *\*\//;
 const documentCache = new Map<string, Script>();
 
@@ -49,6 +50,7 @@ export class Parser {
      * Parse the document into a Script and add it to the cache
      * @param document
      */
+    // todo add tests
     public static async buildScript(
         document: vscode.TextDocument,
         options: BuildScriptOptions = {},
@@ -148,6 +150,7 @@ export class Parser {
      * If a method of this name exists in the current file, returns that method.
      * Otherwise, searches through document cache to find the matching method.
      * Matches are not case-sensitive and only need to match method name.
+     * Note that duplicate method definitions are not allowed in AHK v1.
      */
     public static async getMethodByName(
         document: vscode.TextDocument,
@@ -161,6 +164,7 @@ export class Parser {
             }
         }
         // todo this should prioritize included files first.
+        // https://github.com/mark-wiemer/ahkpp/issues/205
         for (const filePath of localCache.keys()) {
             for (const method of localCache.get(filePath).methods) {
                 if (method.name.toLowerCase() === name) {

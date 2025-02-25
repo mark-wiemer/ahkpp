@@ -104,16 +104,22 @@ export class DefProvider implements vscode.DefinitionProvider {
 
 /**
  * If the position is on an `#Include` line
- * and the included path is an existing file,
+ * and the included path* is an existing file,
  * returns a Location at the beginning of the included file.
  *
  * Otherwise returns undefined.
  *
- ** Currently assumes the working directory is the script path and
- * does not respect previous `#include dir` directives
+ * \* "Included path" is currently calculated with assumptions:
+ * - A_WorkingDir === A_ScriptDir
+ * - No previous `#Include Directory` lines changing the "include working directory"
+ *
+ * todo remove tryGetFileLink assumptions
  */
 export async function tryGetFileLink(
-    /** @example '/c:/path/to/file.ahk' */
+    /**
+     * Path of the current script
+     * @example '/c:/path/to/file.ahk'
+     */
     docPath: string,
     text: string,
 ): Promise<vscode.Location | undefined> {
