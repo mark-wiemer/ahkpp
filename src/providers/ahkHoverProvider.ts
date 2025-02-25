@@ -104,6 +104,10 @@ export class AhkHoverProvider implements HoverProvider {
         return { word, charAfter };
     }
 
+    /**
+     * Loads built-in snippets from the extension.
+     * @see [snippetsV1.json](../../language/snippetsV1.json)
+     */
     private initSnippetCache(context: ExtensionContext) {
         const ahk = JSON.parse(
             readFileSync(
