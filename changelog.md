@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.5.1 - unreleased
+
+-   Improve extension performance when loading AHK v1 scripts (todo PR)
+
 ## 6.5.0 - 2025-02-23 💞
 
 ### Debugger
