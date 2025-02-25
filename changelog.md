@@ -2,7 +2,7 @@
 
 ## 6.5.1 - unreleased
 
--   Improve extension performance when loading AHK v1 scripts (todo PR)
+-   Improve extension performance when loading AHK v1 scripts ([PR #615](https://github.com/mark-wiemer/ahkpp/pull/615))
 
 ## 6.5.0 - 2025-02-23 💞
 
@@ -10,9 +10,9 @@
 
 -   Add [docs/debugging.md](./docs/debugging.md) and [docs/\_welcome.md](./docs/_welcome.md)
 -   Fix `.vscode/launch.json` support for AHK v1 ([Issue #603](https://github.com/mark-wiemer/ahkpp/issues/603))
--   Add `.vscode/launch.json` support for AHK v2 ([PR #606](https://github.com/mark-wiemer/ahkpp/issues/603))
--   Change "AutoHotkey execute bin not found: ..." to "AutoHotkey interpreter not found" with a preceding message showing the interpreter path. ([PR #606](https://github.com/mark-wiemer/ahkpp/issues/603))
--   Remove the `runtime` argument from `launch.json` for both AHK v1 and AHK v2 due to issues with cross-version debugging ([PR #606](https://github.com/mark-wiemer/ahkpp/issues/603))
+-   Add `.vscode/launch.json` support for AHK v2 ([Issue #603](https://github.com/mark-wiemer/ahkpp/issues/603))
+-   Change "AutoHotkey execute bin not found: ..." to "AutoHotkey interpreter not found" with a preceding message showing the interpreter path. ([PR #606](https://github.com/mark-wiemer/ahkpp/pull/606))
+-   Remove the `runtime` argument from `launch.json` for both AHK v1 and AHK v2 due to issues with cross-version debugging ([PR #606](https://github.com/mark-wiemer/ahkpp/pull/606))
     -   We are not considering this a breaking change as this behavior didn't work before. If you'd like to use different AHK interpreters across different workspaces, use IDE workspace settings. If you'd like to use different AHK interpreters within a single workspace, please [open a discussion](https://github.com/mark-wiemer/ahkpp/discussions/new/choose) and we'll be happy to help.
 
 ### IntelliSense
