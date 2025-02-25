@@ -2,7 +2,7 @@ import { suite, test } from 'mocha';
 import assert from 'assert';
 import { getIncludedPath, resolveIncludedPath } from './defProvider.utils';
 
-suite.only(getIncludedPath.name, () => {
+suite(getIncludedPath.name, () => {
     const tests: [
         name: string,
         args: Parameters<typeof getIncludedPath>,
