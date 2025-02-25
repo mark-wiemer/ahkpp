@@ -31,7 +31,8 @@
 ### Known issues
 
 -   If your AHK v2 interpreter is not recognized and you try to debug an AHK v2 script, an "AutoHotkey execute bin not found: ..." output log will appear and take focus in the AHK++ (v1) output channel (open issue [#570](https://github.com/mark-wiemer/ahkpp/issues/570))
--   The "Select AHK v2 interpreter" command does not work, instead please try to run (not debug) an AHK v2 script and use the quick pick from the "... does not exist" error message (open issue [#571](https://github.com/mark-wiemer/ahkpp/issues/571))
+
+(Previously, this changelog noted [#571](https://github.com/mark-wiemer/ahkpp/issues/571), an issue with the "Set AHK v2 Interpreter" command. However, further review shows that was likely a false positive report.)
 
 ### Fixes
 
