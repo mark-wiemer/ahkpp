@@ -9,6 +9,7 @@
         "esbenp.prettier-vscode",
         "simonsiefke.svg-preview",
         "meganrogge.template-string-converter",
-        "tyriar.sort-lines"
+        "tyriar.sort-lines",
+        "wmaurer.change-case"
     ]
 }
