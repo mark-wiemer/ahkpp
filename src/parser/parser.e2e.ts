@@ -149,7 +149,7 @@ suite('Parser', () => {
 
         myTests.forEach((myTest) =>
             test(myTest.name, async () => {
-                const filename = '117-ten-thousand-lines.ahk';
+                const filename = '117-ten-thousand-lines.ahk1';
                 const document = await getDocument(
                     path.join(filesParentPath, filename),
                 );

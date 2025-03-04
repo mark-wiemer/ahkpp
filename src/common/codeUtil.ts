@@ -11,12 +11,12 @@ export class CodeUtil {
             return '';
         }
         return original
-            .replace(/;.+/, '')
+            .replace(/;.+/, '') // end-of-line comment
             .replace(/".*?"/g, '""') // replace string literals with empty string literal
             .replace(/{.*}/g, '') // remove matching braces
-            .replace(/ +/g, ' ')
-            .replace(/\bgui\b.*/gi, '')
-            .replace(/\b(msgbox)\b.+?%/gi, '$1');
+            .replace(/ +/g, ' ') // multiple spaces become a single space
+            .replace(/\bgui\b.*/gi, '') // remove references to GUI funcs
+            .replace(/\b(msgbox)\b.+?%/gi, '$1'); // remove start of MsgBox references
     }
 
     /**

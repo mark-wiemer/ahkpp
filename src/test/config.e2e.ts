@@ -22,10 +22,9 @@ const samplesParentPath = path.join(rootPath, 'src/test/samples');
 
 /** Snippet text that should result in `funcName` being suggested (based on config) */
 const snippetText = 'MyExclu';
+
 /** Func name included in a local library in the `excludedFileName` */
 const funcName = 'MyExcludedFunc';
-/** Name of file containing library functions for `exclude` testing */
-const excludedFileName = 'excluded.ahk';
 
 // CI does not have AHK installed
 suite('general.showOutput @ignoreCI', () => {
@@ -58,6 +57,9 @@ suite('general.showOutput @ignoreCI', () => {
 });
 
 suite('exclude', () => {
+    /** Name of file containing library functions for `exclude` testing */
+    const excludedFileName = 'excluded.ahk';
+    const excludedList = ['1', '2'].map((i) => `${excludedFileName}${i}`);
     /**
      * These tests run in a specific order to update the config correctly
      * Config does not update on v2 for speed
@@ -70,8 +72,8 @@ suite('exclude', () => {
     ][] = [
         ['v1 no exclusions', 1, [], true],
         ['v2 no exclusions', 2, [], true],
-        ['v1 exclusions', 1, [excludedFileName], false],
-        ['v2 exclusions', 2, [excludedFileName], false],
+        ['v1 exclusions', 1, excludedList, false],
+        ['v2 exclusions', 2, excludedList, false],
         ['back to v1 no exclusions', 1, [], true],
         ['back to v2 no exclusions', 2, [], true],
     ];

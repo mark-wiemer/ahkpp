@@ -29,7 +29,16 @@ export class AhkHoverProvider implements HoverProvider {
         this.initSnippetCache(context);
     }
 
-    public async provideHover(document: TextDocument, position: Position) {
+    /**
+     * - If there's no context, return null.
+     * - If there's a snippet hover, return it.
+     * - If there's a method hover, return it.
+     * - Otherwise, return null.
+     */
+    public async provideHover(
+        document: TextDocument,
+        position: Position,
+    ): Promise<Hover | null> {
         const context = this.buildContext(document, position);
         if (!context) {
             return null;
@@ -41,20 +50,23 @@ export class AhkHoverProvider implements HoverProvider {
         }
 
         const method = await Parser.getMethodByName(document, context.word);
-        if (method) {
-            const contents = new MarkdownString('', true).appendCodeblock(
-                method.full,
-            );
-            if (method.comment) {
-                contents.appendText(method.comment);
-            }
-            return new Hover(contents);
+        if (!method) {
+            return null;
         }
-
-        return null;
+        const contents = new MarkdownString('', true).appendCodeblock(
+            method.full,
+        );
+        if (method.comment) {
+            contents.appendText(method.comment);
+        }
+        return new Hover(contents);
     }
 
-    private tryGetSnippetHover(context: Context): Hover {
+    /**
+     * Returns the matching snippet hover, if it exists.
+     * Otherwise returns undefined.
+     */
+    private tryGetSnippetHover(context: Context): Hover | undefined {
         let snippetKey = context.word.toLowerCase();
         if (context.charAfter === '(') {
             snippetKey += '()';
@@ -73,7 +85,15 @@ export class AhkHoverProvider implements HoverProvider {
         return new Hover(content);
     }
 
-    private buildContext(document: TextDocument, position: Position): Context {
+    /**
+     * Gets the `Context` for the provided document and position
+     *
+     * @returns `undefined` if the position is not on a word
+     */
+    private buildContext(
+        document: TextDocument,
+        position: Position,
+    ): Context | undefined {
         const line = position.line;
         const wordRange = document.getWordRangeAtPosition(position);
         if (!wordRange) {
@@ -104,6 +124,10 @@ export class AhkHoverProvider implements HoverProvider {
         return { word, charAfter };
     }
 
+    /**
+     * Loads built-in snippets from the extension.
+     * @see [snippetsV1.json](../../language/snippetsV1.json)
+     */
     private initSnippetCache(context: ExtensionContext) {
         const ahk = JSON.parse(
             readFileSync(

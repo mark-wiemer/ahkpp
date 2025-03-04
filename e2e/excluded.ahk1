@@ -1,0 +1,5 @@
+#Requires AutoHotkey 1.1+
+
+MyExcludedFunc() {
+    MsgBox % "This function is excluded in IDE settings"
+}

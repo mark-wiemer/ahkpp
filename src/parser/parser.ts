@@ -6,6 +6,7 @@ import { pathsToBuild } from './parser.utils';
 import { Out } from '../common/out';
 
 const startBlockComment = / *\/\*/;
+// todo does endBlockComment work on lines like `; */` ?
 const endBlockComment = / *\*\//;
 const documentCache = new Map<string, Script>();
 
@@ -49,11 +50,20 @@ export class Parser {
      * Parse the document into a Script and add it to the cache
      * @param document
      */
+    // todo add tests
     public static async buildScript(
         document: vscode.TextDocument,
         options: BuildScriptOptions = {},
     ): Promise<Script> {
         const funcName = 'buildScript';
+        const lang = document.languageId;
+        if (lang !== 'ahk' && lang !== 'ahk1') {
+            Out.debug(
+                `${funcName} skipping ${lang} doc at ${document.uri.path}`,
+            );
+            return undefined;
+        }
+
         const cachedDocument = documentCache.get(document.uri.path);
         if (options.usingCache && cachedDocument) {
             return cachedDocument;
@@ -148,6 +158,7 @@ export class Parser {
      * If a method of this name exists in the current file, returns that method.
      * Otherwise, searches through document cache to find the matching method.
      * Matches are not case-sensitive and only need to match method name.
+     * Note that duplicate method definitions are not allowed in AHK v1.
      */
     public static async getMethodByName(
         document: vscode.TextDocument,
@@ -161,6 +172,7 @@ export class Parser {
             }
         }
         // todo this should prioritize included files first.
+        // https://github.com/mark-wiemer/ahkpp/issues/205
         for (const filePath of localCache.keys()) {
             for (const method of localCache.get(filePath).methods) {
                 if (method.name.toLowerCase() === name) {
@@ -302,16 +314,21 @@ export class Parser {
     /**
      * detect method by line
      * @param document
-     * @param line
+     * @param lineNum
      */
     private static detectMethodByLine(
         document: vscode.TextDocument,
-        line: number,
-        origin?: string,
+        lineNum: number,
+        original?: string,
     ): Method | Ref | Ref[] {
-        origin ??= document.lineAt(line).text;
-        const text = CodeUtil.purify(origin);
+        original ??= document.lineAt(lineNum).text;
+        const text = CodeUtil.purify(original);
         // [\u4e00-\u9fa5] Chinese unicode characters
+        // start of line
+        // one or more function name characters
+        // that aren't the words "if" or "while"
+        // parentheses around 0 or more arguments
+        // optional opening curly brace
         const refPattern =
             /\s*(([\u4e00-\u9fa5_a-zA-Z0-9]+)(?<!if|while)\(.*?\))\s*(\{)?\s*/i;
         const methodMatch = text.match(refPattern);
@@ -319,13 +336,15 @@ export class Parser {
             return undefined;
         }
         const methodName = methodMatch[2];
-        const character = origin.indexOf(methodName);
+        const charNum = original.indexOf(methodName);
         if (text.length !== methodMatch[0].length) {
-            const refs = [new Ref(methodName, document, line, character)];
+            // line text longer than regex match
+            // todo unclear when this happens
+            const refs = [new Ref(methodName, document, lineNum, charNum)];
             const newRef = this.detectMethodByLine(
                 document,
-                line,
-                origin.replace(new RegExp(methodName + '\\s*\\('), ''),
+                lineNum,
+                original.replace(new RegExp(methodName + '\\s*\\('), ''),
             );
             CodeUtil.join(refs, newRef);
             return refs;
@@ -337,13 +356,13 @@ export class Parser {
                 methodFullName,
                 methodName,
                 document.uri.toString(),
-                line,
-                character,
+                lineNum,
+                charNum,
                 true,
-                Parser.getRemarkByLine(document, line - 1),
+                Parser.getRemarkByLine(document, lineNum - 1),
             );
         }
-        for (let i = line + 1; i < document.lineCount; i++) {
+        for (let i = lineNum + 1; i < document.lineCount; i++) {
             const nextLineText = CodeUtil.purify(document.lineAt(i).text);
             if (!nextLineText.trim()) {
                 continue;
@@ -353,13 +372,13 @@ export class Parser {
                     methodFullName,
                     methodName,
                     document.uri.toString(),
-                    line,
-                    character,
+                    lineNum,
+                    charNum,
                     false,
-                    Parser.getRemarkByLine(document, line - 1),
+                    Parser.getRemarkByLine(document, lineNum - 1),
                 );
             } else {
-                return new Ref(methodName, document, line, character);
+                return new Ref(methodName, document, lineNum, charNum);
             }
         }
         return undefined;

@@ -24,7 +24,13 @@ suite(getIncludedPath.name, () => {
         ['escaped `;` with whitespace', ['#include a `;b.ahk'], 'a `;b.ahk'],
         ['escaped `;` without whitespace', ['#include a`;b.ahk'], 'a`;b.ahk'],
         ['unescaped `;` without whitespace', ['#include a;b.ahk'], 'a;b.ahk'],
-        ['unescaped `;` with whitespace', ['#include a ;b.ahk'], 'a'],
+        ['unescaped `;` with preceding whitespace', ['#include a ;b.ahk'], 'a'],
+        ['unescaped `;` with trailing whitespace', ['#include a ; b.ahk'], 'a'],
+        [
+            'escaped `;` with trailing whitespace',
+            ['#include a `; b.ahk'],
+            'a `; b.ahk',
+        ],
         ['unescaped valid `%`', ['#include %A_ScriptDir%'], '%A_ScriptDir%'],
         ['unescaped `<` and `>`', ['#include <foo>'], '<foo>'],
     ];
