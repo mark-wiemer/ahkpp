@@ -336,9 +336,9 @@ export class Parser {
             return undefined;
         }
         const methodName = methodMatch[2];
-        const character = original.indexOf(methodName);
+        const charNum = original.indexOf(methodName);
         if (text.length !== methodMatch[0].length) {
-            const refs = [new Ref(methodName, document, lineNum, character)];
+            const refs = [new Ref(methodName, document, lineNum, charNum)];
             const newRef = this.detectMethodByLine(
                 document,
                 lineNum,
@@ -355,7 +355,7 @@ export class Parser {
                 methodName,
                 document.uri.toString(),
                 lineNum,
-                character,
+                charNum,
                 true,
                 Parser.getRemarkByLine(document, lineNum - 1),
             );
@@ -371,12 +371,12 @@ export class Parser {
                     methodName,
                     document.uri.toString(),
                     lineNum,
-                    character,
+                    charNum,
                     false,
                     Parser.getRemarkByLine(document, lineNum - 1),
                 );
             } else {
-                return new Ref(methodName, document, lineNum, character);
+                return new Ref(methodName, document, lineNum, charNum);
             }
         }
         return undefined;
