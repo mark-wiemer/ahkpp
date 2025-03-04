@@ -324,6 +324,11 @@ export class Parser {
         original ??= document.lineAt(lineNum).text;
         const text = CodeUtil.purify(original);
         // [\u4e00-\u9fa5] Chinese unicode characters
+        // start of line
+        // one or more function name characters
+        // that aren't the words "if" or "while"
+        // parentheses around 0 or more arguments
+        // optional opening curly brace
         const refPattern =
             /\s*(([\u4e00-\u9fa5_a-zA-Z0-9]+)(?<!if|while)\(.*?\))\s*(\{)?\s*/i;
         const methodMatch = text.match(refPattern);
