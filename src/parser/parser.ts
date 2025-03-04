@@ -319,10 +319,10 @@ export class Parser {
     private static detectMethodByLine(
         document: vscode.TextDocument,
         line: number,
-        origin?: string,
+        original?: string,
     ): Method | Ref | Ref[] {
-        origin ??= document.lineAt(line).text;
-        const text = CodeUtil.purify(origin);
+        original ??= document.lineAt(line).text;
+        const text = CodeUtil.purify(original);
         // [\u4e00-\u9fa5] Chinese unicode characters
         const refPattern =
             /\s*(([\u4e00-\u9fa5_a-zA-Z0-9]+)(?<!if|while)\(.*?\))\s*(\{)?\s*/i;
@@ -331,13 +331,13 @@ export class Parser {
             return undefined;
         }
         const methodName = methodMatch[2];
-        const character = origin.indexOf(methodName);
+        const character = original.indexOf(methodName);
         if (text.length !== methodMatch[0].length) {
             const refs = [new Ref(methodName, document, line, character)];
             const newRef = this.detectMethodByLine(
                 document,
                 line,
-                origin.replace(new RegExp(methodName + '\\s*\\('), ''),
+                original.replace(new RegExp(methodName + '\\s*\\('), ''),
             );
             CodeUtil.join(refs, newRef);
             return refs;
