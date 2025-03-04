@@ -16,8 +16,6 @@ import { suite, before, test } from 'mocha';
 
 /** Currently in `/out/src/test`, want to get to `/` */
 const rootPath = path.join(__dirname, '..', '..', '..');
-
-// Currently in `out` folder, need to get back to main `src` folder
 const samplesParentPath = path.join(rootPath, 'src/test/samples');
 
 /** Snippet text that should result in `funcName` being suggested (based on config) */
