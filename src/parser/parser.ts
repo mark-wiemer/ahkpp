@@ -314,14 +314,14 @@ export class Parser {
     /**
      * detect method by line
      * @param document
-     * @param line
+     * @param lineNum
      */
     private static detectMethodByLine(
         document: vscode.TextDocument,
-        line: number,
+        lineNum: number,
         original?: string,
     ): Method | Ref | Ref[] {
-        original ??= document.lineAt(line).text;
+        original ??= document.lineAt(lineNum).text;
         const text = CodeUtil.purify(original);
         // [\u4e00-\u9fa5] Chinese unicode characters
         const refPattern =
@@ -333,10 +333,10 @@ export class Parser {
         const methodName = methodMatch[2];
         const character = original.indexOf(methodName);
         if (text.length !== methodMatch[0].length) {
-            const refs = [new Ref(methodName, document, line, character)];
+            const refs = [new Ref(methodName, document, lineNum, character)];
             const newRef = this.detectMethodByLine(
                 document,
-                line,
+                lineNum,
                 original.replace(new RegExp(methodName + '\\s*\\('), ''),
             );
             CodeUtil.join(refs, newRef);
@@ -349,13 +349,13 @@ export class Parser {
                 methodFullName,
                 methodName,
                 document.uri.toString(),
-                line,
+                lineNum,
                 character,
                 true,
-                Parser.getRemarkByLine(document, line - 1),
+                Parser.getRemarkByLine(document, lineNum - 1),
             );
         }
-        for (let i = line + 1; i < document.lineCount; i++) {
+        for (let i = lineNum + 1; i < document.lineCount; i++) {
             const nextLineText = CodeUtil.purify(document.lineAt(i).text);
             if (!nextLineText.trim()) {
                 continue;
@@ -365,13 +365,13 @@ export class Parser {
                     methodFullName,
                     methodName,
                     document.uri.toString(),
-                    line,
+                    lineNum,
                     character,
                     false,
-                    Parser.getRemarkByLine(document, line - 1),
+                    Parser.getRemarkByLine(document, lineNum - 1),
                 );
             } else {
-                return new Ref(methodName, document, line, character);
+                return new Ref(methodName, document, lineNum, character);
             }
         }
         return undefined;
