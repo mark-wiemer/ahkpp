@@ -338,6 +338,8 @@ export class Parser {
         const methodName = methodMatch[2];
         const charNum = original.indexOf(methodName);
         if (text.length !== methodMatch[0].length) {
+            // line text longer than regex match
+            // todo unclear when this happens
             const refs = [new Ref(methodName, document, lineNum, charNum)];
             const newRef = this.detectMethodByLine(
                 document,
