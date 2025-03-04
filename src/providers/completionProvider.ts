@@ -15,7 +15,9 @@ const completionItemForMethod = (
         'params' | 'name' | 'full' | 'comment' | 'variables'
     >,
 ): vscode.CompletionItem => {
-    // foo() -> foo, foo(bar) -> foo(bar)
+    // if no params, just name. Else include parens and sample args. e.g.:
+    // foo() -> foo
+    // foo(bar) -> foo(bar)
     const completionItem = new vscode.CompletionItem(
         method.params.length === 0 ? method.name : method.full,
         vscode.CompletionItemKind.Method,

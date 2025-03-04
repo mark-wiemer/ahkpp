@@ -45,6 +45,10 @@ export class Block {
     ) {}
 }
 
+/**
+ * Really a function definition
+ * In AHK v1, methods are functions defined in a class
+ */
 export class Method {
     public params: string[];
     public variables: Variable[];

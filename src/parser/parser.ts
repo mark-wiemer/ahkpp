@@ -311,41 +311,47 @@ export class Parser {
         }
     }
 
-    /**
-     * detect method by line
-     * @param document
-     * @param lineNum
-     */
+    /** Return method definition or function call(s) on the given line */
     private static detectMethodByLine(
         document: vscode.TextDocument,
         lineNum: number,
         original?: string,
     ): Method | Ref | Ref[] {
+        const funcName = 'detectMethodByLine';
+        // todo strip out of prod build entirely for perf
+        Out.debug(
+            `${funcName}(${document.uri.path.split('/').pop()}, ${lineNum}${original === undefined ? '' : `, "${original}"`})`,
+        );
         original ??= document.lineAt(lineNum).text;
         const text = CodeUtil.purify(original);
         // [\u4e00-\u9fa5] Chinese unicode characters
         // start of line
         // one or more function name characters
         // that aren't the words "if" or "while"
-        // parentheses around 0 or more arguments
-        // optional opening curly brace
+        // parentheses around 0 or more arguments (matching up to the first closing paren)
+        // optional opening curly brace (for method definition)
         const refPattern =
             /\s*(([\u4e00-\u9fa5_a-zA-Z0-9]+)(?<!if|while)\(.*?\))\s*(\{)?\s*/i;
         const methodMatch = text.match(refPattern);
         if (!methodMatch) {
             return undefined;
         }
+        Out.debug(`${funcName}#methodMatch: ${methodMatch}`);
         const methodName = methodMatch[2];
         const charNum = original.indexOf(methodName);
         if (text.length !== methodMatch[0].length) {
-            // line text longer than regex match
-            // todo unclear when this happens
+            // multiple function calls on the same line
+            // regex does not match parens, so text is longer due to extra paren
+            // Foo(Bar()), for example
             const refs = [new Ref(methodName, document, lineNum, charNum)];
+            // Recursively unravel all function calls on this line
             const newRef = this.detectMethodByLine(
                 document,
                 lineNum,
+                // remove the call to the outermost function
                 original.replace(new RegExp(methodName + '\\s*\\('), ''),
             );
+            // Join to a flat array of references
             CodeUtil.join(refs, newRef);
             return refs;
         }
