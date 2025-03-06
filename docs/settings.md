@@ -119,3 +119,12 @@ here are some VS Code favorites picked by the community:
     parameter documentation and type information as you type.
 -   `editor.hover.enabled`: Whether the hover is shown. The hover suggests
     autocompletion for symbol names.
+
+### Formatting
+
+These settings control when code is formatted. You can disable AHK formatting entirely by setting the default formatter to "None (null)":
+
+-   `editor.formatOnPaste`
+-   `editor.formatOnSave`
+-   `@id:editor.defaultFormatter @lang:ahk`
+-   `@id:editor.defaultFormatter @lang:ahk2`
