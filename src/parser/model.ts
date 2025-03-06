@@ -2,8 +2,8 @@ import * as vscode from 'vscode';
 
 /** Symbols and structures parsed from a file */
 export interface Script {
-    methods: Method[];
-    refs: Ref[];
+    funcDefs: FuncDef[];
+    funcRefs: FuncCall[];
     labels: Label[];
     variables: Variable[];
     blocks: Block[];
@@ -14,7 +14,7 @@ export interface Variable {
     document: vscode.TextDocument;
     line: number;
     character: number;
-    method: Method;
+    funcDef: FuncDef;
     isGlobal: boolean;
 }
 
@@ -27,7 +27,7 @@ export class Label {
     ) {}
 }
 
-export class Ref {
+export class FuncCall {
     constructor(
         public name: string,
         public document: vscode.TextDocument,
@@ -45,7 +45,12 @@ export class Block {
     ) {}
 }
 
-export class Method {
+/**
+ * Represents a function definition in the script.
+ * In AHK, methods are functions attached to an object,
+ * so `FuncDef` includes method definitions.
+ */
+export class FuncDef {
     public params: string[];
     public variables: Variable[];
     public full: string;
@@ -58,7 +63,7 @@ export class Method {
         public line: number,
         public character: number,
         public withQuote: boolean,
-        /** Method header comment */
+        /** Function header comment */
         public comment: string,
     ) {
         this.buildParams();
@@ -66,7 +71,7 @@ export class Method {
     }
 
     private buildParams() {
-        /** Captures the parameters in a method header */
+        /** Captures the parameters in a function header */
         const paramRegex = /\s*\((.+?)\)\s*$/;
         if (this.origin !== this.name) {
             const paramsMatch = this.origin.match(paramRegex);

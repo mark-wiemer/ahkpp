@@ -69,7 +69,7 @@
     "ahk++.config.v2.general.symbolFoldingFromOpenBrace": "强制符号折叠从大括号处开始",
     "ahk++.config.v2.general.syntaxes": "指定用于智能感知的`ahk2.json`, `*.snippet.json`和`ahk2.d.ahk`文件的文件夹路径.",
     "ahk++.config.v2.warn": "显示 AHK v2 脚本中常见问题的警告。 更改在重启后生效。",
-    "ahk++.config.v2.warn.callWithoutParentheses": "显示每个函数或方法调用的警告，不带括号。",
+    "ahk++.config.v2.warn.callWithoutParentheses": "显示不带括号的每个函数调用的警告。",
     "ahk++.config.v2.warn.localSameAsGlobal": "为每个与全局变量同名的未声明局部变量显示警告。",
     "ahk++.config.v2.warn.varUnset": "引用未指定变量时显示警告。",
     "ahk++.config.v2.workingDirectories": "包含引用的 AHK 文件的附加目录，与[脚本库文件夹](https://www.autohotkey.com/docs/v2/Scripts.htm#lib)分开。",

@@ -12,9 +12,9 @@ suite('provideCompletionItemsInner', () => {
         args: Parameters<typeof provideCompletionItemsInner>,
         expected: ReturnType<typeof provideCompletionItemsInner>,
     ][] = [
-        ['no methods or variables', [[], 'mockUri', 1, []], []],
+        ['no functions or variables', [[], 'mockUri', 1, []], []],
         [
-            'diff file, outside method, no locals',
+            'diff file, outside function, no locals',
             [
                 [
                     {
@@ -36,13 +36,13 @@ suite('provideCompletionItemsInner', () => {
                 {
                     detail: 'mockComment',
                     insertText: 'mockName()',
-                    kind: vscode.CompletionItemKind.Method,
+                    kind: vscode.CompletionItemKind.Function,
                     label: 'mockName',
                 },
             ],
         ],
         [
-            'diff file, outside method, only params',
+            'diff file, outside function, only params',
             [
                 [
                     {
@@ -64,13 +64,13 @@ suite('provideCompletionItemsInner', () => {
                 {
                     detail: 'mockComment',
                     insertText: new vscode.SnippetString('mockName($1)'),
-                    kind: vscode.CompletionItemKind.Method,
+                    kind: vscode.CompletionItemKind.Function,
                     label: 'mockName(mockParam1, mockParam2)',
                 },
             ],
         ],
         [
-            'diff file, inside method, ignore local variables',
+            'diff file, inside function, ignore local variables',
             [
                 [
                     {
@@ -92,13 +92,13 @@ suite('provideCompletionItemsInner', () => {
                 {
                     detail: 'mockComment',
                     insertText: new vscode.SnippetString('mockName($1)'),
-                    kind: vscode.CompletionItemKind.Method,
+                    kind: vscode.CompletionItemKind.Function,
                     label: 'mockName(mockParam1, mockParam2)',
                 },
             ],
         ],
         [
-            'same file, outside method, no locals',
+            'same file, outside function, no locals',
             [
                 [
                     {
@@ -120,13 +120,13 @@ suite('provideCompletionItemsInner', () => {
                 {
                     detail: 'mockComment',
                     insertText: 'mockName()',
-                    kind: vscode.CompletionItemKind.Method,
+                    kind: vscode.CompletionItemKind.Function,
                     label: 'mockName',
                 },
             ],
         ],
         [
-            'same file, outside method, ignore local variables',
+            'same file, outside function, ignore local variables',
             [
                 [
                     {
@@ -148,13 +148,13 @@ suite('provideCompletionItemsInner', () => {
                 {
                     detail: 'mockComment',
                     insertText: new vscode.SnippetString('mockName($1)'),
-                    kind: vscode.CompletionItemKind.Method,
+                    kind: vscode.CompletionItemKind.Function,
                     label: 'mockName(mockParam1, mockParam2)',
                 },
             ],
         ],
         [
-            'same file, inside method, include locals (params first)',
+            'same file, inside function, include locals (params first)',
             [
                 [
                     {
@@ -176,7 +176,7 @@ suite('provideCompletionItemsInner', () => {
                 {
                     detail: 'mockComment',
                     insertText: new vscode.SnippetString('mockName($1)'),
-                    kind: vscode.CompletionItemKind.Method,
+                    kind: vscode.CompletionItemKind.Function,
                     label: 'mockName(mockParam1, mockParam2)',
                 },
                 {
@@ -194,7 +194,7 @@ suite('provideCompletionItemsInner', () => {
             ],
         ],
         [
-            'same file, inside one of two methods, include locals of only the current method',
+            'same file, inside one of two functions, include locals of only the current function',
             [
                 [
                     {
@@ -226,7 +226,7 @@ suite('provideCompletionItemsInner', () => {
                 {
                     detail: 'mockComment1',
                     insertText: new vscode.SnippetString('mockName1($1)'),
-                    kind: vscode.CompletionItemKind.Method,
+                    kind: vscode.CompletionItemKind.Function,
                     label: 'mockName1(mockParam1_1, mockParam1_2)',
                 },
                 {
@@ -244,7 +244,7 @@ suite('provideCompletionItemsInner', () => {
                 {
                     detail: 'mockComment2',
                     insertText: new vscode.SnippetString('mockName2($1)'),
-                    kind: vscode.CompletionItemKind.Method,
+                    kind: vscode.CompletionItemKind.Function,
                     label: 'mockName2(mockParam2_1, mockParam2_2)',
                 },
             ],
@@ -306,7 +306,7 @@ suite('provideCompletionItemsInner', () => {
                 {
                     detail: 'mockComment1',
                     insertText: new vscode.SnippetString('mockName1($1)'),
-                    kind: vscode.CompletionItemKind.Method,
+                    kind: vscode.CompletionItemKind.Function,
                     label: 'mockName1(mockParam1_1, mockParam1_2)',
                 },
                 {
@@ -324,13 +324,13 @@ suite('provideCompletionItemsInner', () => {
                 {
                     detail: 'mockComment2',
                     insertText: new vscode.SnippetString('mockName2($1)'),
-                    kind: vscode.CompletionItemKind.Method,
+                    kind: vscode.CompletionItemKind.Function,
                     label: 'mockName2(mockParam2_1, mockParam2_2)',
                 },
                 {
                     detail: 'mockComment3',
                     insertText: new vscode.SnippetString('mockName3($1)'),
-                    kind: vscode.CompletionItemKind.Method,
+                    kind: vscode.CompletionItemKind.Function,
                     label: 'mockName3(mockParam3_1, mockParam3_2)',
                 },
                 {

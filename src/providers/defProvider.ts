@@ -28,19 +28,19 @@ export class DefProvider implements vscode.DefinitionProvider {
         );
         Out.debug(`${funcName} word: ${word}`);
 
-        // get method
+        // get function definition
         if (
             new RegExp(word + '\\s*\\(.*?\\)').test(
                 document.lineAt(position.line).text,
             )
         ) {
-            Out.debug(`${funcName} calling getMethodByName for word: ${word}`);
-            const method = await Parser.getMethodByName(document, word);
-            Out.debug(`${funcName} method.name: ${method?.name}`);
-            if (method) {
+            Out.debug(`${funcName} calling getFuncDefByName for word: ${word}`);
+            const funcDef = await Parser.getFuncDefByName(document, word);
+            Out.debug(`${funcName} funcDef.name: ${funcDef?.name}`);
+            if (funcDef) {
                 return new vscode.Location(
-                    vscode.Uri.parse(method.uriString),
-                    new vscode.Position(method.line, method.character),
+                    vscode.Uri.parse(funcDef.uriString),
+                    new vscode.Position(funcDef.line, funcDef.character),
                 );
             }
         }
@@ -57,12 +57,12 @@ export class DefProvider implements vscode.DefinitionProvider {
 
         const script = await Parser.buildScript(document, { usingCache: true });
 
-        for (const method of script.methods) {
+        for (const funcDef of script.funcDefs) {
             if (
-                position.line >= method.line &&
-                position.line <= method.endLine
+                position.line >= funcDef.line &&
+                position.line <= funcDef.endLine
             ) {
-                for (const variable of method.variables) {
+                for (const variable of funcDef.variables) {
                     if (variable.name === word) {
                         return new vscode.Location(
                             document.uri,
@@ -73,13 +73,14 @@ export class DefProvider implements vscode.DefinitionProvider {
                         );
                     }
                 }
-                for (const param of method.params) {
+                for (const param of funcDef.params) {
                     if (param === word) {
                         return new vscode.Location(
                             document.uri,
                             new vscode.Position(
-                                method.line,
-                                method.character + method.origin.indexOf(param),
+                                funcDef.line,
+                                funcDef.character +
+                                    funcDef.origin.indexOf(param),
                             ),
                         );
                     }

@@ -1,51 +1,56 @@
 import * as vscode from 'vscode';
 import { Parser } from '../parser/parser';
 import { SnippetString } from 'vscode';
-import { Method } from '../parser/model';
+import { FuncDef } from '../parser/model';
 
-type SimpleMethod = Pick<
-    Method,
+type SimpleFuncDef = Pick<
+    FuncDef,
     'params' | 'name' | 'full' | 'comment' | 'uriString' | 'line' | 'endLine'
 > & { variables: string[] };
 
-/** A completion item for the method itself. */
-const completionItemForMethod = (
-    method: Pick<
-        SimpleMethod,
+/** A completion item for the function itself. */
+const completionItemForFunction = (
+    funcDef: Pick<
+        SimpleFuncDef,
         'params' | 'name' | 'full' | 'comment' | 'variables'
     >,
 ): vscode.CompletionItem => {
-    // foo() -> foo, foo(bar) -> foo(bar)
+    // if no params, just name. Else include parens and sample args. e.g.:
+    // foo() -> foo
+    // foo(bar) -> foo(bar)
     const completionItem = new vscode.CompletionItem(
-        method.params.length === 0 ? method.name : method.full,
-        vscode.CompletionItemKind.Method,
+        funcDef.params.length === 0 ? funcDef.name : funcDef.full,
+        vscode.CompletionItemKind.Function,
     );
-    completionItem.insertText = method.params.length
-        ? new SnippetString(`${method.name}($1)`)
-        : `${method.name}()`;
-    completionItem.detail = method.comment;
+    completionItem.insertText = funcDef.params.length
+        ? new SnippetString(`${funcDef.name}($1)`)
+        : `${funcDef.name}()`;
+    completionItem.detail = funcDef.comment;
     return completionItem;
 };
 
 /**
- * True if the line number is within the method
- * and the method is in the same file.
+ * True if the line number is within the function definition
+ * and the function is defined in the same file.
  */
-const shouldSuggestMethodLocals = (
-    method: Pick<SimpleMethod, 'uriString' | 'line' | 'endLine' | 'variables'>,
+const shouldSuggestFunctionLocals = (
+    funcDef: Pick<
+        SimpleFuncDef,
+        'uriString' | 'line' | 'endLine' | 'variables'
+    >,
     uriString: string,
     lineNumber: number,
 ): boolean =>
-    method.uriString === uriString &&
-    method.line <= lineNumber &&
-    lineNumber <= method.endLine;
+    funcDef.uriString === uriString &&
+    funcDef.line <= lineNumber &&
+    lineNumber <= funcDef.endLine;
 
-/** A completion item for each of the method's local variables and parameters. */
-const completionItemsForMethodLocals = (
-    method: Pick<SimpleMethod, 'params' | 'variables'>,
+/** A completion item for each of the function's local variables and parameters. */
+const completionItemsForFunctionLocals = (
+    funcDef: Pick<SimpleFuncDef, 'params' | 'variables'>,
 ): vscode.CompletionItem[] =>
-    method.params
-        .concat(method.variables)
+    funcDef.params
+        .concat(funcDef.variables)
         .map(
             (local) =>
                 new vscode.CompletionItem(
@@ -55,18 +60,20 @@ const completionItemsForMethodLocals = (
         );
 
 /**
- * A completion item for the method itself.
- * Also one for each of its locals if the line number is within the method.
+ * A completion item for a function call.
+ * Also one for each of its locals if the line number is within the function.
  */
-const completionItemsForMethod = (
-    method: SimpleMethod,
+const completionItemsForFunction = (
+    funcDef: SimpleFuncDef,
     uriString: string,
     lineNumber: number,
 ): vscode.CompletionItem[] => {
-    const result: vscode.CompletionItem[] = [completionItemForMethod(method)];
+    const result: vscode.CompletionItem[] = [
+        completionItemForFunction(funcDef),
+    ];
 
-    if (shouldSuggestMethodLocals(method, uriString, lineNumber)) {
-        result.push(...completionItemsForMethodLocals(method));
+    if (shouldSuggestFunctionLocals(funcDef, uriString, lineNumber)) {
+        result.push(...completionItemsForFunctionLocals(funcDef));
     }
 
     return result;
@@ -76,22 +83,24 @@ const completionItemForVariable = (variable: string): vscode.CompletionItem =>
     new vscode.CompletionItem(variable, vscode.CompletionItemKind.Variable);
 
 /**
- * Suggests all methods and the locals of the current method, if any.
+ * Suggests all functions and the locals of the current function, if any.
  * Suggests all variables provided.
- * @param methods The methods to suggest
+ * @param funcDefs The functions to suggest
  * @param uriString The URI of the current file
  * @param lineNumber The line number of the cursor
  * @param variables The variables to suggest
  * @returns The completion items
+ *
+ * todo should only suggest included and library functions
  */
 export const provideCompletionItemsInner = (
-    methods: SimpleMethod[],
+    funcDefs: SimpleFuncDef[],
     uriString: string,
     lineNumber: number,
     variables: string[],
 ): vscode.CompletionItem[] =>
-    methods
-        .map((m) => completionItemsForMethod(m, uriString, lineNumber))
+    funcDefs
+        .map((m) => completionItemsForFunction(m, uriString, lineNumber))
         .reduce((a, b) => a.concat(b), []) // reduce from 2D array to 1D array
         .concat(variables.map(completionItemForVariable));
 
@@ -110,12 +119,12 @@ export class CompletionProvider implements vscode.CompletionItemProvider {
             return [];
         }
 
-        // Suggest all methods and the locals of the current method, if any
+        // Suggest all functions and the locals of the current function, if any
         // Suggest all variables in the current file
-        const methods = await Parser.getAllMethod();
+        const funcDefs = await Parser.getAllFuncDefs();
         const script = await Parser.buildScript(document, { usingCache: true });
         return provideCompletionItemsInner(
-            methods.map((m) => ({
+            funcDefs.map((m) => ({
                 ...m,
                 variables: m.variables.map((v) => v.name),
             })),

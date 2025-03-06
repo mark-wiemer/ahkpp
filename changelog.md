@@ -3,6 +3,7 @@
 ## 6.5.1 - unreleased
 
 -   Improve extension performance when loading AHK v1 scripts ([PR #615](https://github.com/mark-wiemer/ahkpp/pull/615))
+-   Change `Method` to `Function` in document symbols and internal references. This changes the document outline slightly, but should not change most theme icons and is more correct. ([PR #620](https://github.com/mark-wiemer/ahkpp/pull/620)).
 
 ## 6.5.0 - 2025-02-23 💞
 
@@ -682,7 +683,7 @@ This is "The Kyklish Release" because Kyklish wrote most of this code. Thank you
 
 <details><summary>Older releases from AutoHotkey Plus</summary>
 
-> These releases are not versions of AHK++, but carried over from [AutoHotkey Plus by cweijan](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-autohotkey-plus)
+> These releases are not versions of AHK++, but carried over from [AutoHotkey Plus by cweijan](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-autohotkey-plus) and the git history of this repo.
 
 ## 2.5.6 - 2020-10-06
 
@@ -709,7 +710,7 @@ This is "The Kyklish Release" because Kyklish wrote most of this code. Thank you
 ## 2.5.0 - 2020-09-21
 
 -   Adaptation zero-plus debugger extension.
--   Support rename method name.
+-   Support renaming functions.
 
 ## 2.4.5~2.4.16
 
@@ -717,12 +718,12 @@ This is "The Kyklish Release" because Kyklish wrote most of this code. Thank you
 
 ## 2.4.4 - 2020-06-27
 
--   Support find method references.
+-   Support find function references.
 -   Fix syntax bug.
 
 ## 2.4.3 - 2020-06-25
 
--   Add command|method hover feature.
+-   Add command|function hover feature.
 -   Add labels to outline.
 -   More syntax support.
 
@@ -755,7 +756,7 @@ This is "The Kyklish Release" because Kyklish wrote most of this code. Thank you
 ## 2.3.0 - 2020-04-11
 
 -   Variable view support complex variable value, contribute by @zero-plusplus.
--   Enhance method detecter.
+-   Enhance function detector.
 
 ## 2.2.2 - 2020-03-27
 
@@ -781,11 +782,15 @@ This is "The Kyklish Release" because Kyklish wrote most of this code. Thank you
 
 ## 2.0.3 - 2020-03-10
 
--   Fix detecter if and while block as methods.
--   Support go to method definition in same file.
+-   Fix detecting if and while blocks as function calls.
+-   Support "go to function definition" in same file.
 
 ## 2.0.2 - 2019-11-27
 
--   Enhance method symbol detection.
+-   Enhance function symbol detection.
+
+## Older
+
+There is no changelog for versions older than 2.0.2.
 
 </details>

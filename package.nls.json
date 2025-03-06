@@ -42,7 +42,7 @@
     "ahk++.config.v2.file.templateSnippetName": "The name of the snippet to populate new AHK v2 files. If blank, no snippet will be applied.",
     "ahk++.config.v2.formatter.arrayStyle": "Line break style for array formatting",
     "ahk++.config.v2.formatter.braceStyle": "Line break style for brace placement",
-    "ahk++.config.v2.formatter.breakChainedMethods": "Whether to break chained method calls onto new lines",
+    "ahk++.config.v2.formatter.breakChainedMethods": "Whether to break chained function calls onto new lines",
     "ahk++.config.v2.formatter.ignoreComment": "Whether to ignore formatting within comments",
     "ahk++.config.v2.formatter.indentBetweenHotIfDirectives": "Whether to indent code between HotIf directives",
     "ahk++.config.v2.formatter.indentString": "String to use for indentation (usually one tab or some spaces)",
@@ -66,7 +66,7 @@
     "ahk++.config.v2.general.symbolFoldingFromOpenBrace": "Fold parameter lists separately from definitions.",
     "ahk++.config.v2.general.syntaxes": "Path to the folder containing ahk2.json, ahk2.d.ahk, and *.snippet.json files used by IntelliSense.",
     "ahk++.config.v2.warn": "Display warnings for common issues in AHK v2 scripts. Changes take effect after restart.",
-    "ahk++.config.v2.warn.callWithoutParentheses": "Display warnings for each function or method call without parentheses.",
+    "ahk++.config.v2.warn.callWithoutParentheses": "Display warnings for each function call without parentheses.",
     "ahk++.config.v2.warn.localSameAsGlobal": "Display warnings for each undeclared local variable that has the same name as a global variable.",
     "ahk++.config.v2.warn.varUnset": "Display a warning when referencing an unassigned variable.",
     "ahk++.config.v2.workingDirectories": "Additional directories containing referenced AHK files, separate from the [script library folders](https://www.autohotkey.com/docs/v2/Scripts.htm#lib)."

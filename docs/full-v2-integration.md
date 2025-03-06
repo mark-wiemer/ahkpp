@@ -46,7 +46,7 @@ All new settings are in the `V2` settings category
 -   Warn
     -   Var Unset: Display a warning when referencing an unassigned variable. Changes take effect after restart.
     -   Local Same As Global: Display warnings for each undeclared local variable that has the same name as a global variable. Changes take effect after restart.
-    -   Call Without Parentheses: Display warnings for each function or method call without parentheses. Changes take effect after restart.
+    -   Call Without Parentheses: Display warnings for each function call without parentheses. Changes take effect after restart.
 -   Symbol Folding From Open Brace: Fold parameter lists separately from definitions. Recommended false for consistency with other languages.
 -   Working Directories: The directories containing referenced AHK files
 
