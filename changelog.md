@@ -3,7 +3,7 @@
 ## 6.5.1 - unreleased
 
 -   Improve extension performance when loading AHK v1 scripts ([PR #615](https://github.com/mark-wiemer/ahkpp/pull/615))
--   Change `Method` to `Function` in document symbols and internal references. This changes the document outline slightly, but should not change most theme icons and is more correct. (todo PR).
+-   Change `Method` to `Function` in document symbols and internal references. This changes the document outline slightly, but should not change most theme icons and is more correct. ([PR #620](https://github.com/mark-wiemer/ahkpp/pull/620)).
 
 ## 6.5.0 - 2025-02-23 💞
 
