@@ -32,7 +32,7 @@ export class AhkHoverProvider implements HoverProvider {
     /**
      * - If there's no context, return null.
      * - If there's a snippet hover, return it.
-     * - If there's a method hover, return it.
+     * - If there's a function hover, return it.
      * - Otherwise, return null.
      */
     public async provideHover(
@@ -49,15 +49,15 @@ export class AhkHoverProvider implements HoverProvider {
             return snippetHover;
         }
 
-        const method = await Parser.getMethodByName(document, context.word);
-        if (!method) {
+        const funcDef = await Parser.getFuncDefByName(document, context.word);
+        if (!funcDef) {
             return null;
         }
         const contents = new MarkdownString('', true).appendCodeblock(
-            method.full,
+            funcDef.full,
         );
-        if (method.comment) {
-            contents.appendText(method.comment);
+        if (funcDef.comment) {
+            contents.appendText(funcDef.comment);
         }
         return new Hover(contents);
     }

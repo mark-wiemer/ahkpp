@@ -1,7 +1,7 @@
 import { ConfigKey, Global } from '../common/global';
 import * as vscode from 'vscode';
 import { CodeUtil } from '../common/codeUtil';
-import { Script, Method, Ref, Label, Block, Variable } from './model';
+import { Script, FuncDef, FuncCall, Label, Block, Variable } from './model';
 import { pathsToBuild } from './parser.utils';
 import { Out } from '../common/out';
 
@@ -24,10 +24,7 @@ export interface BuildScriptOptions {
 
 /** Parses v1 files */
 export class Parser {
-    /**
-     * Load method list by path
-     * @param buildPath
-     */
+    /** Build all scripts in the given path */
     public static async buildByPath(buildPath: string) {
         const excludeConfig = Global.getConfig<string[]>(ConfigKey.exclude);
         const paths = await pathsToBuild(
@@ -79,12 +76,12 @@ export class Parser {
                 ? Math.min(document.lineCount, maxParseLength)
                 : document.lineCount;
 
-        const methods: Method[] = [];
-        const refs: Ref[] = [];
+        const funcDefs: FuncDef[] = [];
+        const calls: FuncCall[] = [];
         const labels: Label[] = [];
         const variables: Variable[] = [];
         const blocks: Block[] = [];
-        let currentMethod: Method;
+        let currentFuncDef: FuncDef;
         let deep = 0;
         let blockComment = false;
         for (let line = 0; line < linesToParse; line++) {
@@ -98,25 +95,25 @@ export class Parser {
             if (blockComment) {
                 continue;
             }
-            const methodOrRef = Parser.detectMethodByLine(document, line);
-            if (methodOrRef) {
-                if (methodOrRef instanceof Method) {
-                    methods.push(methodOrRef);
-                    refs.push(
-                        new Ref(
-                            methodOrRef.name,
+            const defOrCall = Parser.detectFunctionByLine(document, line);
+            if (defOrCall) {
+                if (defOrCall instanceof FuncDef) {
+                    funcDefs.push(defOrCall);
+                    calls.push(
+                        new FuncCall(
+                            defOrCall.name,
                             document,
                             line,
-                            methodOrRef.character,
+                            defOrCall.character,
                         ),
                     );
-                    currentMethod = methodOrRef;
-                    if (methodOrRef.withQuote) {
+                    currentFuncDef = defOrCall;
+                    if (defOrCall.withQuote) {
                         deep++;
                     }
                     continue;
                 } else {
-                    CodeUtil.join(refs, methodOrRef);
+                    CodeUtil.join(calls, defOrCall);
                 }
             }
             const label = Parser.getLabelByLine(document, line);
@@ -133,20 +130,26 @@ export class Parser {
             }
             if (lineText.includes('}')) {
                 deep--;
-                if (currentMethod) {
-                    currentMethod.endLine = line;
+                if (currentFuncDef) {
+                    currentFuncDef.endLine = line;
                 }
             }
             const variable = Parser.detectVariableByLine(document, line);
             if (variable) {
-                if (deep === 0 || !currentMethod) {
+                if (deep === 0 || !currentFuncDef) {
                     this.joinVars(variables, variable);
                 } else {
-                    currentMethod.pushVariable(variable);
+                    currentFuncDef.pushVariable(variable);
                 }
             }
         }
-        const script: Script = { methods, labels, refs, variables, blocks };
+        const script: Script = {
+            funcDefs: funcDefs,
+            labels,
+            funcRefs: calls,
+            variables,
+            blocks,
+        };
         Out.debug(`${funcName} document.uri.path: ${document.uri.path}`);
         Out.debug(`${funcName} script: ${JSON.stringify(script)}`);
         documentCache.set(document.uri.path, script);
@@ -154,43 +157,44 @@ export class Parser {
     }
 
     /**
-     * Finds the best reference to the method.
-     * If a method of this name exists in the current file, returns that method.
-     * Otherwise, searches through document cache to find the matching method.
-     * Matches are not case-sensitive and only need to match method name.
-     * Note that duplicate method definitions are not allowed in AHK v1.
+     * Finds the best reference to the function.
+     * If a function of this name exists in the current file, returns that function.
+     * Otherwise, searches through document cache to find the matching function.
+     * Matches are not case-sensitive and only need to match function name.
+     * Note that duplicate function definitions are not allowed in AHK v1.
+     *
+     * todo should search only included files and library files
+     * - https://github.com/mark-wiemer/ahkpp/issues/205
      */
-    public static async getMethodByName(
+    public static async getFuncDefByName(
         document: vscode.TextDocument,
         name: string,
         localCache = documentCache,
     ) {
         name = name.toLowerCase();
-        for (const method of localCache.get(document.uri.path).methods) {
-            if (method.name.toLowerCase() === name) {
-                return method;
+        for (const func of localCache.get(document.uri.path).funcDefs) {
+            if (func.name.toLowerCase() === name) {
+                return func;
             }
         }
-        // todo this should prioritize included files first.
-        // https://github.com/mark-wiemer/ahkpp/issues/205
         for (const filePath of localCache.keys()) {
-            for (const method of localCache.get(filePath).methods) {
-                if (method.name.toLowerCase() === name) {
-                    return method;
+            for (const func of localCache.get(filePath).funcDefs) {
+                if (func.name.toLowerCase() === name) {
+                    return func;
                 }
             }
         }
         return undefined;
     }
 
-    public static async getAllMethod(): Promise<Method[]> {
-        const methods = [];
+    public static async getAllFuncDefs(): Promise<FuncDef[]> {
+        const funcs = [];
         for (const filePath of documentCache.keys()) {
-            for (const method of documentCache.get(filePath).methods) {
-                methods.push(method);
+            for (const func of documentCache.get(filePath).funcDefs) {
+                funcs.push(func);
             }
         }
-        return methods;
+        return funcs;
     }
 
     public static async getLabelByName(
@@ -213,12 +217,12 @@ export class Parser {
         return undefined;
     }
 
-    public static getAllRefByName(name: string): Ref[] {
+    public static getAllRefByName(name: string): FuncCall[] {
         const refs = [];
         name = name.toLowerCase();
         for (const filePath of documentCache.keys()) {
             const document = documentCache.get(filePath);
-            for (const ref of document.refs) {
+            for (const ref of document.funcRefs) {
                 if (ref.name.toLowerCase() === name) {
                     refs.push(ref);
                 }
@@ -280,12 +284,12 @@ export class Parser {
                 line,
                 document,
                 isGlobal: true,
-                method: null,
+                funcDef: null,
                 name: varName,
                 character: lineText.indexOf(varName),
             };
         } else {
-            const vars = [];
+            const vars: Variable[] = [];
             const commandMatchAll = CodeUtil.matchAll(
                 Parser.varCommandPattern,
                 lineText.replace(/\(.+?\)/g, ''),
@@ -302,7 +306,7 @@ export class Parser {
                     line,
                     document,
                     isGlobal: true,
-                    method: null,
+                    funcDef: null,
                     name: varName,
                     character: lineText.indexOf(commandMatchAll[index][0]),
                 });
@@ -311,56 +315,58 @@ export class Parser {
         }
     }
 
-    /** Return method definition or function call(s) on the given line */
-    private static detectMethodByLine(
+    /** Return function definition or function call(s) on the given line */
+    private static detectFunctionByLine(
         document: vscode.TextDocument,
         lineNum: number,
         original?: string,
-    ): Method | Ref | Ref[] {
-        const funcName = 'detectMethodByLine';
+    ): FuncDef | FuncCall | FuncCall[] {
+        const thisFuncName = 'detectFunctionByLine';
         // todo strip out of prod build entirely for perf
         Out.debug(
-            `${funcName}(${document.uri.path.split('/').pop()}, ${lineNum}${original === undefined ? '' : `, "${original}"`})`,
+            `${thisFuncName}(${document.uri.path.split('/').pop()}, ${lineNum}${original === undefined ? '' : `, "${original}"`})`,
         );
         original ??= document.lineAt(lineNum).text;
         const text = CodeUtil.purify(original);
         // [\u4e00-\u9fa5] Chinese unicode characters
+        // Matches function definitions and calls
         // start of line
         // one or more function name characters
         // that aren't the words "if" or "while"
         // parentheses around 0 or more arguments (matching up to the first closing paren)
-        // optional opening curly brace (for method definition)
-        const refPattern =
+        // optional opening curly brace (for func definition)
+        const funcPattern =
             /\s*(([\u4e00-\u9fa5_a-zA-Z0-9]+)(?<!if|while)\(.*?\))\s*(\{)?\s*/i;
-        const methodMatch = text.match(refPattern);
-        if (!methodMatch) {
+        const match = text.match(funcPattern);
+        if (!match) {
             return undefined;
         }
-        Out.debug(`${funcName}#methodMatch: ${methodMatch}`);
-        const methodName = methodMatch[2];
-        const charNum = original.indexOf(methodName);
-        if (text.length !== methodMatch[0].length) {
+        Out.debug(`${thisFuncName}#match: ${match}`);
+        const funcName = match[2];
+        const charNum = original.indexOf(funcName);
+        if (text.length !== match[0].length) {
             // multiple function calls on the same line
             // regex does not match parens, so text is longer due to extra paren
             // Foo(Bar()), for example
-            const refs = [new Ref(methodName, document, lineNum, charNum)];
+            const refs = [new FuncCall(funcName, document, lineNum, charNum)];
             // Recursively unravel all function calls on this line
-            const newRef = this.detectMethodByLine(
+            const newRef = this.detectFunctionByLine(
                 document,
                 lineNum,
                 // remove the call to the outermost function
-                original.replace(new RegExp(methodName + '\\s*\\('), ''),
+                original.replace(new RegExp(funcName + '\\s*\\('), ''),
             );
             // Join to a flat array of references
             CodeUtil.join(refs, newRef);
             return refs;
         }
-        const methodFullName = methodMatch[1];
-        const isMethod = methodMatch[3];
+        const funcFullName = match[1];
+        // unsure if `isMethod` is a reasonable name for this
+        const isMethod = match[3];
         if (isMethod) {
-            return new Method(
-                methodFullName,
-                methodName,
+            return new FuncDef(
+                funcFullName,
+                funcName,
                 document.uri.toString(),
                 lineNum,
                 charNum,
@@ -374,9 +380,9 @@ export class Parser {
                 continue;
             }
             if (nextLineText.match(/^\s*{/)) {
-                return new Method(
-                    methodFullName,
-                    methodName,
+                return new FuncDef(
+                    funcFullName,
+                    funcName,
                     document.uri.toString(),
                     lineNum,
                     charNum,
@@ -384,7 +390,7 @@ export class Parser {
                     Parser.getRemarkByLine(document, lineNum - 1),
                 );
             } else {
-                return new Ref(methodName, document, lineNum, charNum);
+                return new FuncCall(funcName, document, lineNum, charNum);
             }
         }
         return undefined;

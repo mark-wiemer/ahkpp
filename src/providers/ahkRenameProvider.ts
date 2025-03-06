@@ -48,8 +48,8 @@ export class AhkRenameProvider implements vscode.RenameProvider {
         const wordRange = document.getWordRangeAtPosition(position);
         const word = document.getText(wordRange);
 
-        const method = await Parser.getMethodByName(document, word);
-        if (method) {
+        const funcDef = await Parser.getFuncDefByName(document, word);
+        if (funcDef) {
             return wordRange;
         }
         throw new Error('You cannot rename this element.');

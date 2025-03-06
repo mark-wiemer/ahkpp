@@ -6,13 +6,16 @@ export class SignatureProvider implements vscode.SignatureHelpProvider {
         document: vscode.TextDocument,
         position: vscode.Position,
     ): Promise<vscode.SignatureHelp> {
-        let methodPosition: vscode.Position;
+        let funcDefCandidatePosition: vscode.Position;
         const lineText = document.lineAt(position.line).text;
         let splitCount = 0;
         for (let index = position.character - 1; index > 0; index--) {
             const char = lineText.charAt(index);
             if (char === '(') {
-                methodPosition = new vscode.Position(position.line, index);
+                funcDefCandidatePosition = new vscode.Position(
+                    position.line,
+                    index,
+                );
                 break;
             }
             if (char === ',') {
@@ -20,17 +23,17 @@ export class SignatureProvider implements vscode.SignatureHelpProvider {
             }
         }
         const word = document.getText(
-            document.getWordRangeAtPosition(methodPosition),
+            document.getWordRangeAtPosition(funcDefCandidatePosition),
         );
 
-        const method = await Parser.getMethodByName(document, word);
-        if (method) {
+        const funcDef = await Parser.getFuncDefByName(document, word);
+        if (funcDef) {
             return {
                 activeSignature: 0,
                 signatures: [
                     {
-                        label: method.origin,
-                        parameters: method.params.map((param) => {
+                        label: funcDef.origin,
+                        parameters: funcDef.params.map((param) => {
                             return { label: param };
                         }),
                     },

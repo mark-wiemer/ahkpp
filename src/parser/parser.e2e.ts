@@ -123,27 +123,27 @@ suite('Parser', () => {
         const myTests: {
             name: string;
             maximumParseLength: number;
-            expectedMethodCount: number;
+            expectedFuncDefCount: number;
         }[] = [
             {
                 name: 'stops at provided max parse length',
                 maximumParseLength: 10_000,
-                expectedMethodCount: 1,
+                expectedFuncDefCount: 1,
             },
             {
                 name: 'respects parse lengths higher than ten thousand',
                 maximumParseLength: 11_000,
-                expectedMethodCount: 2,
+                expectedFuncDefCount: 2,
             },
             {
                 name: '-1 means unlimited parsing',
                 maximumParseLength: -1,
-                expectedMethodCount: 2,
+                expectedFuncDefCount: 2,
             },
             {
                 name: '0 means no parsing',
                 maximumParseLength: 0,
-                expectedMethodCount: 0,
+                expectedFuncDefCount: 0,
             },
         ];
 
@@ -157,8 +157,8 @@ suite('Parser', () => {
                     maximumParseLength: myTest.maximumParseLength,
                 });
                 assert.strictEqual(
-                    result.methods.length,
-                    myTest.expectedMethodCount,
+                    result.funcDefs.length,
+                    myTest.expectedFuncDefCount,
                 );
             }),
         );

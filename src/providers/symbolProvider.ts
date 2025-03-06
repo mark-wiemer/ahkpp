@@ -9,15 +9,15 @@ export class SymbolProvider implements vscode.DocumentSymbolProvider {
 
         const script = await Parser.buildScript(document, { usingCache: true });
 
-        for (const method of script.methods) {
+        for (const funcDef of script.funcDefs) {
             result.push(
                 new vscode.SymbolInformation(
-                    method.full,
-                    vscode.SymbolKind.Method,
-                    method.comment,
+                    funcDef.full,
+                    vscode.SymbolKind.Function,
+                    funcDef.comment,
                     new vscode.Location(
-                        vscode.Uri.parse(method.uriString),
-                        new vscode.Position(method.line, method.character),
+                        vscode.Uri.parse(funcDef.uriString),
+                        new vscode.Position(funcDef.line, funcDef.character),
                     ),
                 ),
             );

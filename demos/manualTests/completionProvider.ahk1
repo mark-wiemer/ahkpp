@@ -7,11 +7,11 @@
 ; compTest comment
 compTest(p1, p2) {
     p3 := 1
-    ; Suggestions within method include locals
+    ; Suggestions within function include locals
     p
 }
 
-; Suggestions outside of method exclude locals
+; Suggestions outside of function exclude locals
 p
 
 ; Default settings (enabled parsing) shows suggestions
