@@ -128,3 +128,5 @@ These settings control when code is formatted. You can disable AHK formatting en
 -   `editor.formatOnSave`
 -   `@id:editor.defaultFormatter @lang:ahk`
 -   `@id:editor.defaultFormatter @lang:ahk2`
+
+See [#619](https://github.com/mark-wiemer/ahkpp/discussions/619) for a detailed discussion.
