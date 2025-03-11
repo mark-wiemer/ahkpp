@@ -96,7 +96,7 @@ suite('pathsToBuild', () => {
     ];
     tests.forEach(([name, exclusions, relativeExpected]) =>
         test(name, async () => {
-            const result = await pathsToBuild(mockPath, [], exclusions);
+            const result = await pathsToBuild(mockPath, exclusions);
             const absoluteExpected = relativeExpected.map((e) =>
                 path.join(mockPath, e),
             );

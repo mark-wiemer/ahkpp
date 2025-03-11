@@ -27,19 +27,14 @@ export class Parser {
     /** Build all scripts in the given path */
     public static async buildByPath(buildPath: string) {
         const excludeConfig = Global.getConfig<string[]>(ConfigKey.exclude);
-        const paths = await pathsToBuild(
-            buildPath,
-            [],
-            excludeConfig,
-            Out.debug,
-        );
+        const paths = await pathsToBuild(buildPath, excludeConfig, Out.debug);
         Out.debug(`Building ${paths.length} files`);
         for (const path of paths) {
             Out.debug(`Building ${path}`);
             const document = await vscode.workspace.openTextDocument(
                 vscode.Uri.file(path),
             );
-            this.buildScript(document);
+            await this.buildScript(document);
         }
     }
 

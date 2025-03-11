@@ -6,24 +6,25 @@ interface Exclude {
     folder: RegExp[];
 }
 
+/** Recursively returns absolute paths of all apparent v1 scripts under `rootPath` */
 export async function pathsToBuild(
     rootPath: string,
-    paths: string[] = [],
     excludeConfig: string[],
-    log?: (val: string) => void,
+    log: (val: string) => void = () => {},
 ): Promise<string[]> {
+    const paths: string[] = [];
     if (!rootPath) {
-        return [];
+        return paths;
     }
     const exclude = parseExcludeConfig(excludeConfig);
-    log?.(`folder: ${exclude.folder.map((re) => re.toString()).join('\n')}`);
-    log?.(`file: ${exclude.file.map((re) => re.toString()).join('\n')}`);
+    log(`folder: ${exclude.folder.map((re) => re.toString()).join('\n')}`);
+    log(`file: ${exclude.file.map((re) => re.toString()).join('\n')}`);
 
-    const pathsToBuildInner = async (rootPath) => {
+    const pathsToBuildInner = async (rootPath: string) => {
         const dir = await promises.opendir(rootPath);
         for await (const dirent of dir) {
             const path = resolve(rootPath, dirent.name);
-            log?.('Checking ' + path);
+            log('Checking ' + path);
             if (
                 dirent.isDirectory() &&
                 !exclude.folder.some((re) => re.test(path))
@@ -34,10 +35,10 @@ export async function pathsToBuild(
                 dirent.name.match(/\.(ahk|ah1|ahk1|ext)$/i) &&
                 !exclude.file.some((re) => re.test(path))
             ) {
-                log?.('Adding ' + path);
+                log('Adding ' + path);
                 paths.push(path);
             } else {
-                log?.('Ignoring ' + path);
+                log('Ignoring ' + path);
             }
         }
         return paths;
