@@ -10,7 +10,6 @@ export class Global {
     public static getConfig<T>(key: ConfigKey): T | undefined {
         return (
             // older versions of AHK++ used `ahk++` lowercase
-            // todo add deprecation warning for lowercase config vars
             vscode.workspace.getConfiguration('ahk++').get<T>(key) ??
             vscode.workspace.getConfiguration(configPrefix).get<T>(key)
         );
