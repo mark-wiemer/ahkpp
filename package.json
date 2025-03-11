@@ -252,6 +252,23 @@
                     "uniqueItems": true,
                     "markdownDescription": "%ahk++.config.exclude%"
                 },
+                "AHK++.experimental": {
+                    "markdownDescription": "%ahk++.config.experimental%",
+                    "type": "object",
+                    "properties": {
+                        "v1IncludeTree": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": "%ahk++.config.experimental.v1IncludeTree%"
+                        }
+                    },
+                    "default": {
+                        "v1IncludeTree": false
+                    },
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                },
                 "AHK++.general": {
                     "type": "object",
                     "properties": {
