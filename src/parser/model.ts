@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 /** Symbols and structures parsed from a file */
 export interface Script {
     funcDefs: FuncDef[];
-    funcRefs: FuncCall[];
+    funcRefs: FuncRef[];
     labels: Label[];
     variables: Variable[];
     blocks: Block[];
@@ -27,7 +27,7 @@ export class Label {
     ) {}
 }
 
-export class FuncCall {
+export class FuncRef {
     constructor(
         public name: string,
         public document: vscode.TextDocument,

@@ -1,7 +1,7 @@
 import { ConfigKey, Global } from '../common/global';
 import * as vscode from 'vscode';
 import { CodeUtil } from '../common/codeUtil';
-import { Script, FuncDef, FuncCall, Label, Block, Variable } from './model';
+import { Script, FuncDef, FuncRef, Label, Block, Variable } from './model';
 import { pathsToBuild } from './parser.utils';
 import { Out } from '../common/out';
 
@@ -77,11 +77,12 @@ export class Parser {
                 : document.lineCount;
 
         const funcDefs: FuncDef[] = [];
-        const calls: FuncCall[] = [];
+        const funcRefs: FuncRef[] = [];
         const labels: Label[] = [];
         const variables: Variable[] = [];
         const blocks: Block[] = [];
         let currentFuncDef: FuncDef;
+        /** Tracks scope of newly-defined variables */
         let deep = 0;
         let blockComment = false;
         for (let line = 0; line < linesToParse; line++) {
@@ -99,8 +100,8 @@ export class Parser {
             if (defOrCall) {
                 if (defOrCall instanceof FuncDef) {
                     funcDefs.push(defOrCall);
-                    calls.push(
-                        new FuncCall(
+                    funcRefs.push(
+                        new FuncRef(
                             defOrCall.name,
                             document,
                             line,
@@ -113,7 +114,7 @@ export class Parser {
                     }
                     continue;
                 } else {
-                    CodeUtil.join(calls, defOrCall);
+                    CodeUtil.join(funcRefs, defOrCall);
                 }
             }
             const label = Parser.getLabelByLine(document, line);
@@ -125,6 +126,7 @@ export class Parser {
             if (block) {
                 blocks.push(block);
             }
+            // todo won't work on lines with comments
             if (lineText.includes('{')) {
                 deep++;
             }
@@ -144,9 +146,9 @@ export class Parser {
             }
         }
         const script: Script = {
-            funcDefs: funcDefs,
+            funcDefs,
             labels,
-            funcRefs: calls,
+            funcRefs,
             variables,
             blocks,
         };
@@ -163,7 +165,7 @@ export class Parser {
      * Matches are not case-sensitive and only need to match function name.
      * Note that duplicate function definitions are not allowed in AHK v1.
      *
-     * todo should search only included files and library files
+     * todo should only search included files and library files
      * - https://github.com/mark-wiemer/ahkpp/issues/205
      */
     public static async getFuncDefByName(
@@ -217,7 +219,7 @@ export class Parser {
         return undefined;
     }
 
-    public static getAllRefByName(name: string): FuncCall[] {
+    public static getAllRefByName(name: string): FuncRef[] {
         const refs = [];
         name = name.toLowerCase();
         for (const filePath of documentCache.keys()) {
@@ -320,7 +322,7 @@ export class Parser {
         document: vscode.TextDocument,
         lineNum: number,
         original?: string,
-    ): FuncDef | FuncCall | FuncCall[] {
+    ): FuncDef | FuncRef | FuncRef[] {
         const thisFuncName = 'detectFunctionByLine';
         // todo strip out of prod build entirely for perf
         Out.debug(
@@ -348,7 +350,7 @@ export class Parser {
             // multiple function calls on the same line
             // regex does not match parens, so text is longer due to extra paren
             // Foo(Bar()), for example
-            const refs = [new FuncCall(funcName, document, lineNum, charNum)];
+            const refs = [new FuncRef(funcName, document, lineNum, charNum)];
             // Recursively unravel all function calls on this line
             const newRef = this.detectFunctionByLine(
                 document,
@@ -361,9 +363,8 @@ export class Parser {
             return refs;
         }
         const funcFullName = match[1];
-        // unsure if `isMethod` is a reasonable name for this
-        const isMethod = match[3];
-        if (isMethod) {
+        const isDefinition = match[3];
+        if (isDefinition) {
             return new FuncDef(
                 funcFullName,
                 funcName,
@@ -371,7 +372,7 @@ export class Parser {
                 lineNum,
                 charNum,
                 true,
-                Parser.getRemarkByLine(document, lineNum - 1),
+                Parser.getFullLineComment(document, lineNum - 1),
             );
         }
         for (let i = lineNum + 1; i < document.lineCount; i++) {
@@ -387,30 +388,32 @@ export class Parser {
                     lineNum,
                     charNum,
                     false,
-                    Parser.getRemarkByLine(document, lineNum - 1),
+                    Parser.getFullLineComment(document, lineNum - 1),
                 );
             } else {
-                return new FuncCall(funcName, document, lineNum, charNum);
+                return new FuncRef(funcName, document, lineNum, charNum);
             }
         }
         return undefined;
     }
 
     /**
-     * detect remark, remark format: ;any
+     * Returns the full-line comment, excluding the `;` and leading space.
+     * Returns null if line has non-comment text or if lineNum is invalid.
      * @param document
-     * @param line
+     * @param lineNum
      */
-    private static getRemarkByLine(
+    private static getFullLineComment(
         document: vscode.TextDocument,
-        line: number,
+        lineNum: number,
     ) {
-        if (line >= 0) {
-            const { text } = document.lineAt(line);
-            const markMatch = text.match(/^\s*;\s*(.+)/);
-            if (markMatch) {
-                return markMatch[1];
-            }
+        if (lineNum < 0) {
+            return null;
+        }
+        const { text } = document.lineAt(lineNum);
+        const match = text.match(/^\s*;\s*(.+)/);
+        if (match) {
+            return match[1];
         }
         return null;
     }
