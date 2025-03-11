@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Parser } from '../parser/parser';
-import { resolveIncludedPath } from './defProvider.utils';
+import { resolveIncludedPath } from '../common/utils';
 import { Out } from '../common/out';
 import { stat } from 'fs/promises';
 

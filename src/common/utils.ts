@@ -2,6 +2,7 @@
 
 import { isAbsolute, join, normalize } from 'path';
 
+// #region `#include` utilities
 /**
  ** Returns the string representing the included path after the `#include`.
  ** Only works for actual `#include` directives, not comments or strings containing `#include`.
@@ -75,3 +76,4 @@ export const resolveIncludedPath = (
         : join(parentGoodPath, normalizedPath);
     return absolutePath;
 };
+// #endregion
