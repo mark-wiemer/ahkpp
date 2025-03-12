@@ -121,7 +121,7 @@ This setting fixes [issue #205](https://github.com/mark-wiemer/ahkpp/issues/205)
 There are several known issues with this feature:
 
 -   It does not account for `#include <dir>` directives which change the base path of inclusion
--   It doesn't search through any library to resolve the included script (neither does the default setting)
+-   It doesn't search through any library to resolve the included script (default setting searches through local libraries)
 
 ## Other IDE settings
 
