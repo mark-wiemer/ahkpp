@@ -1,7 +1,9 @@
 import { Dir, promises } from 'fs';
 import { resolve } from 'path';
 import { FuncDef, Script } from './model';
-export const documentCache = new Map<string, Script>();
+
+/** Caches scripts by their document.uri.path */
+export const scriptCache = new Map<string, Script>();
 
 interface Exclude {
     file: RegExp[];
@@ -159,38 +161,60 @@ function glob2regexp(glob: string) {
 export function getFuncDefByName(
     path: string,
     name: string,
-    localCache = documentCache,
+    /** Use the new search algorithm instead of global search */
+    newSearch: boolean,
+    //* Local value is used for testing
+    localCache?: Map<string, Pick<Script, 'includedPaths' | 'funcDefs'>>,
 ): FuncDef | undefined {
     name = name.toLowerCase();
+    const cache = localCache ?? scriptCache;
     // defined in this file (original logic)
-    for (const func of localCache.get(path).funcDefs) {
+    const script = cache.get(path);
+
+    for (const func of script.funcDefs) {
         if (func.name.toLowerCase() === name) {
             return func;
         }
     }
 
-    // defined in an included file (experimental logic)
-    // this only searches one level deep, but it's a start
-    // todo nested searching with cycle detection
-    // todo tests!
-    localCache.get(path).includedPaths.forEach((path) => {
-        const includedDocument = documentCache.get(path);
-        if (includedDocument) {
-            for (const func of includedDocument.funcDefs) {
+    if (!newSearch) {
+        // global search (original logic)
+        for (const filePath of cache.keys()) {
+            for (const func of cache.get(filePath).funcDefs) {
                 if (func.name.toLowerCase() === name) {
                     return func;
                 }
             }
         }
-    });
+        // end here so that users see the difference between new and old
+        return undefined;
+    }
 
-    // global search (original logic)
-    for (const filePath of localCache.keys()) {
-        for (const func of localCache.get(filePath).funcDefs) {
+    // defined in an included file (experimental logic)
+    const visitedPaths = new Set<string>();
+    const queue: string[] = script.includedPaths;
+    while (queue.length > 0) {
+        const currentPath = queue.shift();
+        if (visitedPaths.has(currentPath)) {
+            continue;
+        }
+        visitedPaths.add(currentPath);
+
+        const includedScript = cache.get(currentPath);
+        if (!includedScript) {
+            continue;
+        }
+        // search this included path
+        for (const func of includedScript.funcDefs) {
             if (func.name.toLowerCase() === name) {
                 return func;
             }
         }
+        // add the deeper included paths to the queue
+        for (const includedPath of includedScript.includedPaths) {
+            if (!visitedPaths.has(includedPath)) {
+                queue.push(includedPath);
+            }
+        }
     }
-    return undefined;
 }

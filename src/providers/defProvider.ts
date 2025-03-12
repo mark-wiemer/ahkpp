@@ -5,6 +5,8 @@ import { Out } from '../common/out';
 import { stat } from 'fs/promises';
 import { getFuncDefByName } from '../parser/parser.utils';
 
+import { ConfigKey, Global } from '../common/global';
+
 export class DefProvider implements vscode.DefinitionProvider {
     public async provideDefinition(
         document: vscode.TextDocument,
@@ -36,7 +38,10 @@ export class DefProvider implements vscode.DefinitionProvider {
             )
         ) {
             Out.debug(`${funcName} calling getFuncDefByName for word: ${word}`);
-            const funcDef = getFuncDefByName(docPath, word);
+            const newSearch = Global.getConfig<boolean>(
+                ConfigKey.v1IncludeTree,
+            );
+            const funcDef = getFuncDefByName(docPath, word, newSearch);
             Out.debug(`${funcName} funcDef.name: ${funcDef?.name}`);
             if (funcDef) {
                 return new vscode.Location(

@@ -10,6 +10,7 @@ import {
     TextDocument,
 } from 'vscode';
 import { getFuncDefByName } from '../parser/parser.utils';
+import { ConfigKey, Global } from '../common/global';
 
 interface Snippet {
     prefix: string;
@@ -50,7 +51,8 @@ export class AhkHoverProvider implements HoverProvider {
         }
 
         const docPath = document.uri.path;
-        const funcDef = getFuncDefByName(docPath, context.word);
+        const newSearch = Global.getConfig<boolean>(ConfigKey.v1IncludeTree);
+        const funcDef = getFuncDefByName(docPath, context.word, newSearch);
         if (!funcDef) {
             return null;
         }

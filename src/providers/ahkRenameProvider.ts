@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { Parser } from '../parser/parser';
 import { getFuncDefByName } from '../parser/parser.utils';
+import { ConfigKey, Global } from '../common/global';
 
 export class AhkRenameProvider implements vscode.RenameProvider {
     async provideRenameEdits(
@@ -49,7 +50,8 @@ export class AhkRenameProvider implements vscode.RenameProvider {
         const wordRange = document.getWordRangeAtPosition(position);
         const word = document.getText(wordRange);
 
-        const funcDef = getFuncDefByName(document.uri.path, word);
+        const newSearch = Global.getConfig<boolean>(ConfigKey.v1IncludeTree);
+        const funcDef = getFuncDefByName(document.uri.path, word, newSearch);
         if (funcDef) {
             return wordRange;
         }

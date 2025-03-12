@@ -2,7 +2,7 @@ import { ConfigKey, Global } from '../common/global';
 import * as vscode from 'vscode';
 import { CodeUtil } from '../common/codeUtil';
 import { Script, FuncDef, FuncRef, Label, Block, Variable } from './model';
-import { documentCache, pathsToBuild } from './parser.utils';
+import { scriptCache, pathsToBuild } from './parser.utils';
 import { Out } from '../common/out';
 import { resolveIncludedPath } from '../common/utils';
 
@@ -12,7 +12,7 @@ const endBlockComment = / *\*\//;
 
 export const clearCache = () => {
     Out.debug('Clearing cache');
-    documentCache.clear();
+    scriptCache.clear();
 };
 
 export interface BuildScriptOptions {
@@ -71,18 +71,15 @@ export class Parser {
     ): Promise<Script> {
         const funcName = 'buildScript';
         const lang = document.languageId;
+        const docPath = document.uri.path;
         if (lang !== 'ahk' && lang !== 'ahk1') {
-            Out.debug(
-                `${funcName} skipping ${lang} doc at ${document.uri.path}`,
-            );
+            Out.debug(`${funcName} skipping ${lang} doc at ${docPath}`);
             return undefined;
         }
 
-        const cachedDocument = documentCache.get(document.uri.path);
+        const cachedDocument = scriptCache.get(docPath);
         if (options.usingCache && cachedDocument) {
-            Out.debug(
-                `${funcName} returning cached document for ${document.uri.path}`,
-            );
+            Out.debug(`${funcName} returning cached document for ${docPath}`);
             return cachedDocument;
         }
 
@@ -147,7 +144,7 @@ export class Parser {
             if (block) {
                 blocks.push(block);
             }
-            const include = resolveIncludedPath(document.uri.path, lineText);
+            const include = resolveIncludedPath(docPath, lineText);
             if (include) {
                 includedPaths.push(include);
             }
@@ -179,9 +176,9 @@ export class Parser {
             blocks,
             includedPaths,
         };
-        documentCache.set(document.uri.path, script);
+        scriptCache.set(docPath, script);
 
-        Out.debug(`${funcName} document.uri.path: ${document.uri.path}`);
+        Out.debug(`${funcName} document.uri.path: ${docPath}`);
         Out.debug(`${funcName} script: ${JSON.stringify(script)}`);
 
         Out.debug(`Building included paths:`);
@@ -193,8 +190,8 @@ export class Parser {
 
     public static async getAllFuncDefs(): Promise<FuncDef[]> {
         const funcs = [];
-        for (const filePath of documentCache.keys()) {
-            for (const func of documentCache.get(filePath).funcDefs) {
+        for (const filePath of scriptCache.keys()) {
+            for (const func of scriptCache.get(filePath).funcDefs) {
                 funcs.push(func);
             }
         }
@@ -206,13 +203,13 @@ export class Parser {
         name: string,
     ) {
         name = name.toLowerCase();
-        for (const label of documentCache.get(document.uri.path).labels) {
+        for (const label of scriptCache.get(document.uri.path).labels) {
             if (label.name.toLowerCase() === name) {
                 return label;
             }
         }
-        for (const filePath of documentCache.keys()) {
-            for (const label of documentCache.get(filePath).labels) {
+        for (const filePath of scriptCache.keys()) {
+            for (const label of scriptCache.get(filePath).labels) {
                 if (label.name.toLowerCase() === name) {
                     return label;
                 }
@@ -224,8 +221,8 @@ export class Parser {
     public static getAllRefByName(name: string): FuncRef[] {
         const refs = [];
         name = name.toLowerCase();
-        for (const filePath of documentCache.keys()) {
-            const document = documentCache.get(filePath);
+        for (const filePath of scriptCache.keys()) {
+            const document = scriptCache.get(filePath);
             for (const ref of document.funcRefs) {
                 if (ref.name.toLowerCase() === name) {
                     refs.push(ref);

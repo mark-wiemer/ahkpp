@@ -1,9 +1,10 @@
 import { suite, test } from 'mocha';
 import * as assert from 'assert';
-import { pathsToBuild } from './parser.utils';
+import { getFuncDefByName, pathsToBuild } from './parser.utils';
 import sinon from 'sinon';
 import { Dir, Dirent, promises } from 'fs';
 import path from 'path';
+import { FuncDef, Script } from './model';
 
 const rootPath = path.join(__dirname, '..', '..', '..');
 const mockDirName = 'e2e';
@@ -103,4 +104,185 @@ suite('pathsToBuild', () => {
             assert.deepStrictEqual(result, absoluteExpected);
         }),
     );
+});
+
+suite('getFuncDefByName', () => {
+    type RetType = ReturnType<typeof getFuncDefByName>;
+    const mockScriptPath = 'mockScriptPath';
+    const mockFuncName = 'testFunc';
+    const mockFuncDef = {
+        name: mockFuncName,
+        uriString: mockScriptPath,
+    } as FuncDef;
+
+    const getMockScript = () => ({
+        funcDefs: [mockFuncDef],
+        includedPaths: [],
+    });
+
+    const getMockCache = () => makeCache([[mockScriptPath, getMockScript()]]);
+
+    const makeCache = (pairs: [string, Partial<Script>][]) => {
+        return new Map<string, Script>(pairs as [string, Script][]);
+    };
+
+    suite('common behavior', () => {
+        const tests: [string, (ns: boolean) => void][] = [
+            [
+                'finds function in the same file',
+                (newSearch: boolean) => {
+                    const result = getFuncDefByName(
+                        mockScriptPath,
+                        mockFuncName,
+                        newSearch,
+                        getMockCache(),
+                    );
+                    assert.strictEqual(result, mockFuncDef);
+                },
+            ],
+            [
+                'returns undefined for non-existent function',
+                (newSearch: boolean) => {
+                    const result = getFuncDefByName(
+                        mockScriptPath,
+                        'nonExistentFunc',
+                        newSearch,
+                        getMockCache(),
+                    );
+                    assert.strictEqual(result, undefined);
+                },
+            ],
+            [
+                'finds function in included file',
+                (newSearch: boolean) => {
+                    const includedFuncDef = { name: 'includedFunc' } as FuncDef;
+                    const includedScript = {
+                        funcDefs: [includedFuncDef],
+                        includedPaths: [],
+                    } as Script;
+
+                    const script = getMockScript();
+                    script.includedPaths.push('includedPath');
+
+                    const cache = makeCache([[mockScriptPath, script]]);
+                    cache.set('includedPath', includedScript);
+
+                    const result = getFuncDefByName(
+                        mockScriptPath,
+                        'includedFunc',
+                        newSearch,
+                        cache,
+                    );
+                    assert.strictEqual(result, includedFuncDef);
+                },
+            ],
+        ];
+
+        suite('new search', () => {
+            tests.forEach(([name, testFunc]) => {
+                test(name, () => {
+                    testFunc(true);
+                });
+            });
+        });
+
+        suite('old search', () => {
+            tests.forEach(([name, testFunc]) => {
+                test(name, () => {
+                    testFunc(false);
+                });
+            });
+        });
+    });
+
+    suite('differing behavior', () => {
+        const tests: {
+            oldName: string;
+            newName: string;
+            oldResult: RetType;
+            newResult: RetType;
+            testFunc: (ns: boolean) => RetType;
+        }[] = [
+            {
+                oldName: 'finds non-included function in global search',
+                newName: `does not find function that isn't included`,
+                oldResult: { name: 'globalFunc' } as FuncDef,
+                newResult: undefined,
+                testFunc: (newSearch: boolean) => {
+                    const globalFuncDef = { name: 'globalFunc' } as FuncDef;
+                    const globalScript = {
+                        funcDefs: [globalFuncDef],
+                        includedPaths: [],
+                    } as Script;
+
+                    const cache = getMockCache();
+                    cache.set('globalPath', globalScript);
+
+                    return getFuncDefByName(
+                        mockScriptPath,
+                        'globalFunc',
+                        newSearch,
+                        cache,
+                    );
+                },
+            },
+            {
+                oldName: 'does not prioritize included files',
+                newName: `prioritizes included files`,
+                oldResult: {
+                    name: 'includedFunc',
+                    uriString: 'globalPath',
+                } as FuncDef,
+                newResult: {
+                    name: 'includedFunc',
+                    uriString: 'includedPath',
+                } as FuncDef,
+                testFunc: (newSearch: boolean) => {
+                    const includedFuncDef = { name: 'includedFunc' } as FuncDef;
+                    const includedScript: Script = {
+                        funcDefs: [
+                            { ...includedFuncDef, uriString: 'includedPath' },
+                        ],
+                        includedPaths: [],
+                    } as Script;
+
+                    const globalScript: Script = {
+                        funcDefs: [
+                            { ...includedFuncDef, uriString: 'globalPath' },
+                        ],
+                        includedPaths: [],
+                    } as Script;
+
+                    // same func def name in two files--test which is prioritized
+                    // set global first so that it's searched first
+                    const script = getMockScript();
+                    script.includedPaths.push('includedPath');
+                    const cache = makeCache([[mockScriptPath, script]]);
+                    cache.set('globalPath', globalScript);
+                    cache.set('includedPath', includedScript);
+
+                    return getFuncDefByName(
+                        mockScriptPath,
+                        'includedFunc',
+                        newSearch,
+                        cache,
+                    );
+                },
+            },
+        ];
+
+        tests.forEach(
+            ({ oldName, newName, oldResult, newResult, testFunc }) => {
+                test(`old search ` + oldName, () => {
+                    const result = testFunc(false);
+                    assert.deepStrictEqual(result, oldResult);
+                });
+
+                test(`new search ` + newName, () => {
+                    const result = testFunc(true);
+                    assert.deepStrictEqual(result, newResult);
+                });
+            },
+        );
+    });
 });
