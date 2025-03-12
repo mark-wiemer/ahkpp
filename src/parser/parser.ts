@@ -27,12 +27,22 @@ const buildPaths = async (
     paths: string[],
     options: BuildScriptOptions = {},
 ): Promise<void> => {
+    const funcName = 'buildPaths';
+    Out.debug(`${funcName}(${paths.length} paths)`);
     for (const path of paths) {
-        Out.debug(`Building ${path} with options: ${JSON.stringify(options)}`);
-        const document = await vscode.workspace.openTextDocument(
-            vscode.Uri.file(path),
+        Out.debug(
+            `${funcName} building ${path} with options: ${JSON.stringify(options)}`,
         );
-        await Parser.buildScript(document, options);
+        try {
+            const document = await vscode.workspace.openTextDocument(
+                vscode.Uri.file(path),
+            );
+            Out.debug(`buildPaths opened` + document);
+            await Parser.buildScript(document, options);
+        } catch (e) {
+            Out.debug(`${funcName} error building ${path}`);
+            Out.debug(e);
+        }
     }
 };
 
@@ -71,7 +81,9 @@ export class Parser {
 
         const cachedDocument = documentCache.get(document.uri.path);
         if (options.usingCache && cachedDocument) {
-            Out.debug(`${funcName} returning cached document`);
+            Out.debug(
+                `${funcName} returning cached document for ${document.uri.path}`,
+            );
             return cachedDocument;
         }
 
