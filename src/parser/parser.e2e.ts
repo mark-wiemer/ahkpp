@@ -135,27 +135,26 @@ suite('Parser', () => {
             name: string;
             filename: string;
             /** Expected included files */
-            expectedBasenames: string[];
+            expectedRelativePaths: string[];
         }[] = [
             {
                 name: 'nonexistent file is still added',
                 filename: '205-main.ahk1',
-                expectedBasenames: ['included.ahk1'],
+                expectedRelativePaths: ['included.ahk1'],
             },
         ];
 
-        includeTests.forEach(
-            ({ name, filename, expectedBasenames: expected }) =>
-                test.only(name, async () => {
-                    const document = await getDocument(
-                        path.join(samplesPath, filename),
-                    );
-                    const result = await Parser.buildScript(document);
-                    const includedFiles = result.includedPaths.map((file) =>
-                        path.basename(file),
-                    );
-                    assert.deepStrictEqual(includedFiles, expected);
-                }),
+        includeTests.forEach(({ name, filename, expectedRelativePaths }) =>
+            test.only(name, async () => {
+                const document = await getDocument(
+                    path.join(samplesPath, filename),
+                );
+                const result = await Parser.buildScript(document);
+                const expected = expectedRelativePaths.map((relPath) =>
+                    path.join(samplesPath, relPath),
+                );
+                assert.deepStrictEqual(result.includedPaths, expected);
+            }),
         );
     });
 });
