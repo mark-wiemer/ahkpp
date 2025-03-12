@@ -207,9 +207,14 @@ export class Parser {
         name: string,
         localCache = documentCache,
     ) {
+        const thisScript: Pick<Script, 'funcDefs' | 'includedPaths'> =
+            localCache.get(document.uri.path) ?? {
+                funcDefs: [],
+                includedPaths: [],
+            };
         name = name.toLowerCase();
         // defined in this file (original logic)
-        for (const func of localCache.get(document.uri.path).funcDefs) {
+        for (const func of thisScript.funcDefs) {
             if (func.name.toLowerCase() === name) {
                 return func;
             }
@@ -219,7 +224,7 @@ export class Parser {
         // this only searches one level deep, but it's a start
         // todo nested searching with cycle detection
         // todo tests!
-        localCache.get(document.uri.path).includedPaths.forEach((path) => {
+        thisScript.includedPaths.forEach((path) => {
             const includedDocument = documentCache.get(path);
             if (includedDocument) {
                 for (const func of includedDocument.funcDefs) {
