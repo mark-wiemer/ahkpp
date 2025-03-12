@@ -23,7 +23,7 @@ All settings, alphabetically by section ID:
 | Compiler                         | compileIcon                   | path                                                   | (empty string)                                      | Icon path for the compiled AHK file (optional).                                                                                                                                                                                                                        |
 | Compiler                         | compilerPath                  | path                                                   | C:/Program Files/AutoHotkey/Compiler/Ahk2Exe.exe    | Path to the AHK compiler. This is the same for both v1 and v2.                                                                                                                                                                                                         |
 | Compiler                         | useMpress                     | boolean                                                | false                                               | Use [MPRESS](https://www.autohotkey.com/mpress/mpress_web.htm) (if available) to compress the resulting executable.                                                                                                                                                    |
-| Exclude                          | (n/a)                         | string array                                           | (empty array)                                       | [Glob patterns](<https://en.wikipedia.org/wiki/Glob_(programming)>) for excluding files and folders from completion suggestions. Applies even when files are opened.                                                                                                   |
+| Exclude                          | (n/a)                         | string array                                           | (empty array)                                       | [Glob patterns](<https://en.wikipedia.org/wiki/Glob_(programming)>) for excluding files and folders from completion suggestions. Applies even when files are opened. Scripts included with `#Include` are never excluded.                                              |
 | Experimental                     | v1IncludeTree                 | boolean                                                | false                                               | Get function info and definitions based on included and library files only. When false, reads from the entire workspace. Changes take effect after restart.                                                                                                            |
 | General                          | showOutput                    | <ul><li>always</li><li>never</li></ul>                 | always                                              | Automatically show output view when running a script. View can always be toggled with F1 > 'View: Toggle Output' (`Ctrl+Shift+U`). <ul><li>always: Always open the output view when running a script</li><li>never: Never automatically show the output view</li></ul> |
 | Menu                             | showDebugButton               | boolean                                                | true                                                | Show the debug buttons in the editor title menu.                                                                                                                                                                                                                       |
@@ -109,6 +109,20 @@ Note 4: Possible values of v2: General `librarySuggestions`:
 -   Local
 -   User and Standard
 -   All
+
+## Experimental settings
+
+Experimental settings enable functionality with known issues.
+
+### v1IncludeTree
+
+This setting fixes [issue #205](https://github.com/mark-wiemer/ahkpp/issues/205), where Ctrl+clicking a function call sometimes takes users to the wrong function definition.
+
+There are several known issues with this feature:
+
+-   It does not account for `#include <dir>` directives which change the base path of inclusion
+-   It doesn't search for deeply nested included scripts
+-   It doesn't search through any library to resolve the included script
 
 ## Other IDE settings
 
