@@ -6,104 +6,71 @@ import { Parser } from './parser';
 
 suite('Parser', () => {
     suite('detectVariableByLine', () => {
-        // List of test data
-        const dataList = [
-            // {
-            //     in: // input test string
-            //     rs: // expected result - number of detected variables inside line with command
-            // },
+        const tests = [
             {
                 // Space at end of input test string is important: regex that detects variables
                 // inside command is not ideal. Whole symbol detection are not ideal and produce
                 // many false-positive detects. It does not have simple fix, needs whole refactor.
-                in: 'MouseGetPos, OutputVarX, OutputVarY, OutputVarWin, OutputVarControl ',
-                rs: 4,
+                input: 'MouseGetPos, OutputVarX, OutputVarY, OutputVarWin, OutputVarControl ',
+                expected: 4,
             },
         ];
-        dataList.forEach((data) => {
-            test("'" + data.in + "' => " + data.rs, async () => {
+        tests.forEach(({ input, expected }) => {
+            test(`'${input}' => ${expected}`, async () => {
                 const document = await vscode.workspace.openTextDocument({
                     language: 'ahk',
-                    content: data.in,
+                    content: input,
                 });
                 // Use array access for the private members
                 const variables = Parser['detectVariableByLine'](document, 0);
                 // 'variables' can be single object or array of objects
                 if (Array.isArray(variables)) {
-                    assert.strictEqual(variables.length, data.rs);
+                    assert.strictEqual(variables.length, expected);
                 } else {
-                    assert.strictEqual(1, data.rs);
+                    assert.strictEqual(1, expected);
                 }
             });
         });
     });
 
     suite('getLabelByLine', () => {
-        // List of test data
-        const dataList = [
-            // {
-            //     in: // input test string
-            //     rs: // expected result - label name or undefined
-            // },
-            {
-                in: 'ValidLabel:',
-                rs: 'ValidLabel',
-            },
-            {
-                in: 'NotValidLabel :',
-                rs: undefined,
-            },
+        const tests = [
+            { input: 'ValidLabel:', expected: 'ValidLabel' },
+            { input: 'NotValidLabel :', expected: undefined },
         ];
-        dataList.forEach((data) => {
-            test("'" + data.in + "' => '" + data.rs + "'", async () => {
+        tests.forEach(({ input, expected }) => {
+            test(`${input} -> ${expected}`, async () => {
                 const document = await vscode.workspace.openTextDocument({
                     language: 'ahk',
-                    content: data.in,
+                    content: input,
                 });
                 // Use array access for the private members
                 const label = Parser['getLabelByLine'](document, 0);
                 if (label === undefined) {
-                    assert.equal(label, data.rs);
+                    assert.equal(label, expected);
                 } else {
-                    assert.strictEqual(label.name, data.rs);
+                    assert.strictEqual(label.name, expected);
                 }
             });
         });
     });
 
     suite('getRemarkByLine', () => {
-        // List of test data
-        const dataList = [
-            // {
-            //     in: // input test string
-            //     rs: // expected result
-            // },
-            {
-                in: ';comment',
-                rs: 'comment',
-            },
-            {
-                in: '; comment',
-                rs: 'comment',
-            },
-            {
-                in: ' ;comment',
-                rs: 'comment',
-            },
-            {
-                in: ' ; comment',
-                rs: 'comment',
-            },
+        const tests = [
+            { input: ';comment', expected: 'comment' },
+            { in: '; comment', rs: 'comment' },
+            { in: ' ;comment', rs: 'comment' },
+            { in: ' ; comment', rs: 'comment' },
         ];
-        dataList.forEach((data) => {
-            test("'" + data.in + "' => '" + data.rs + "'", async () => {
+        tests.forEach(({ input, expected }) => {
+            test(`'${input}' -> '${expected}'`, async () => {
                 const document = await vscode.workspace.openTextDocument({
                     language: 'ahk',
-                    content: data.in,
+                    content: input,
                 });
                 // Use array access for the private members
                 const comment = Parser['getRemarkByLine'](document, 0);
-                assert.strictEqual(comment, data.rs);
+                assert.strictEqual(comment, expected);
             });
         });
     });
@@ -120,7 +87,7 @@ suite('Parser', () => {
             'samples', // ./src/parser/samples
         );
 
-        const myTests: {
+        const tests: {
             name: string;
             maximumParseLength: number;
             expectedFuncDefCount: number;
@@ -147,18 +114,18 @@ suite('Parser', () => {
             },
         ];
 
-        myTests.forEach((myTest) =>
-            test(myTest.name, async () => {
+        tests.forEach(({ name, maximumParseLength, expectedFuncDefCount }) =>
+            test(name, async () => {
                 const filename = '117-ten-thousand-lines.ahk1';
                 const document = await getDocument(
                     path.join(filesParentPath, filename),
                 );
                 const result = await Parser.buildScript(document, {
-                    maximumParseLength: myTest.maximumParseLength,
+                    maximumParseLength: maximumParseLength,
                 });
                 assert.strictEqual(
                     result.funcDefs.length,
-                    myTest.expectedFuncDefCount,
+                    expectedFuncDefCount,
                 );
             }),
         );
