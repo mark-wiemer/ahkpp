@@ -1,4 +1,4 @@
-import { promises } from 'fs';
+import { Dir, promises } from 'fs';
 import { resolve } from 'path';
 
 interface Exclude {
@@ -6,22 +6,37 @@ interface Exclude {
     folder: RegExp[];
 }
 
-/** Recursively returns absolute paths of all apparent v1 scripts under `rootPath` */
+/**
+ * Recursively returns absolute paths of all apparent v1 scripts under `rootDirPath`.
+ * Behavior undefined if `rootDirPath` is not a valid directory path.
+ */
 export async function pathsToBuild(
-    rootPath: string,
+    rootDirPath: string,
     excludeConfig: string[],
     log: (val: string) => void = () => {},
 ): Promise<string[]> {
+    const funcName = 'pathsToBuild';
     const paths: string[] = [];
-    if (!rootPath) {
+    if (!rootDirPath) {
         return paths;
     }
     const exclude = parseExcludeConfig(excludeConfig);
-    log(`folder: ${exclude.folder.map((re) => re.toString()).join('\n')}`);
-    log(`file: ${exclude.file.map((re) => re.toString()).join('\n')}`);
+    const folderStr = exclude.folder.map((re) => re.toString()).join('\n');
+    log(`${funcName}.exclude.folder: ${folderStr}`);
+    const file = exclude.file.map((re) => re.toString()).join('\n');
+    log(`${funcName}.exclude.file: ${file}`);
 
     const pathsToBuildInner = async (rootPath: string) => {
-        const dir = await promises.opendir(rootPath);
+        log(`${funcName} checking root ` + rootPath);
+        let dir: Dir;
+        try {
+            dir = await promises.opendir(rootPath);
+        } catch (e) {
+            log(`${funcName} error opening root ` + rootPath);
+            log(e);
+            return paths;
+        }
+        log(`${funcName} opened root ` + rootPath);
         for await (const dirent of dir) {
             const path = resolve(rootPath, dirent.name);
             log('Checking ' + path);
@@ -44,7 +59,7 @@ export async function pathsToBuild(
         return paths;
     };
 
-    return await pathsToBuildInner(rootPath);
+    return await pathsToBuildInner(rootDirPath);
 }
 
 function parseExcludeConfig(exclude: string[] = []): Exclude {
