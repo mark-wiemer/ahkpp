@@ -4,6 +4,7 @@ import { CodeUtil } from '../common/codeUtil';
 import { Script, FuncDef, FuncRef, Label, Block, Variable } from './model';
 import { pathsToBuild } from './parser.utils';
 import { Out } from '../common/out';
+import { resolveIncludedPath } from '../common/utils';
 
 const startBlockComment = / *\/\*/;
 // todo does endBlockComment work on lines like `; */` ?
@@ -22,22 +23,34 @@ export interface BuildScriptOptions {
     maximumParseLength?: number;
 }
 
+const buildPaths = async (
+    paths: string[],
+    options: BuildScriptOptions = {},
+): Promise<void> => {
+    for (const path of paths) {
+        Out.debug(`Building ${path} with options: ${JSON.stringify(options)}`);
+        const document = await vscode.workspace.openTextDocument(
+            vscode.Uri.file(path),
+        );
+        await Parser.buildScript(document, options);
+    }
+};
+
+/**
+ * Build all scripts in the given directory path, accounting for exclusion rules
+ * Behavior undefined if `rootDirPath` is not a valid directory path.
+ */
+export async function buildByPath(rootDirPath: string) {
+    const excludeConfig = Global.getConfig<string[]>(ConfigKey.exclude);
+    const paths = await pathsToBuild(rootDirPath, excludeConfig, Out.debug);
+    Out.debug(
+        `Building ${paths.length} ${paths.length === 1 ? 'file' : 'files'}`,
+    );
+    buildPaths(paths);
+}
+
 /** Parses v1 files */
 export class Parser {
-    /** Build all scripts in the given path */
-    public static async buildByPath(buildPath: string) {
-        const excludeConfig = Global.getConfig<string[]>(ConfigKey.exclude);
-        const paths = await pathsToBuild(buildPath, excludeConfig, Out.debug);
-        Out.debug(`Building ${paths.length} files`);
-        for (const path of paths) {
-            Out.debug(`Building ${path}`);
-            const document = await vscode.workspace.openTextDocument(
-                vscode.Uri.file(path),
-            );
-            await this.buildScript(document);
-        }
-    }
-
     /**
      * Parse the document into a Script and add it to the cache
      * @param document
@@ -58,6 +71,7 @@ export class Parser {
 
         const cachedDocument = documentCache.get(document.uri.path);
         if (options.usingCache && cachedDocument) {
+            Out.debug(`${funcName} returning cached document`);
             return cachedDocument;
         }
 
@@ -76,6 +90,7 @@ export class Parser {
         const labels: Label[] = [];
         const variables: Variable[] = [];
         const blocks: Block[] = [];
+        const includedPaths: string[] = [];
         let currentFuncDef: FuncDef;
         /** Tracks scope of newly-defined variables */
         let deep = 0;
@@ -121,6 +136,11 @@ export class Parser {
             if (block) {
                 blocks.push(block);
             }
+            const include = resolveIncludedPath(document.uri.path, lineText);
+            if (include) {
+                includedPaths.push(include);
+            }
+
             // todo won't work on lines with comments
             if (lineText.includes('{')) {
                 deep++;
@@ -146,10 +166,17 @@ export class Parser {
             funcRefs,
             variables,
             blocks,
+            includedPaths,
         };
+        documentCache.set(document.uri.path, script);
+
         Out.debug(`${funcName} document.uri.path: ${document.uri.path}`);
         Out.debug(`${funcName} script: ${JSON.stringify(script)}`);
-        documentCache.set(document.uri.path, script);
+
+        Out.debug(`Building included paths:`);
+        Out.debug('\t' + (includedPaths.join('\n\t') || '(none)'));
+        await buildPaths(includedPaths, { usingCache: true });
+
         return script;
     }
 
@@ -169,11 +196,29 @@ export class Parser {
         localCache = documentCache,
     ) {
         name = name.toLowerCase();
+        // defined in this file (original logic)
         for (const func of localCache.get(document.uri.path).funcDefs) {
             if (func.name.toLowerCase() === name) {
                 return func;
             }
         }
+
+        // defined in an included file (experimental logic)
+        // this only searches one level deep, but it's a start
+        // todo nested searching with cycle detection
+        // todo tests!
+        localCache.get(document.uri.path).includedPaths.forEach((path) => {
+            const includedDocument = documentCache.get(path);
+            if (includedDocument) {
+                for (const func of includedDocument.funcDefs) {
+                    if (func.name.toLowerCase() === name) {
+                        return func;
+                    }
+                }
+            }
+        });
+
+        // global search (original logic)
         for (const filePath of localCache.keys()) {
             for (const func of localCache.get(filePath).funcDefs) {
                 if (func.name.toLowerCase() === name) {

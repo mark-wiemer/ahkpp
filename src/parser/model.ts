@@ -7,6 +7,8 @@ export interface Script {
     labels: Label[];
     variables: Variable[];
     blocks: Block[];
+    /** Paths to scripts included within the current one */
+    includedPaths: string[];
 }
 
 export interface Variable {

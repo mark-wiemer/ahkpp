@@ -18,7 +18,7 @@
     "ahk++.config.compiler.compileIcon": "编译后 AHK 文件的图标路径（可选）。",
     "ahk++.config.compiler.compilerPath": "AHK 编译器的路径。这对 v1 和 v2 都是一样的。",
     "ahk++.config.compiler.useMPress": "使用 MPRESS (如果可用) 压缩生成的可执行文件。",
-    "ahk++.config.exclude": "[Glob patterns](<https://en.wikipedia.org/wiki/Glob_(programming)>) 用于从完成建议中排除文件和文件夹。即使在打开文件时也适用。",
+    "ahk++.config.exclude": "[Glob patterns](<https://en.wikipedia.org/wiki/Glob_(programming)>) 用于从完成建议中排除文件和文件夹。即使在打开文件时也适用。 使用 `#Include` 包含的脚本永远不会被排除在外。",
     "ahk++.config.experimental": "已知或可能存在问题的新功能。请 [报告任何问题](https://github.com/mark-wiemer/ahkpp/issues/new/choose)。",
     "ahk++.config.experimental.v1IncludeTree": "仅根据包含文件和库文件获取函数信息和定义。 如果为假，则从整个工作区读取。更改在重新启动后生效。",
     "ahk++.config.general.showOutput": "运行脚本时自动显示输出视图。可以通过 F1 > 查看来切换视图： 切换输出 (`Ctrl+Shift+U`)",
