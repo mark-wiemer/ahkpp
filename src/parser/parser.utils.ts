@@ -1,5 +1,7 @@
 import { Dir, promises } from 'fs';
 import { resolve } from 'path';
+import { FuncDef, Script } from './model';
+export const documentCache = new Map<string, Script>();
 
 interface Exclude {
     file: RegExp[];
@@ -142,4 +144,53 @@ function glob2regexp(glob: string) {
     if (!/[\\/]$/.test(glob)) reStr += '$';
     if (isNot) reStr = reStr.startsWith('^') ? `^(?!${reStr})` : `(?!${reStr})`;
     return new RegExp(reStr, 'i');
+}
+
+/**
+ * Finds the best reference to the function.
+ * If a function of this name exists in the current file, returns that function.
+ * Otherwise, searches through document cache to find the matching function.
+ * Matches are not case-sensitive and only need to match function name.
+ * Note that duplicate function definitions are not allowed in AHK v1.
+ *
+ * todo should only search included files and library files
+ * - https://github.com/mark-wiemer/ahkpp/issues/205
+ */
+export function getFuncDefByName(
+    path: string,
+    name: string,
+    localCache = documentCache,
+): FuncDef | undefined {
+    name = name.toLowerCase();
+    // defined in this file (original logic)
+    for (const func of localCache.get(path).funcDefs) {
+        if (func.name.toLowerCase() === name) {
+            return func;
+        }
+    }
+
+    // defined in an included file (experimental logic)
+    // this only searches one level deep, but it's a start
+    // todo nested searching with cycle detection
+    // todo tests!
+    localCache.get(path).includedPaths.forEach((path) => {
+        const includedDocument = documentCache.get(path);
+        if (includedDocument) {
+            for (const func of includedDocument.funcDefs) {
+                if (func.name.toLowerCase() === name) {
+                    return func;
+                }
+            }
+        }
+    });
+
+    // global search (original logic)
+    for (const filePath of localCache.keys()) {
+        for (const func of localCache.get(filePath).funcDefs) {
+            if (func.name.toLowerCase() === name) {
+                return func;
+            }
+        }
+    }
+    return undefined;
 }

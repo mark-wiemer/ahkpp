@@ -55,12 +55,12 @@ suite('Parser', () => {
         });
     });
 
-    suite('getRemarkByLine', () => {
+    suite('getFullLineComment', () => {
         const tests = [
             { input: ';comment', expected: 'comment' },
-            { in: '; comment', rs: 'comment' },
-            { in: ' ;comment', rs: 'comment' },
-            { in: ' ; comment', rs: 'comment' },
+            { input: '; comment', expected: 'comment' },
+            { input: ' ;comment', expected: 'comment' },
+            { input: ' ; comment', expected: 'comment' },
         ];
         tests.forEach(({ input, expected }) => {
             test(`'${input}' -> '${expected}'`, async () => {
@@ -69,7 +69,7 @@ suite('Parser', () => {
                     content: input,
                 });
                 // Use array access for the private members
-                const comment = Parser['getRemarkByLine'](document, 0);
+                const comment = Parser['getFullLineComment'](document, 0);
                 assert.strictEqual(comment, expected);
             });
         });
@@ -145,7 +145,7 @@ suite('Parser', () => {
         ];
 
         includeTests.forEach(({ name, filename, expectedRelativePaths }) =>
-            test.only(name, async () => {
+            test(name, async () => {
                 const document = await getDocument(
                     path.join(samplesPath, filename),
                 );

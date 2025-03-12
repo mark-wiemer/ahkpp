@@ -3,6 +3,7 @@ import { Parser } from '../parser/parser';
 import { resolveIncludedPath } from '../common/utils';
 import { Out } from '../common/out';
 import { stat } from 'fs/promises';
+import { getFuncDefByName } from '../parser/parser.utils';
 
 export class DefProvider implements vscode.DefinitionProvider {
     public async provideDefinition(
@@ -35,7 +36,7 @@ export class DefProvider implements vscode.DefinitionProvider {
             )
         ) {
             Out.debug(`${funcName} calling getFuncDefByName for word: ${word}`);
-            const funcDef = await Parser.getFuncDefByName(document, word);
+            const funcDef = getFuncDefByName(docPath, word);
             Out.debug(`${funcName} funcDef.name: ${funcDef?.name}`);
             if (funcDef) {
                 return new vscode.Location(

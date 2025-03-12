@@ -2,14 +2,13 @@ import { ConfigKey, Global } from '../common/global';
 import * as vscode from 'vscode';
 import { CodeUtil } from '../common/codeUtil';
 import { Script, FuncDef, FuncRef, Label, Block, Variable } from './model';
-import { pathsToBuild } from './parser.utils';
+import { documentCache, pathsToBuild } from './parser.utils';
 import { Out } from '../common/out';
 import { resolveIncludedPath } from '../common/utils';
 
 const startBlockComment = / *\/\*/;
 // todo does endBlockComment work on lines like `; */` ?
 const endBlockComment = / *\*\//;
-const documentCache = new Map<string, Script>();
 
 export const clearCache = () => {
     Out.debug('Clearing cache');
@@ -190,55 +189,6 @@ export class Parser {
         await buildPaths(includedPaths, { usingCache: true });
 
         return script;
-    }
-
-    /**
-     * Finds the best reference to the function.
-     * If a function of this name exists in the current file, returns that function.
-     * Otherwise, searches through document cache to find the matching function.
-     * Matches are not case-sensitive and only need to match function name.
-     * Note that duplicate function definitions are not allowed in AHK v1.
-     *
-     * todo should only search included files and library files
-     * - https://github.com/mark-wiemer/ahkpp/issues/205
-     */
-    public static async getFuncDefByName(
-        document: vscode.TextDocument,
-        name: string,
-        localCache = documentCache,
-    ) {
-        name = name.toLowerCase();
-        // defined in this file (original logic)
-        for (const func of localCache.get(document.uri.path).funcDefs) {
-            if (func.name.toLowerCase() === name) {
-                return func;
-            }
-        }
-
-        // defined in an included file (experimental logic)
-        // this only searches one level deep, but it's a start
-        // todo nested searching with cycle detection
-        // todo tests!
-        localCache.get(document.uri.path).includedPaths.forEach((path) => {
-            const includedDocument = documentCache.get(path);
-            if (includedDocument) {
-                for (const func of includedDocument.funcDefs) {
-                    if (func.name.toLowerCase() === name) {
-                        return func;
-                    }
-                }
-            }
-        });
-
-        // global search (original logic)
-        for (const filePath of localCache.keys()) {
-            for (const func of localCache.get(filePath).funcDefs) {
-                if (func.name.toLowerCase() === name) {
-                    return func;
-                }
-            }
-        }
-        return undefined;
     }
 
     public static async getAllFuncDefs(): Promise<FuncDef[]> {
