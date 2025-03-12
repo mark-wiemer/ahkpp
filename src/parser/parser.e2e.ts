@@ -77,7 +77,7 @@ suite('Parser', () => {
 
     suite('buildScript', () => {
         // Currently in `out` folder, need to get back to main `src` folder
-        const filesParentPath = path.join(
+        const samplesPath = path.join(
             __dirname, // ./out/src/parser
             '..', // ./out/src
             '..', // ./out
@@ -87,7 +87,7 @@ suite('Parser', () => {
             'samples', // ./src/parser/samples
         );
 
-        const tests: {
+        const parseLenTests: {
             name: string;
             maximumParseLength: number;
             expectedFuncDefCount: number;
@@ -114,20 +114,48 @@ suite('Parser', () => {
             },
         ];
 
-        tests.forEach(({ name, maximumParseLength, expectedFuncDefCount }) =>
-            test(name, async () => {
-                const filename = '117-ten-thousand-lines.ahk1';
-                const document = await getDocument(
-                    path.join(filesParentPath, filename),
-                );
-                const result = await Parser.buildScript(document, {
-                    maximumParseLength: maximumParseLength,
-                });
-                assert.strictEqual(
-                    result.funcDefs.length,
-                    expectedFuncDefCount,
-                );
-            }),
+        parseLenTests.forEach(
+            ({ name, maximumParseLength, expectedFuncDefCount }) =>
+                test(name, async () => {
+                    const filename = '117-ten-thousand-lines.ahk1';
+                    const document = await getDocument(
+                        path.join(samplesPath, filename),
+                    );
+                    const result = await Parser.buildScript(document, {
+                        maximumParseLength: maximumParseLength,
+                    });
+                    assert.strictEqual(
+                        result.funcDefs.length,
+                        expectedFuncDefCount,
+                    );
+                }),
+        );
+
+        const includeTests: {
+            name: string;
+            filename: string;
+            /** Expected included files */
+            expectedBasenames: string[];
+        }[] = [
+            {
+                name: 'nonexistent file is still added',
+                filename: '205-main.ahk1',
+                expectedBasenames: ['included.ahk1'],
+            },
+        ];
+
+        includeTests.forEach(
+            ({ name, filename, expectedBasenames: expected }) =>
+                test.only(name, async () => {
+                    const document = await getDocument(
+                        path.join(samplesPath, filename),
+                    );
+                    const result = await Parser.buildScript(document);
+                    const includedFiles = result.includedPaths.map((file) =>
+                        path.basename(file),
+                    );
+                    assert.deepStrictEqual(includedFiles, expected);
+                }),
         );
     });
 });
