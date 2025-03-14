@@ -2,7 +2,11 @@ import { Dir, promises } from 'fs';
 import { resolve } from 'path';
 import { FuncDef, Script } from './model';
 
-/** Caches scripts by their document.uri.path */
+/**
+ * Caches scripts by their document.uri.path:
+ * case-sensitive, forward-slash delimited, absolute paths
+ * @example '/c:/Users/mark/myFile.ahk'
+ */
 export const scriptCache = new Map<string, Script>();
 
 interface Exclude {
@@ -153,18 +157,20 @@ function glob2regexp(glob: string) {
  * If a function of this name exists in the current file, returns that function.
  * Otherwise, searches through document cache to find the matching function.
  * Matches are not case-sensitive and only need to match function name.
- * Note that duplicate function definitions are not allowed in AHK v1.
+ * Note that duplicate function definitions are not allowed in AHK v1 or v2.
  *
- * todo should only search included files and library files
- * - https://github.com/mark-wiemer/ahkpp/issues/205
+ * @param newSearch Only look at local files and local library, not entire workspace
+ * ref https://www.autohotkey.com/docs/v1/Functions.htm#lib
  */
 export function getFuncDefByName(
+    /** Forward-slash delimited path */
     path: string,
     name: string,
     /** Use the new search algorithm instead of global search */
     newSearch: boolean,
     //* Local value is used for testing
     localCache?: Map<string, Pick<Script, 'includedPaths' | 'funcDefs'>>,
+    log: (val: string) => void = () => {},
 ): FuncDef | undefined {
     name = name.toLowerCase();
     const cache = localCache ?? scriptCache;
@@ -217,4 +223,22 @@ export function getFuncDefByName(
             }
         }
     }
+
+    // full name defined in a local library file of the same name
+    // library file must end in `.ahk` in this case to be found by AHK v1
+    const libPath = path.replace(/\/[^/]+$/, `/lib/${name}.ahk`);
+    for (const filePath of cache.keys()) {
+        if (filePath.toLowerCase() !== libPath.toLowerCase()) {
+            log(`Skipping ${filePath} as it doesn't match ${libPath}`);
+            continue;
+        }
+        for (const func of cache.get(filePath).funcDefs) {
+            if (func.name.toLowerCase() === name) {
+                return func;
+            }
+        }
+    }
+
+    // partial name (prefix) defined in a local library file
+    // todo
 }

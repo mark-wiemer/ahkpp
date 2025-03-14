@@ -108,7 +108,8 @@ suite('pathsToBuild', () => {
 
 suite('getFuncDefByName', () => {
     type RetType = ReturnType<typeof getFuncDefByName>;
-    const mockScriptPath = 'mockScriptPath';
+    const mockScriptPath = 'mock/Script/Path.ahk';
+    const mockLibPath = 'mock/Script/lib';
     const mockFuncName = 'testFunc';
     const mockFuncDef = {
         name: mockFuncName,
@@ -174,6 +175,29 @@ suite('getFuncDefByName', () => {
                         cache,
                     );
                     assert.strictEqual(result, includedFuncDef);
+                },
+            ],
+            [
+                'finds function in library file case-insensitively',
+                (newSearch: boolean) => {
+                    const libFuncDef = { name: 'libFunc' } as FuncDef;
+                    const libScript = {
+                        funcDefs: [libFuncDef],
+                        includedPaths: [],
+                    } as Script;
+
+                    const script = getMockScript();
+
+                    const cache = makeCache([[mockScriptPath, script]]);
+                    cache.set(`${mockLibPath}/libFUNC.ahk`, libScript);
+
+                    const result = getFuncDefByName(
+                        mockScriptPath,
+                        'libFunc',
+                        newSearch,
+                        cache,
+                    );
+                    assert.strictEqual(result, libFuncDef);
                 },
             ],
         ];

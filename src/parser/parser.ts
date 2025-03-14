@@ -178,12 +178,15 @@ export class Parser {
         };
         scriptCache.set(docPath, script);
 
-        Out.debug(`${funcName} document.uri.path: ${docPath}`);
-        Out.debug(`${funcName} script: ${JSON.stringify(script)}`);
-
+        // we can build included paths at the end because we don't store
+        // definition locations of all function calls
+        // in the cache, we search and find them as needed based on user action
         Out.debug(`Building included paths:`);
         Out.debug('\t' + (includedPaths.join('\n\t') || '(none)'));
         await buildPaths(includedPaths, { usingCache: true });
+
+        Out.debug(`${funcName} document.uri.path: ${docPath}`);
+        Out.debug(`${funcName} script: ${JSON.stringify(script)}`);
 
         return script;
     }
@@ -316,46 +319,53 @@ export class Parser {
         }
     }
 
-    /** Return function definition or function call(s) on the given line */
+    /**
+     * Return function definition or function call(s) on the given line
+     * @param textToParse Optional text to parse. Defaults to the line text. Used for recursion.
+     */
     private static detectFunctionByLine(
         document: vscode.TextDocument,
         lineNum: number,
-        original?: string,
+        textToParse?: string,
     ): FuncDef | FuncRef | FuncRef[] {
         const thisFuncName = 'detectFunctionByLine';
-        // todo strip out of prod build entirely for perf
         Out.debug(
-            `${thisFuncName}(${document.uri.path.split('/').pop()}, ${lineNum}${original === undefined ? '' : `, "${original}"`})`,
+            `${thisFuncName}(${document.uri.path.split('/').pop()}, ${lineNum}${textToParse === undefined ? '' : `, "${textToParse}"`})`,
         );
-        original ??= document.lineAt(lineNum).text;
-        const text = CodeUtil.purify(original);
+        textToParse ??= document.lineAt(lineNum).text;
+        const text = CodeUtil.purify(textToParse);
         // [\u4e00-\u9fa5] Chinese unicode characters
-        // Matches function definitions and calls
-        // start of line
-        // one or more function name characters
-        // that aren't the words "if" or "while"
-        // parentheses around 0 or more arguments (matching up to the first closing paren)
-        // optional opening curly brace (for func definition)
+        // Matches function definitions and calls:
+        // - one or more function name characters
+        // - that aren't the words "if" or "while"
+        // - parentheses around 0 or more arguments (matching up to the first closing paren)
+        // - optional opening curly brace (for func definition)
         const funcPattern =
             /\s*(([\u4e00-\u9fa5_a-zA-Z0-9]+)(?<!if|while)\(.*?\))\s*(\{)?\s*/i;
         const match = text.match(funcPattern);
         if (!match) {
             return undefined;
         }
-        Out.debug(`${thisFuncName}#match: ${match}`);
+        Out.debug(`${thisFuncName}#text: ${text}`);
+        Out.debug(`${thisFuncName}#match: ['${match.join(`', '`)}']`);
         const funcName = match[2];
-        const charNum = original.indexOf(funcName);
+        const charNum = textToParse.indexOf(funcName);
         if (text.length !== match[0].length) {
             // multiple function calls on the same line
             // regex does not match parens, so text is longer due to extra paren
-            // Foo(Bar()), for example
+            // note the lack of closing paren in the example:
+            // Foo(Bar()).length !== Foo(Bar().length
+            Out.debug(
+                `${thisFuncName}#multiple function calls on line ${lineNum}`,
+            );
+            Out.debug(`${thisFuncName}#text: ${text}, match[0]: ${match[0]}`);
             const refs = [new FuncRef(funcName, document, lineNum, charNum)];
             // Recursively unravel all function calls on this line
             const newRef = this.detectFunctionByLine(
                 document,
                 lineNum,
                 // remove the call to the outermost function
-                original.replace(new RegExp(funcName + '\\s*\\('), ''),
+                textToParse.replace(new RegExp(funcName + '\\s*\\('), ''),
             );
             // Join to a flat array of references
             CodeUtil.join(refs, newRef);
