@@ -16,7 +16,7 @@ information while removing the fluff :)
 
 All settings, alphabetically by section ID:
 
-<!-- Values are user-facing from VS Code's settings editor, hence `v1: File` instead of `v1.file`. Note that users do see camelCase property names ! -->
+<!-- Values are user-facing from VS Code's settings editor, hence `v1: File` instead of `v1.file`. Note that users **do** see camelCase property names! -->
 
 | Section                          | Property                      | Type                                                   | Default                                             | Description                                                                                                                                                                                                                                                            |
 | -------------------------------- | ----------------------------- | ------------------------------------------------------ | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
