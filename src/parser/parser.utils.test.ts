@@ -220,37 +220,47 @@ suite('getFuncDefByName', () => {
     });
 
     suite.only('differing behavior', () => {
-        const tests: {
+        const funcName = 'someFunc';
+
+        const simpleTests = [
+            { name: `function that isn't included`, path: 'globalPath' },
+            {
+                name: `non-included .ahk1 local library file`,
+                path: `${mockLibPath}/${funcName}.ahk1`,
+            },
+            {
+                name: `non-included diff name local library file`,
+                path: `${mockLibPath}/diff${funcName}.ahk`,
+            },
+        ];
+
+        simpleTests.forEach(({ name, path }) => {
+            const fd = { name: funcName } as FuncDef;
+            const testFunc = (ns: boolean) => {
+                const script = { funcDefs: [fd], includedPaths: [] } as Script;
+                const cache = getMockCache();
+                cache.set(path, script);
+                return getFuncDefByName(mockScriptPath, funcName, ns, cache);
+            };
+
+            test(`old search finds ` + name, () => {
+                const result = testFunc(false);
+                assert.deepStrictEqual(result, fd);
+            });
+
+            test(`new search doesn't find ` + name, () => {
+                const result = testFunc(true);
+                assert.deepStrictEqual(result, undefined);
+            });
+        });
+
+        const complexTests: {
             oldName: string;
             newName: string;
             oldResult: RetType;
             newResult: RetType;
             testFunc: (ns: boolean) => RetType;
         }[] = [
-            // non-included function
-            {
-                oldName: 'finds non-included function in global search',
-                newName: `does not find function that isn't included`,
-                oldResult: { name: 'globalFunc' } as FuncDef,
-                newResult: undefined,
-                testFunc: (newSearch: boolean) => {
-                    const globalFuncDef = { name: 'globalFunc' } as FuncDef;
-                    const globalScript = {
-                        funcDefs: [globalFuncDef],
-                        includedPaths: [],
-                    } as Script;
-
-                    const cache = getMockCache();
-                    cache.set('globalPath', globalScript);
-
-                    return getFuncDefByName(
-                        mockScriptPath,
-                        'globalFunc',
-                        newSearch,
-                        cache,
-                    );
-                },
-            },
             // prioritization of included files
             {
                 oldName: 'does not prioritize included files',
@@ -295,61 +305,9 @@ suite('getFuncDefByName', () => {
                     );
                 },
             },
-            // `lib/func.ahk1' file
-            {
-                oldName: 'finds non-included .ahk1 local library file',
-                newName: `does not find non-included .ahk1 local library file`,
-                oldResult: { name: 'libFunc' } as FuncDef,
-                newResult: undefined,
-                testFunc: (newSearch: boolean) => {
-                    const libFuncDef = { name: 'libFunc' } as FuncDef;
-                    const libScript = {
-                        funcDefs: [libFuncDef],
-                        includedPaths: [],
-                    } as Script;
-
-                    const script = getMockScript();
-
-                    const cache = makeCache([[mockScriptPath, script]]);
-                    cache.set(`${mockLibPath}/libFUNC.ahk1`, libScript);
-
-                    return getFuncDefByName(
-                        mockScriptPath,
-                        'libFunc',
-                        newSearch,
-                        cache,
-                    );
-                },
-            },
-            // `lib/diffName.ahk` file
-            {
-                oldName: 'finds non-included diffName.ahk local library file',
-                newName: `does not find non-included diffName.ahk local library file`,
-                oldResult: { name: 'libFunc' } as FuncDef,
-                newResult: undefined,
-                testFunc: (newSearch: boolean) => {
-                    const libFuncDef = { name: 'libFunc' } as FuncDef;
-                    const libScript = {
-                        funcDefs: [libFuncDef],
-                        includedPaths: [],
-                    } as Script;
-
-                    const script = getMockScript();
-
-                    const cache = makeCache([[mockScriptPath, script]]);
-                    cache.set(`${mockLibPath}/diffName.ahk`, libScript);
-
-                    return getFuncDefByName(
-                        mockScriptPath,
-                        'libFunc',
-                        newSearch,
-                        cache,
-                    );
-                },
-            },
         ];
 
-        tests.forEach(
+        complexTests.forEach(
             ({ oldName, newName, oldResult, newResult, testFunc }) => {
                 test(`old search ` + oldName, () => {
                     const result = testFunc(false);
