@@ -7,8 +7,8 @@
 
 ### v1-exclusive changes
 
--   Have scripts referenced in a `#include` directive bypass the `exclude` setting (todo PR)
--   Add experimental `funcDefSearch` setting that improves function definition resolution
+-   Have scripts referenced by `#include` bypass the `exclude` setting ([PR #623](https://github.com/mark-wiemer/ahkpp/pull/623))
+-   Add experimental `funcDefSearch` setting that improves function definition resolution ([PR #623](https://github.com/mark-wiemer/ahkpp/pull/623))
 
 ## 6.5.0 - 2025-02-23 💞
 
