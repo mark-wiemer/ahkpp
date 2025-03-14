@@ -170,7 +170,6 @@ export function getFuncDefByName(
     newSearch: boolean,
     //* Local value is used for testing
     localCache?: Map<string, Pick<Script, 'includedPaths' | 'funcDefs'>>,
-    log: (val: string) => void = () => {},
 ): FuncDef | undefined {
     name = name.toLowerCase();
     const cache = localCache ?? scriptCache;
@@ -226,10 +225,10 @@ export function getFuncDefByName(
 
     // full name defined in a local library file of the same name
     // library file must end in `.ahk` in this case to be found by AHK v1
-    const libPath = path.replace(/\/[^/]+$/, `/lib/${name}.ahk`);
+    const libPath = path.replace(/\/[^/]+$/, `/lib/`);
+    const fullPath = libPath + name + '.ahk';
     for (const filePath of cache.keys()) {
-        if (filePath.toLowerCase() !== libPath.toLowerCase()) {
-            log(`Skipping ${filePath} as it doesn't match ${libPath}`);
+        if (filePath.toLowerCase() !== fullPath.toLowerCase()) {
             continue;
         }
         for (const func of cache.get(filePath).funcDefs) {
@@ -240,5 +239,22 @@ export function getFuncDefByName(
     }
 
     // partial name (prefix) defined in a local library file
-    // todo
+    // this is the last step--if it fails, return undefined
+    // in theory we could expand to search user and standard libraries in future
+    const prefixPath = name.includes('_')
+        ? libPath + name.split('_')[0] + '.ahk'
+        : undefined;
+    if (!prefixPath) {
+        return undefined;
+    }
+    for (const filePath of cache.keys()) {
+        if (filePath.toLowerCase() !== prefixPath.toLowerCase()) {
+            continue;
+        }
+        for (const func of cache.get(filePath).funcDefs) {
+            if (func.name.toLowerCase() === name) {
+                return func;
+            }
+        }
+    }
 }

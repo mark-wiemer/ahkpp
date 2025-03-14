@@ -112,16 +112,15 @@ Note 4: Possible values of v2: General `librarySuggestions`:
 
 ## Experimental settings
 
-Experimental settings enable functionality with known issues.
+Experimental settings enable functionality with known issues. If you see an issue that isn't known, please [report it](https://github.com/mark-wiemer/ahkpp/issues/new/choose)!
 
 ### v1IncludeTree
 
 This setting fixes [issue #205](https://github.com/mark-wiemer/ahkpp/issues/205), where Ctrl+clicking a function call sometimes takes users to the wrong function definition.
 
-There are several known issues with this feature:
+There is one core known issue with this feature:
 
 -   It does not account for `#include <dir>` directives which change the base path of inclusion
--   It doesn't search through local libraries for prefix-matched functions (neither does classic logic)
 
 ## Other IDE settings
 
