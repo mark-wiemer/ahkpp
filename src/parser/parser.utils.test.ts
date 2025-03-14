@@ -178,7 +178,7 @@ suite('getFuncDefByName', () => {
                 },
             ],
             [
-                'finds function in library file case-insensitively',
+                'finds function in non-included local lib file case-insensitively',
                 (newSearch: boolean) => {
                     const libFuncDef = { name: 'libFunc' } as FuncDef;
                     const libScript = {
@@ -219,7 +219,7 @@ suite('getFuncDefByName', () => {
         });
     });
 
-    suite.only('differing behavior', () => {
+    suite('differing behavior', () => {
         const funcName = 'someFunc';
 
         const simpleTests = [
@@ -243,18 +243,21 @@ suite('getFuncDefByName', () => {
                 return getFuncDefByName(mockScriptPath, funcName, ns, cache);
             };
 
-            test(`old search finds ` + name, () => {
-                const result = testFunc(false);
-                assert.deepStrictEqual(result, fd);
-            });
+            suite(name, () => {
+                test(`old search finds it`, () => {
+                    const result = testFunc(false);
+                    assert.deepStrictEqual(result, fd);
+                });
 
-            test(`new search doesn't find ` + name, () => {
-                const result = testFunc(true);
-                assert.deepStrictEqual(result, undefined);
+                test(`new search doesn't find it`, () => {
+                    const result = testFunc(true);
+                    assert.deepStrictEqual(result, undefined);
+                });
             });
         });
 
         const complexTests: {
+            suiteName: string;
             oldName: string;
             newName: string;
             oldResult: RetType;
@@ -263,6 +266,7 @@ suite('getFuncDefByName', () => {
         }[] = [
             // prioritization of included files
             {
+                suiteName: 'prioritize included files',
                 oldName: 'does not prioritize included files',
                 newName: `prioritizes included files`,
                 oldResult: {
@@ -308,15 +312,24 @@ suite('getFuncDefByName', () => {
         ];
 
         complexTests.forEach(
-            ({ oldName, newName, oldResult, newResult, testFunc }) => {
-                test(`old search ` + oldName, () => {
-                    const result = testFunc(false);
-                    assert.deepStrictEqual(result, oldResult);
-                });
+            ({
+                suiteName,
+                oldName,
+                newName,
+                oldResult,
+                newResult,
+                testFunc,
+            }) => {
+                suite(suiteName, () => {
+                    test(`old search ` + oldName, () => {
+                        const result = testFunc(false);
+                        assert.deepStrictEqual(result, oldResult);
+                    });
 
-                test(`new search ` + newName, () => {
-                    const result = testFunc(true);
-                    assert.deepStrictEqual(result, newResult);
+                    test(`new search ` + newName, () => {
+                        const result = testFunc(true);
+                        assert.deepStrictEqual(result, newResult);
+                    });
                 });
             },
         );
