@@ -127,7 +127,7 @@ suite('getFuncDefByName', () => {
         return new Map<string, Script>(pairs as [string, Script][]);
     };
 
-    suite.only('common behavior', () => {
+    suite('common behavior', () => {
         const tests: [string, (ns: boolean) => void][] = [
             [
                 'finds function in the same file',

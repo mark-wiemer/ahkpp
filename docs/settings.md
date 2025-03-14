@@ -118,9 +118,10 @@ Experimental settings enable functionality with known issues. If you see an issu
 
 This setting fixes [issue #205](https://github.com/mark-wiemer/ahkpp/issues/205), where Ctrl+clicking a function call sometimes takes users to the wrong function definition.
 
-There is one core known issue with this feature:
+Known issues with this feature:
 
 -   It does not account for `#include <dir>` directives which change the base path of inclusion
+-   If a file is renamed, links to functions declared in that file may fail. Restarting the extension should solve this issue.
 
 ## Other IDE settings
 
