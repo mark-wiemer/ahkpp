@@ -1,6 +1,6 @@
 import { suite, test } from 'mocha';
 import assert from 'assert';
-import { getIncludedPath, resolveIncludedPath } from './defProvider.utils';
+import { getIncludedPath, resolveIncludedPath } from './utils';
 
 suite(getIncludedPath.name, () => {
     const tests: [

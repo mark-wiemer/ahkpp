@@ -9,7 +9,8 @@ import {
     Range,
     TextDocument,
 } from 'vscode';
-import { Parser } from '../parser/parser';
+import { getFuncDefByName } from '../parser/parser.utils';
+import { ConfigKey, Global } from '../common/global';
 
 interface Snippet {
     prefix: string;
@@ -49,7 +50,9 @@ export class AhkHoverProvider implements HoverProvider {
             return snippetHover;
         }
 
-        const funcDef = await Parser.getFuncDefByName(document, context.word);
+        const docPath = document.uri.path;
+        const newSearch = Global.getConfig<boolean>(ConfigKey.funcDefSearch);
+        const funcDef = getFuncDefByName(docPath, context.word, newSearch);
         if (!funcDef) {
             return null;
         }

@@ -2,6 +2,7 @@
 
 import { isAbsolute, join, normalize } from 'path';
 
+// #region `#include` utilities
 /**
  ** Returns the string representing the included path after the `#include`.
  ** Only works for actual `#include` directives, not comments or strings containing `#include`.
@@ -19,8 +20,8 @@ import { isAbsolute, join, normalize } from 'path';
  * ('#include semi-colon ;and-more.ahk') === 'semi-colon'
  * ('#include semi-colon`;and-more.ahk') === 'semi-colon`;and-more.ahk'
  */
-export const getIncludedPath = (ahkLine: string): string | undefined =>
-    ahkLine.match(/^\s*#include\s*,?\s*(.+?)( ;.*)?$/i)?.[1];
+export const getIncludedPath = (lineText: string): string | undefined =>
+    lineText.match(/^\s*#include\s*,?\s*(.+?)( ;.*)?$/i)?.[1];
 
 /**
  * Trims, escapes semi-colons, and resolves:
@@ -42,14 +43,14 @@ const normalizeIncludedPath = (
     );
 
 /**
- * Returns the absolute, normalized path included by a #include directive.
- * Does not check if that path is to a folder or if the path exists.
- * Assumes A_WorkingDir === A_ScriptDir.
+ * Returns the absolute, normalized path included by a `#include` directive.
+ * - Does not check if that path is to a folder or if the path exists.
+ * - Assumes `A_WorkingDir === A_ScriptDir`.
  *
  * @param basePath The path to include from, usually the script's path.
  * This may be a different path if the including script has a preceding `#include dir`
  *
- * @returns The absolute included path
+ * @returns The absolute included path. Returns `undefined` if no path is found.
  */
 export const resolveIncludedPath = (
     /**
@@ -58,9 +59,9 @@ export const resolveIncludedPath = (
      */
     basePath: string,
     /** Line of text from the including script. */
-    ahkLine: string,
+    lineText: string,
 ): string | undefined => {
-    const includedPath = getIncludedPath(ahkLine);
+    const includedPath = getIncludedPath(lineText);
     if (!includedPath || includedPath.startsWith('<')) return undefined;
 
     /** @example 'c:/path/to' */
@@ -75,3 +76,4 @@ export const resolveIncludedPath = (
         : join(parentGoodPath, normalizedPath);
     return absolutePath;
 };
+// #endregion

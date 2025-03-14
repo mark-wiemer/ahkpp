@@ -6,111 +6,78 @@ import { Parser } from './parser';
 
 suite('Parser', () => {
     suite('detectVariableByLine', () => {
-        // List of test data
-        const dataList = [
-            // {
-            //     in: // input test string
-            //     rs: // expected result - number of detected variables inside line with command
-            // },
+        const tests = [
             {
                 // Space at end of input test string is important: regex that detects variables
                 // inside command is not ideal. Whole symbol detection are not ideal and produce
                 // many false-positive detects. It does not have simple fix, needs whole refactor.
-                in: 'MouseGetPos, OutputVarX, OutputVarY, OutputVarWin, OutputVarControl ',
-                rs: 4,
+                input: 'MouseGetPos, OutputVarX, OutputVarY, OutputVarWin, OutputVarControl ',
+                expected: 4,
             },
         ];
-        dataList.forEach((data) => {
-            test("'" + data.in + "' => " + data.rs, async () => {
+        tests.forEach(({ input, expected }) => {
+            test(`'${input}' => ${expected}`, async () => {
                 const document = await vscode.workspace.openTextDocument({
                     language: 'ahk',
-                    content: data.in,
+                    content: input,
                 });
                 // Use array access for the private members
                 const variables = Parser['detectVariableByLine'](document, 0);
                 // 'variables' can be single object or array of objects
                 if (Array.isArray(variables)) {
-                    assert.strictEqual(variables.length, data.rs);
+                    assert.strictEqual(variables.length, expected);
                 } else {
-                    assert.strictEqual(1, data.rs);
+                    assert.strictEqual(1, expected);
                 }
             });
         });
     });
 
     suite('getLabelByLine', () => {
-        // List of test data
-        const dataList = [
-            // {
-            //     in: // input test string
-            //     rs: // expected result - label name or undefined
-            // },
-            {
-                in: 'ValidLabel:',
-                rs: 'ValidLabel',
-            },
-            {
-                in: 'NotValidLabel :',
-                rs: undefined,
-            },
+        const tests = [
+            { input: 'ValidLabel:', expected: 'ValidLabel' },
+            { input: 'NotValidLabel :', expected: undefined },
         ];
-        dataList.forEach((data) => {
-            test("'" + data.in + "' => '" + data.rs + "'", async () => {
+        tests.forEach(({ input, expected }) => {
+            test(`${input} -> ${expected}`, async () => {
                 const document = await vscode.workspace.openTextDocument({
                     language: 'ahk',
-                    content: data.in,
+                    content: input,
                 });
                 // Use array access for the private members
                 const label = Parser['getLabelByLine'](document, 0);
                 if (label === undefined) {
-                    assert.equal(label, data.rs);
+                    assert.equal(label, expected);
                 } else {
-                    assert.strictEqual(label.name, data.rs);
+                    assert.strictEqual(label.name, expected);
                 }
             });
         });
     });
 
-    suite('getRemarkByLine', () => {
-        // List of test data
-        const dataList = [
-            // {
-            //     in: // input test string
-            //     rs: // expected result
-            // },
-            {
-                in: ';comment',
-                rs: 'comment',
-            },
-            {
-                in: '; comment',
-                rs: 'comment',
-            },
-            {
-                in: ' ;comment',
-                rs: 'comment',
-            },
-            {
-                in: ' ; comment',
-                rs: 'comment',
-            },
+    suite('getFullLineComment', () => {
+        const tests = [
+            { input: ';comment', expected: 'comment' },
+            { input: '; comment', expected: 'comment' },
+            { input: ' ;comment', expected: 'comment' },
+            { input: ' ; comment', expected: 'comment' },
         ];
-        dataList.forEach((data) => {
-            test("'" + data.in + "' => '" + data.rs + "'", async () => {
+        tests.forEach(({ input, expected }) => {
+            test(`'${input}' -> '${expected}'`, async () => {
                 const document = await vscode.workspace.openTextDocument({
                     language: 'ahk',
-                    content: data.in,
+                    content: input,
                 });
                 // Use array access for the private members
-                const comment = Parser['getRemarkByLine'](document, 0);
-                assert.strictEqual(comment, data.rs);
+                const comment = Parser['getFullLineComment'](document, 0);
+                assert.strictEqual(comment, expected);
             });
         });
     });
 
     suite('buildScript', () => {
         // Currently in `out` folder, need to get back to main `src` folder
-        const filesParentPath = path.join(
+        const samplesPath = path.join(
             __dirname, // ./out/src/parser
             '..', // ./out/src
             '..', // ./out
@@ -120,7 +87,7 @@ suite('Parser', () => {
             'samples', // ./src/parser/samples
         );
 
-        const myTests: {
+        const parseLenTests: {
             name: string;
             maximumParseLength: number;
             expectedFuncDefCount: number;
@@ -147,19 +114,46 @@ suite('Parser', () => {
             },
         ];
 
-        myTests.forEach((myTest) =>
-            test(myTest.name, async () => {
-                const filename = '117-ten-thousand-lines.ahk1';
+        parseLenTests.forEach(
+            ({ name, maximumParseLength, expectedFuncDefCount }) =>
+                test(name, async () => {
+                    const filename = '117-ten-thousand-lines.ahk1';
+                    const document = await getDocument(
+                        path.join(samplesPath, filename),
+                    );
+                    const result = await Parser.buildScript(document, {
+                        maximumParseLength: maximumParseLength,
+                    });
+                    assert.strictEqual(
+                        result.funcDefs.length,
+                        expectedFuncDefCount,
+                    );
+                }),
+        );
+
+        const includeTests: {
+            name: string;
+            filename: string;
+            /** Expected included files */
+            expectedRelativePaths: string[];
+        }[] = [
+            {
+                name: 'nonexistent file is still added',
+                filename: '205-main.ahk1',
+                expectedRelativePaths: ['included.ahk1'],
+            },
+        ];
+
+        includeTests.forEach(({ name, filename, expectedRelativePaths }) =>
+            test(name, async () => {
                 const document = await getDocument(
-                    path.join(filesParentPath, filename),
+                    path.join(samplesPath, filename),
                 );
-                const result = await Parser.buildScript(document, {
-                    maximumParseLength: myTest.maximumParseLength,
-                });
-                assert.strictEqual(
-                    result.funcDefs.length,
-                    myTest.expectedFuncDefCount,
+                const result = await Parser.buildScript(document);
+                const expected = expectedRelativePaths.map((relPath) =>
+                    path.join(samplesPath, relPath),
                 );
+                assert.deepStrictEqual(result.includedPaths, expected);
             }),
         );
     });

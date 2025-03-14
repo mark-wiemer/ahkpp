@@ -1,29 +1,53 @@
-import { promises } from 'fs';
+import { Dir, promises } from 'fs';
 import { resolve } from 'path';
+import { FuncDef, Script } from './model';
+
+/**
+ * Caches scripts by their document.uri.path:
+ * case-sensitive, forward-slash delimited, absolute paths
+ * @example '/c:/Users/mark/myFile.ahk'
+ */
+export const scriptCache = new Map<string, Script>();
 
 interface Exclude {
     file: RegExp[];
     folder: RegExp[];
 }
 
+/**
+ * Recursively returns absolute paths of all apparent v1 scripts under `rootDirPath`.
+ * Behavior undefined if `rootDirPath` is not a valid directory path.
+ */
 export async function pathsToBuild(
-    rootPath: string,
-    paths: string[] = [],
+    rootDirPath: string,
     excludeConfig: string[],
-    log?: (val: string) => void,
+    log: (val: string) => void = () => {},
 ): Promise<string[]> {
-    if (!rootPath) {
-        return [];
+    const funcName = 'pathsToBuild';
+    const paths: string[] = [];
+    if (!rootDirPath) {
+        return paths;
     }
     const exclude = parseExcludeConfig(excludeConfig);
-    log?.(`folder: ${exclude.folder.map((re) => re.toString()).join('\n')}`);
-    log?.(`file: ${exclude.file.map((re) => re.toString()).join('\n')}`);
+    const folderStr = exclude.folder.map((re) => re.toString()).join('\n');
+    log(`${funcName}.exclude.folder: ${folderStr}`);
+    const file = exclude.file.map((re) => re.toString()).join('\n');
+    log(`${funcName}.exclude.file: ${file}`);
 
-    const pathsToBuildInner = async (rootPath) => {
-        const dir = await promises.opendir(rootPath);
+    const pathsToBuildInner = async (rootPath: string) => {
+        log(`${funcName} checking root ` + rootPath);
+        let dir: Dir;
+        try {
+            dir = await promises.opendir(rootPath);
+        } catch (e) {
+            log(`${funcName} error opening root ` + rootPath);
+            log(e);
+            return paths;
+        }
+        log(`${funcName} opened root ` + rootPath);
         for await (const dirent of dir) {
             const path = resolve(rootPath, dirent.name);
-            log?.('Checking ' + path);
+            log('Checking ' + path);
             if (
                 dirent.isDirectory() &&
                 !exclude.folder.some((re) => re.test(path))
@@ -34,16 +58,16 @@ export async function pathsToBuild(
                 dirent.name.match(/\.(ahk|ah1|ahk1|ext)$/i) &&
                 !exclude.file.some((re) => re.test(path))
             ) {
-                log?.('Adding ' + path);
+                log('Adding ' + path);
                 paths.push(path);
             } else {
-                log?.('Ignoring ' + path);
+                log('Ignoring ' + path);
             }
         }
         return paths;
     };
 
-    return await pathsToBuildInner(rootPath);
+    return await pathsToBuildInner(rootDirPath);
 }
 
 function parseExcludeConfig(exclude: string[] = []): Exclude {
@@ -126,4 +150,111 @@ function glob2regexp(glob: string) {
     if (!/[\\/]$/.test(glob)) reStr += '$';
     if (isNot) reStr = reStr.startsWith('^') ? `^(?!${reStr})` : `(?!${reStr})`;
     return new RegExp(reStr, 'i');
+}
+
+/**
+ * Finds the best reference to the function.
+ * If a function of this name exists in the current file, returns that function.
+ * Otherwise, searches through document cache to find the matching function.
+ * Matches are not case-sensitive and only need to match function name.
+ * Note that duplicate function definitions are not allowed in AHK v1 or v2.
+ *
+ * @param newSearch Only look at local files and local library, not entire workspace
+ * ref https://www.autohotkey.com/docs/v1/Functions.htm#lib
+ */
+export function getFuncDefByName(
+    /** Forward-slash delimited path */
+    path: string,
+    name: string,
+    /** Use the new search algorithm instead of global search */
+    newSearch: boolean,
+    //* Local value is used for testing
+    localCache?: Map<string, Pick<Script, 'includedPaths' | 'funcDefs'>>,
+): FuncDef | undefined {
+    name = name.toLowerCase();
+    const cache = localCache ?? scriptCache;
+    // defined in this file (original logic)
+    const script = cache.get(path);
+
+    for (const func of script.funcDefs) {
+        if (func.name.toLowerCase() === name) {
+            return func;
+        }
+    }
+
+    if (!newSearch) {
+        // global search (original logic)
+        for (const filePath of cache.keys()) {
+            for (const func of cache.get(filePath).funcDefs) {
+                if (func.name.toLowerCase() === name) {
+                    return func;
+                }
+            }
+        }
+        // end here so that users see the difference between new and old
+        return undefined;
+    }
+
+    // defined in an included file (experimental logic)
+    const visitedPaths = new Set<string>();
+    const queue: string[] = script.includedPaths;
+    while (queue.length > 0) {
+        const currentPath = queue.shift();
+        if (visitedPaths.has(currentPath)) {
+            continue;
+        }
+        visitedPaths.add(currentPath);
+
+        const includedScript = cache.get(currentPath);
+        if (!includedScript) {
+            continue;
+        }
+        // search this included path
+        for (const func of includedScript.funcDefs) {
+            if (func.name.toLowerCase() === name) {
+                return func;
+            }
+        }
+        // add the deeper included paths to the queue
+        for (const includedPath of includedScript.includedPaths) {
+            if (!visitedPaths.has(includedPath)) {
+                queue.push(includedPath);
+            }
+        }
+    }
+
+    // full name defined in a local library file of the same name
+    // library file must end in `.ahk` in this case to be found by AHK v1
+    const libPath = path.replace(/\/[^/]+$/, `/lib/`);
+    const fullPath = libPath + name + '.ahk';
+    for (const filePath of cache.keys()) {
+        if (filePath.toLowerCase() !== fullPath.toLowerCase()) {
+            continue;
+        }
+        for (const func of cache.get(filePath).funcDefs) {
+            if (func.name.toLowerCase() === name) {
+                return func;
+            }
+        }
+    }
+
+    // partial name (prefix) defined in a local library file
+    // this is the last step--if it fails, return undefined
+    // in theory we could expand to search user and standard libraries in future
+    const prefixPath = name.includes('_')
+        ? libPath + name.split('_')[0] + '.ahk'
+        : undefined;
+    if (!prefixPath) {
+        return undefined;
+    }
+    for (const filePath of cache.keys()) {
+        if (filePath.toLowerCase() !== prefixPath.toLowerCase()) {
+            continue;
+        }
+        for (const func of cache.get(filePath).funcDefs) {
+            if (func.name.toLowerCase() === name) {
+                return func;
+            }
+        }
+    }
 }

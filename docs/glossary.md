@@ -11,3 +11,4 @@ Links are to the AHK v2 definition of the related term. Links are only provided 
 | [Script](https://www.autohotkey.com/docs/v2/Scripts.htm)              | an AutoHotkey script file, like `main.ahk` or `myFile.ahk1`                        |
 | [Function](https://www.autohotkey.com/docs/v2/Concepts.htm#functions) | an AHK function, usually in the context of "function ref" or "function definition" |
 | [Method](https://www.autohotkey.com/docs/v2/Concepts.htm#methods)     | an AHK function attached to an object                                              |
+| Reference                                                             | a function call or definition                                                      |

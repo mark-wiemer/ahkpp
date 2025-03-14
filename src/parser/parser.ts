@@ -1,18 +1,18 @@
 import { ConfigKey, Global } from '../common/global';
 import * as vscode from 'vscode';
 import { CodeUtil } from '../common/codeUtil';
-import { Script, FuncDef, FuncCall, Label, Block, Variable } from './model';
-import { pathsToBuild } from './parser.utils';
+import { Script, FuncDef, FuncRef, Label, Block, Variable } from './model';
+import { scriptCache, pathsToBuild } from './parser.utils';
 import { Out } from '../common/out';
+import { resolveIncludedPath } from '../common/utils';
 
 const startBlockComment = / *\/\*/;
 // todo does endBlockComment work on lines like `; */` ?
 const endBlockComment = / *\*\//;
-const documentCache = new Map<string, Script>();
 
 export const clearCache = () => {
     Out.debug('Clearing cache');
-    documentCache.clear();
+    scriptCache.clear();
 };
 
 export interface BuildScriptOptions {
@@ -22,27 +22,44 @@ export interface BuildScriptOptions {
     maximumParseLength?: number;
 }
 
-/** Parses v1 files */
-export class Parser {
-    /** Build all scripts in the given path */
-    public static async buildByPath(buildPath: string) {
-        const excludeConfig = Global.getConfig<string[]>(ConfigKey.exclude);
-        const paths = await pathsToBuild(
-            buildPath,
-            [],
-            excludeConfig,
-            Out.debug,
+const buildPaths = async (
+    paths: string[],
+    options: BuildScriptOptions = {},
+): Promise<void> => {
+    const funcName = 'buildPaths';
+    Out.debug(`${funcName}(${paths.length} paths)`);
+    for (const path of paths) {
+        Out.debug(
+            `${funcName} building ${path} with options: ${JSON.stringify(options)}`,
         );
-        Out.debug(`Building ${paths.length} files`);
-        for (const path of paths) {
-            Out.debug(`Building ${path}`);
+        try {
             const document = await vscode.workspace.openTextDocument(
                 vscode.Uri.file(path),
             );
-            this.buildScript(document);
+            Out.debug(`buildPaths opened` + document);
+            await Parser.buildScript(document, options);
+        } catch (e) {
+            Out.debug(`${funcName} error building ${path}`);
+            Out.debug(e);
         }
     }
+};
 
+/**
+ * Build all scripts in the given directory path, accounting for exclusion rules
+ * Behavior undefined if `rootDirPath` is not a valid directory path.
+ */
+export async function buildByPath(rootDirPath: string) {
+    const excludeConfig = Global.getConfig<string[]>(ConfigKey.exclude);
+    const paths = await pathsToBuild(rootDirPath, excludeConfig, Out.debug);
+    Out.debug(
+        `Building ${paths.length} ${paths.length === 1 ? 'file' : 'files'}`,
+    );
+    buildPaths(paths);
+}
+
+/** Parses v1 files */
+export class Parser {
     /**
      * Parse the document into a Script and add it to the cache
      * @param document
@@ -54,15 +71,15 @@ export class Parser {
     ): Promise<Script> {
         const funcName = 'buildScript';
         const lang = document.languageId;
+        const docPath = document.uri.path;
         if (lang !== 'ahk' && lang !== 'ahk1') {
-            Out.debug(
-                `${funcName} skipping ${lang} doc at ${document.uri.path}`,
-            );
+            Out.debug(`${funcName} skipping ${lang} doc at ${docPath}`);
             return undefined;
         }
 
-        const cachedDocument = documentCache.get(document.uri.path);
+        const cachedDocument = scriptCache.get(docPath);
         if (options.usingCache && cachedDocument) {
+            Out.debug(`${funcName} returning cached document for ${docPath}`);
             return cachedDocument;
         }
 
@@ -77,11 +94,13 @@ export class Parser {
                 : document.lineCount;
 
         const funcDefs: FuncDef[] = [];
-        const calls: FuncCall[] = [];
+        const funcRefs: FuncRef[] = [];
         const labels: Label[] = [];
         const variables: Variable[] = [];
         const blocks: Block[] = [];
+        const includedPaths: string[] = [];
         let currentFuncDef: FuncDef;
+        /** Tracks scope of newly-defined variables */
         let deep = 0;
         let blockComment = false;
         for (let line = 0; line < linesToParse; line++) {
@@ -99,8 +118,8 @@ export class Parser {
             if (defOrCall) {
                 if (defOrCall instanceof FuncDef) {
                     funcDefs.push(defOrCall);
-                    calls.push(
-                        new FuncCall(
+                    funcRefs.push(
+                        new FuncRef(
                             defOrCall.name,
                             document,
                             line,
@@ -113,7 +132,7 @@ export class Parser {
                     }
                     continue;
                 } else {
-                    CodeUtil.join(calls, defOrCall);
+                    CodeUtil.join(funcRefs, defOrCall);
                 }
             }
             const label = Parser.getLabelByLine(document, line);
@@ -125,6 +144,12 @@ export class Parser {
             if (block) {
                 blocks.push(block);
             }
+            const include = resolveIncludedPath(docPath, lineText);
+            if (include) {
+                includedPaths.push(include);
+            }
+
+            // todo won't work on lines with comments
             if (lineText.includes('{')) {
                 deep++;
             }
@@ -144,53 +169,32 @@ export class Parser {
             }
         }
         const script: Script = {
-            funcDefs: funcDefs,
+            funcDefs,
             labels,
-            funcRefs: calls,
+            funcRefs,
             variables,
             blocks,
+            includedPaths,
         };
-        Out.debug(`${funcName} document.uri.path: ${document.uri.path}`);
-        Out.debug(`${funcName} script: ${JSON.stringify(script)}`);
-        documentCache.set(document.uri.path, script);
-        return script;
-    }
+        scriptCache.set(docPath, script);
 
-    /**
-     * Finds the best reference to the function.
-     * If a function of this name exists in the current file, returns that function.
-     * Otherwise, searches through document cache to find the matching function.
-     * Matches are not case-sensitive and only need to match function name.
-     * Note that duplicate function definitions are not allowed in AHK v1.
-     *
-     * todo should search only included files and library files
-     * - https://github.com/mark-wiemer/ahkpp/issues/205
-     */
-    public static async getFuncDefByName(
-        document: vscode.TextDocument,
-        name: string,
-        localCache = documentCache,
-    ) {
-        name = name.toLowerCase();
-        for (const func of localCache.get(document.uri.path).funcDefs) {
-            if (func.name.toLowerCase() === name) {
-                return func;
-            }
-        }
-        for (const filePath of localCache.keys()) {
-            for (const func of localCache.get(filePath).funcDefs) {
-                if (func.name.toLowerCase() === name) {
-                    return func;
-                }
-            }
-        }
-        return undefined;
+        // we can build included paths at the end because we don't store
+        // definition locations of all function calls
+        // in the cache, we search and find them as needed based on user action
+        Out.debug(`Building included paths:`);
+        Out.debug('\t' + (includedPaths.join('\n\t') || '(none)'));
+        await buildPaths(includedPaths, { usingCache: true });
+
+        Out.debug(`${funcName} document.uri.path: ${docPath}`);
+        Out.debug(`${funcName} script: ${JSON.stringify(script)}`);
+
+        return script;
     }
 
     public static async getAllFuncDefs(): Promise<FuncDef[]> {
         const funcs = [];
-        for (const filePath of documentCache.keys()) {
-            for (const func of documentCache.get(filePath).funcDefs) {
+        for (const filePath of scriptCache.keys()) {
+            for (const func of scriptCache.get(filePath).funcDefs) {
                 funcs.push(func);
             }
         }
@@ -202,13 +206,13 @@ export class Parser {
         name: string,
     ) {
         name = name.toLowerCase();
-        for (const label of documentCache.get(document.uri.path).labels) {
+        for (const label of scriptCache.get(document.uri.path).labels) {
             if (label.name.toLowerCase() === name) {
                 return label;
             }
         }
-        for (const filePath of documentCache.keys()) {
-            for (const label of documentCache.get(filePath).labels) {
+        for (const filePath of scriptCache.keys()) {
+            for (const label of scriptCache.get(filePath).labels) {
                 if (label.name.toLowerCase() === name) {
                     return label;
                 }
@@ -217,11 +221,11 @@ export class Parser {
         return undefined;
     }
 
-    public static getAllRefByName(name: string): FuncCall[] {
+    public static getAllRefByName(name: string): FuncRef[] {
         const refs = [];
         name = name.toLowerCase();
-        for (const filePath of documentCache.keys()) {
-            const document = documentCache.get(filePath);
+        for (const filePath of scriptCache.keys()) {
+            const document = scriptCache.get(filePath);
             for (const ref of document.funcRefs) {
                 if (ref.name.toLowerCase() === name) {
                     refs.push(ref);
@@ -315,55 +319,61 @@ export class Parser {
         }
     }
 
-    /** Return function definition or function call(s) on the given line */
+    /**
+     * Return function definition or function call(s) on the given line
+     * @param textToParse Optional text to parse. Defaults to the line text. Used for recursion.
+     */
     private static detectFunctionByLine(
         document: vscode.TextDocument,
         lineNum: number,
-        original?: string,
-    ): FuncDef | FuncCall | FuncCall[] {
+        textToParse?: string,
+    ): FuncDef | FuncRef | FuncRef[] {
         const thisFuncName = 'detectFunctionByLine';
-        // todo strip out of prod build entirely for perf
         Out.debug(
-            `${thisFuncName}(${document.uri.path.split('/').pop()}, ${lineNum}${original === undefined ? '' : `, "${original}"`})`,
+            `${thisFuncName}(${document.uri.path.split('/').pop()}, ${lineNum}${textToParse === undefined ? '' : `, "${textToParse}"`})`,
         );
-        original ??= document.lineAt(lineNum).text;
-        const text = CodeUtil.purify(original);
+        textToParse ??= document.lineAt(lineNum).text;
+        const text = CodeUtil.purify(textToParse);
         // [\u4e00-\u9fa5] Chinese unicode characters
-        // Matches function definitions and calls
-        // start of line
-        // one or more function name characters
-        // that aren't the words "if" or "while"
-        // parentheses around 0 or more arguments (matching up to the first closing paren)
-        // optional opening curly brace (for func definition)
+        // Matches function definitions and calls:
+        // - one or more function name characters
+        // - that aren't the words "if" or "while"
+        // - parentheses around 0 or more arguments (matching up to the first closing paren)
+        // - optional opening curly brace (for func definition)
         const funcPattern =
             /\s*(([\u4e00-\u9fa5_a-zA-Z0-9]+)(?<!if|while)\(.*?\))\s*(\{)?\s*/i;
         const match = text.match(funcPattern);
         if (!match) {
             return undefined;
         }
-        Out.debug(`${thisFuncName}#match: ${match}`);
+        Out.debug(`${thisFuncName}#text: ${text}`);
+        Out.debug(`${thisFuncName}#match: ['${match.join(`', '`)}']`);
         const funcName = match[2];
-        const charNum = original.indexOf(funcName);
+        const charNum = textToParse.indexOf(funcName);
         if (text.length !== match[0].length) {
             // multiple function calls on the same line
             // regex does not match parens, so text is longer due to extra paren
-            // Foo(Bar()), for example
-            const refs = [new FuncCall(funcName, document, lineNum, charNum)];
+            // note the lack of closing paren in the example:
+            // Foo(Bar()).length !== Foo(Bar().length
+            Out.debug(
+                `${thisFuncName}#multiple function calls on line ${lineNum}`,
+            );
+            Out.debug(`${thisFuncName}#text: ${text}, match[0]: ${match[0]}`);
+            const refs = [new FuncRef(funcName, document, lineNum, charNum)];
             // Recursively unravel all function calls on this line
             const newRef = this.detectFunctionByLine(
                 document,
                 lineNum,
                 // remove the call to the outermost function
-                original.replace(new RegExp(funcName + '\\s*\\('), ''),
+                textToParse.replace(new RegExp(funcName + '\\s*\\('), ''),
             );
             // Join to a flat array of references
             CodeUtil.join(refs, newRef);
             return refs;
         }
         const funcFullName = match[1];
-        // unsure if `isMethod` is a reasonable name for this
-        const isMethod = match[3];
-        if (isMethod) {
+        const isDefinition = match[3];
+        if (isDefinition) {
             return new FuncDef(
                 funcFullName,
                 funcName,
@@ -371,7 +381,7 @@ export class Parser {
                 lineNum,
                 charNum,
                 true,
-                Parser.getRemarkByLine(document, lineNum - 1),
+                Parser.getFullLineComment(document, lineNum - 1),
             );
         }
         for (let i = lineNum + 1; i < document.lineCount; i++) {
@@ -387,30 +397,32 @@ export class Parser {
                     lineNum,
                     charNum,
                     false,
-                    Parser.getRemarkByLine(document, lineNum - 1),
+                    Parser.getFullLineComment(document, lineNum - 1),
                 );
             } else {
-                return new FuncCall(funcName, document, lineNum, charNum);
+                return new FuncRef(funcName, document, lineNum, charNum);
             }
         }
         return undefined;
     }
 
     /**
-     * detect remark, remark format: ;any
+     * Returns the full-line comment, excluding the `;` and leading space.
+     * Returns null if line has non-comment text or if lineNum is invalid.
      * @param document
-     * @param line
+     * @param lineNum
      */
-    private static getRemarkByLine(
+    private static getFullLineComment(
         document: vscode.TextDocument,
-        line: number,
+        lineNum: number,
     ) {
-        if (line >= 0) {
-            const { text } = document.lineAt(line);
-            const markMatch = text.match(/^\s*;\s*(.+)/);
-            if (markMatch) {
-                return markMatch[1];
-            }
+        if (lineNum < 0) {
+            return null;
+        }
+        const { text } = document.lineAt(lineNum);
+        const match = text.match(/^\s*;\s*(.+)/);
+        if (match) {
+            return match[1];
         }
         return null;
     }

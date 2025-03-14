@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { ProviderResult } from 'vscode';
-import { clearCache, Parser } from './parser/parser';
+import { buildByPath, clearCache } from './parser/parser';
 import { RunnerService } from './service/runnerService';
 import { DebugSession } from './debugger/debugSession';
 import { DefProvider } from './providers/defProvider';
@@ -21,9 +21,7 @@ import { activate as activateV2 } from '../ahk2/client/src/extension';
 export function activate(context: vscode.ExtensionContext) {
     (async () => {
         Global.updateStatusBarItems('Indexing AutoHotkey workspace...');
-        await Parser.buildByPath(
-            vscode.workspace.workspaceFolders?.[0].uri.fsPath,
-        );
+        await buildByPath(vscode.workspace.workspaceFolders?.[0].uri.fsPath);
         Global.updateStatusBarItems('Indexed AutoHotkey workspace :)');
         Global.hide();
     })();
@@ -93,9 +91,7 @@ export function activate(context: vscode.ExtensionContext) {
             return;
 
         clearCache();
-        await Parser.buildByPath(
-            vscode.workspace.workspaceFolders?.[0].uri.fsPath,
-        );
+        await buildByPath(vscode.workspace.workspaceFolders?.[0].uri.fsPath);
     });
 
     activateV2(context);

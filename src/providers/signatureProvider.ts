@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import { Parser } from '../parser/parser';
+import { getFuncDefByName } from '../parser/parser.utils';
+import { ConfigKey, Global } from '../common/global';
 
 export class SignatureProvider implements vscode.SignatureHelpProvider {
     public async provideSignatureHelp(
@@ -26,7 +27,8 @@ export class SignatureProvider implements vscode.SignatureHelpProvider {
             document.getWordRangeAtPosition(funcDefCandidatePosition),
         );
 
-        const funcDef = await Parser.getFuncDefByName(document, word);
+        const newSearch = Global.getConfig<boolean>(ConfigKey.funcDefSearch);
+        const funcDef = getFuncDefByName(document.uri.path, word, newSearch);
         if (funcDef) {
             return {
                 activeSignature: 0,

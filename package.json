@@ -80,10 +80,11 @@
         "pretest:unit": "npm run compile:ts",
         "test:unit": "mocha",
         "test:unit:ci": "npm run test:unit -- --forbid-only",
-        "validate": "npm run lint && npm run test && npm run package",
+        "validate": "npm run format && npm run test && npm run package",
         "validate:ci": "npm run lint && npm run test:ci && npm run package",
         "validate:deep": "cd ahk2 && npm run validate && cd .. && npm run validate",
         "validate:fix": "npm run lint:fix && npm run test && npm run package",
+        "validate:test:e2e": "npm run test:e2e && npm run package",
         "vscode:prepublish": "npm run build && echo Packaging..."
     },
     "contributes": {
@@ -251,6 +252,23 @@
                     },
                     "uniqueItems": true,
                     "markdownDescription": "%ahk++.config.exclude%"
+                },
+                "AHK++.experimental": {
+                    "markdownDescription": "%ahk++.config.experimental%",
+                    "type": "object",
+                    "properties": {
+                        "funcDefSearch": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": "%ahk++.config.experimental.funcDefSearch%"
+                        }
+                    },
+                    "default": {
+                        "funcDefSearch": false
+                    },
+                    "additionalProperties": {
+                        "type": "string"
+                    }
                 },
                 "AHK++.general": {
                     "type": "object",
