@@ -8,6 +8,7 @@
 ### v1-exclusive changes
 
 -   Have scripts referenced in a `#include` directive bypass the `exclude` setting (todo PR)
+-   Add experimental `funcDefSearch` setting that improves function definition resolution
 
 ## 6.5.0 - 2025-02-23 💞
 
