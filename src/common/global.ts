@@ -55,7 +55,7 @@ export enum ConfigKey {
     templateSnippetNameV2 = 'v2.file.templateSnippetName',
     trimExtraSpaces = 'v1.formatter.trimExtraSpaces',
     useMpress = 'compiler.useMpress',
-    v1IncludeTree = 'experimental.v1IncludeTree',
+    funcDefSearch = 'experimental.funcDefSearch',
 }
 
 /** Also in submodule */

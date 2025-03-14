@@ -51,7 +51,7 @@ export class AhkHoverProvider implements HoverProvider {
         }
 
         const docPath = document.uri.path;
-        const newSearch = Global.getConfig<boolean>(ConfigKey.v1IncludeTree);
+        const newSearch = Global.getConfig<boolean>(ConfigKey.funcDefSearch);
         const funcDef = getFuncDefByName(docPath, context.word, newSearch);
         if (!funcDef) {
             return null;

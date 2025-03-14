@@ -257,14 +257,14 @@
                     "markdownDescription": "%ahk++.config.experimental%",
                     "type": "object",
                     "properties": {
-                        "v1IncludeTree": {
+                        "funcDefSearch": {
                             "type": "boolean",
                             "default": false,
-                            "description": "%ahk++.config.experimental.v1IncludeTree%"
+                            "description": "%ahk++.config.experimental.funcDefSearch%"
                         }
                     },
                     "default": {
-                        "v1IncludeTree": false
+                        "funcDefSearch": false
                     },
                     "additionalProperties": {
                         "type": "string"

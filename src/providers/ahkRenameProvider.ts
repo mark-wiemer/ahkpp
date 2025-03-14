@@ -50,7 +50,7 @@ export class AhkRenameProvider implements vscode.RenameProvider {
         const wordRange = document.getWordRangeAtPosition(position);
         const word = document.getText(wordRange);
 
-        const newSearch = Global.getConfig<boolean>(ConfigKey.v1IncludeTree);
+        const newSearch = Global.getConfig<boolean>(ConfigKey.funcDefSearch);
         const funcDef = getFuncDefByName(document.uri.path, word, newSearch);
         if (funcDef) {
             return wordRange;

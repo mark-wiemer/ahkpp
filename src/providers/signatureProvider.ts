@@ -27,7 +27,7 @@ export class SignatureProvider implements vscode.SignatureHelpProvider {
             document.getWordRangeAtPosition(funcDefCandidatePosition),
         );
 
-        const newSearch = Global.getConfig<boolean>(ConfigKey.v1IncludeTree);
+        const newSearch = Global.getConfig<boolean>(ConfigKey.funcDefSearch);
         const funcDef = getFuncDefByName(document.uri.path, word, newSearch);
         if (funcDef) {
             return {

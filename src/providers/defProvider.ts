@@ -39,7 +39,7 @@ export class DefProvider implements vscode.DefinitionProvider {
         ) {
             Out.debug(`${funcName} calling getFuncDefByName for word: ${word}`);
             const newSearch = Global.getConfig<boolean>(
-                ConfigKey.v1IncludeTree,
+                ConfigKey.funcDefSearch,
             );
             const funcDef = getFuncDefByName(docPath, word, newSearch);
             Out.debug(`${funcName} funcDef.name: ${funcDef?.name}`);
