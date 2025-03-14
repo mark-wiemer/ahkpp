@@ -127,7 +127,7 @@ suite('getFuncDefByName', () => {
         return new Map<string, Script>(pairs as [string, Script][]);
     };
 
-    suite('common behavior', () => {
+    suite.only('common behavior', () => {
         const tests: [string, (ns: boolean) => void][] = [
             [
                 'finds function in the same file',
@@ -194,6 +194,29 @@ suite('getFuncDefByName', () => {
                     const result = getFuncDefByName(
                         mockScriptPath,
                         'libFunc',
+                        newSearch,
+                        cache,
+                    );
+                    assert.strictEqual(result, libFuncDef);
+                },
+            ],
+            [
+                'finds function in non-included local lib file with prefix name only',
+                (newSearch: boolean) => {
+                    const libFuncDef = { name: 'libFunc_cool' } as FuncDef;
+                    const libScript = {
+                        funcDefs: [libFuncDef],
+                        includedPaths: [],
+                    } as Script;
+
+                    const script = getMockScript();
+
+                    const cache = makeCache([[mockScriptPath, script]]);
+                    cache.set(`${mockLibPath}/libFunc.ahk`, libScript);
+
+                    const result = getFuncDefByName(
+                        mockScriptPath,
+                        'libFunc_cool',
                         newSearch,
                         cache,
                     );
