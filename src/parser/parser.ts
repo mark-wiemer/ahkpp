@@ -11,7 +11,7 @@ const startBlockComment = / *\/\*/;
 const endBlockComment = / *\*\//;
 
 export const clearCache = () => {
-    Out.debug('Clearing cache');
+    Out.verbose('Clearing cache');
     scriptCache.clear();
 };
 
@@ -27,20 +27,20 @@ const buildPaths = async (
     options: BuildScriptOptions = {},
 ): Promise<void> => {
     const funcName = 'buildPaths';
-    Out.debug(`${funcName}(${paths.length} paths)`);
+    Out.verbose(`${funcName}(${paths.length} paths)`);
     for (const path of paths) {
-        Out.debug(
+        Out.verbose(
             `${funcName} building ${path} with options: ${JSON.stringify(options)}`,
         );
         try {
             const document = await vscode.workspace.openTextDocument(
                 vscode.Uri.file(path),
             );
-            Out.debug(`buildPaths opened` + document);
+            Out.verbose(`buildPaths opened` + document);
             await Parser.buildScript(document, options);
         } catch (e) {
-            Out.debug(`${funcName} error building ${path}`);
-            Out.debug(e);
+            Out.info(`${funcName} error building ${path}`);
+            Out.info(e);
         }
     }
 };
@@ -51,8 +51,8 @@ const buildPaths = async (
  */
 export async function buildByPath(rootDirPath: string) {
     const excludeConfig = Global.getConfig<string[]>(ConfigKey.exclude);
-    const paths = await pathsToBuild(rootDirPath, excludeConfig, Out.debug);
-    Out.debug(
+    const paths = await pathsToBuild(rootDirPath, excludeConfig, Out.info);
+    Out.verbose(
         `Building ${paths.length} ${paths.length === 1 ? 'file' : 'files'}`,
     );
     buildPaths(paths);
@@ -73,13 +73,13 @@ export class Parser {
         const lang = document.languageId;
         const docPath = document.uri.path;
         if (lang !== 'ahk' && lang !== 'ahk1') {
-            Out.debug(`${funcName} skipping ${lang} doc at ${docPath}`);
+            Out.verbose(`${funcName} skipping ${lang} doc at ${docPath}`);
             return undefined;
         }
 
         const cachedDocument = scriptCache.get(docPath);
         if (options.usingCache && cachedDocument) {
-            Out.debug(`${funcName} returning cached document for ${docPath}`);
+            Out.verbose(`${funcName} returning cached document for ${docPath}`);
             return cachedDocument;
         }
 
@@ -181,12 +181,12 @@ export class Parser {
         // we can build included paths at the end because we don't store
         // definition locations of all function calls
         // in the cache, we search and find them as needed based on user action
-        Out.debug(`Building included paths:`);
-        Out.debug('\t' + (includedPaths.join('\n\t') || '(none)'));
+        Out.verbose(`Building included paths:`);
+        Out.verbose('\t' + (includedPaths.join('\n\t') || '(none)'));
         await buildPaths(includedPaths, { usingCache: true });
 
-        Out.debug(`${funcName} document.uri.path: ${docPath}`);
-        Out.debug(`${funcName} script: ${JSON.stringify(script)}`);
+        Out.verbose(`${funcName} document.uri.path: ${docPath}`);
+        Out.verbose(`${funcName} script: ${JSON.stringify(script)}`);
 
         return script;
     }
@@ -329,7 +329,7 @@ export class Parser {
         textToParse?: string,
     ): FuncDef | FuncRef | FuncRef[] {
         const thisFuncName = 'detectFunctionByLine';
-        Out.debug(
+        Out.verbose(
             `${thisFuncName}(${document.uri.path.split('/').pop()}, ${lineNum}${textToParse === undefined ? '' : `, "${textToParse}"`})`,
         );
         textToParse ??= document.lineAt(lineNum).text;
@@ -346,8 +346,8 @@ export class Parser {
         if (!match) {
             return undefined;
         }
-        Out.debug(`${thisFuncName}#text: ${text}`);
-        Out.debug(`${thisFuncName}#match: ['${match.join(`', '`)}']`);
+        Out.verbose(`${thisFuncName}#text: ${text}`);
+        Out.verbose(`${thisFuncName}#match: ['${match.join(`', '`)}']`);
         const funcName = match[2];
         const charNum = textToParse.indexOf(funcName);
         if (text.length !== match[0].length) {
@@ -355,10 +355,10 @@ export class Parser {
             // regex does not match parens, so text is longer due to extra paren
             // note the lack of closing paren in the example:
             // Foo(Bar()).length !== Foo(Bar().length
-            Out.debug(
+            Out.verbose(
                 `${thisFuncName}#multiple function calls on line ${lineNum}`,
             );
-            Out.debug(`${thisFuncName}#text: ${text}, match[0]: ${match[0]}`);
+            Out.verbose(`${thisFuncName}#text: ${text}, match[0]: ${match[0]}`);
             const refs = [new FuncRef(funcName, document, lineNum, charNum)];
             // Recursively unravel all function calls on this line
             const newRef = this.detectFunctionByLine(

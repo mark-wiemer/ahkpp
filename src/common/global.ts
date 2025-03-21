@@ -40,6 +40,7 @@ export enum ConfigKey {
     compileIcon = 'compiler.compileIcon',
     compilerPath = 'compiler.compilerPath',
     exclude = 'exclude',
+    funcDefSearch = 'experimental.funcDefSearch',
     general = 'general',
     generalV2 = 'v2.general',
     helpPathV1 = 'v1.file.helpPath',
@@ -55,7 +56,7 @@ export enum ConfigKey {
     templateSnippetNameV2 = 'v2.file.templateSnippetName',
     trimExtraSpaces = 'v1.formatter.trimExtraSpaces',
     useMpress = 'compiler.useMpress',
-    funcDefSearch = 'experimental.funcDefSearch',
+    verboseLogging = 'general.verboseLogging',
 }
 
 /** Also in submodule */

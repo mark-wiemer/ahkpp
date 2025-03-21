@@ -1,6 +1,6 @@
 import { Out } from 'src/common/out';
 import { DebugSession } from './debugSession';
 
-Out.debug('Starting DebugAdapter');
+Out.verbose('Starting DebugAdapter');
 
 DebugSession.run(DebugSession);
