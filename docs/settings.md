@@ -120,8 +120,7 @@ This setting fixes [issue #205](https://github.com/mark-wiemer/ahkpp/issues/205)
 
 Known issues with this feature:
 
--   It does not account for `#include <dir>` directives which change the base path of inclusion
--   If a file is renamed, links to functions declared in that file may fail. Restarting the extension should solve this issue.
+-   It does not account for `#include <dir>` directives which change the base path of inclusion ([#628](https://github.com/mark-wiemer/ahkpp/issues/628))
 
 ## Other IDE settings
 
