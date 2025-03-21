@@ -1,9 +1,9 @@
 import { build } from 'esbuild';
+import minimist from 'minimist';
 
-/* eslint-disable-next-line no-undef */
-const isProd = process.argv.indexOf('--mode=production') >= 0;
+const args = minimist(process.argv.slice(2));
+const isProd = args.mode === 'production';
 
-/* eslint-disable-next-line no-undef */
 console.log('Building AHK++ in', isProd ? 'production' : 'development', 'mode');
 
 // https://esbuild.github.io/api
@@ -12,7 +12,7 @@ build({
     bundle: true,
     outfile: 'dist/extension.js',
     external: ['vscode'],
-    format: 'cjs',
+    format: 'cjs', // VS Code limitation, move to ESM requires investigation
     platform: 'node',
     minify: isProd,
     sourcemap: !isProd,
