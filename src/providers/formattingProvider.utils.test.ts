@@ -1052,8 +1052,7 @@ interface FormatTest {
 suite('internalFormat', () => {
     // Currently in `out` folder, need to get back to main `src` folder
     const filesParentPath = path.join(
-        __dirname, // ./out/src/providers
-        '..', // ./out/src
+        __dirname, // ./out/providers
         '..', // ./out
         '..', // .
         'src', // ./src

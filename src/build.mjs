@@ -2,18 +2,42 @@ import { build } from 'esbuild';
 import minimist from 'minimist';
 
 const args = minimist(process.argv.slice(2));
+const isUnitTest = args.mode === 'unit-test';
 const isProd = args.mode === 'production';
-
-console.log('Building AHK++ in', isProd ? 'production' : 'development', 'mode');
+const entryPoints = [];
 
 // https://esbuild.github.io/api
-build({
-    entryPoints: ['./src/extension.ts'],
+const buildOptions = {
+    entryPoints: entryPoints,
     bundle: true,
-    outfile: 'dist/extension.js',
-    external: ['vscode'],
     format: 'cjs', // VS Code limitation, move to ESM requires investigation
     platform: 'node',
     minify: isProd,
-    sourcemap: !isProd,
-});
+    sourcemap: !isProd && !isUnitTest,
+};
+
+console.log(`Building AHK++ in ${args.mode ?? 'development'} mode`);
+
+if (isUnitTest) {
+    const outdir = 'out';
+    entryPoints.push('./src/**/*utils.ts');
+    build({
+        ...buildOptions,
+        outdir: outdir,
+        bundle: true,
+        external: ['vscode'],
+    });
+    build({
+        ...buildOptions,
+        entryPoints: ['./src/**/*utils.test.ts'],
+        bundle: false,
+        outdir: outdir,
+    });
+} else {
+    entryPoints.push('./src/extension.ts');
+    build({
+        ...buildOptions,
+        outfile: 'dist/extension.js',
+        external: ['vscode'],
+    });
+}
