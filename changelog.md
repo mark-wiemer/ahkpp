@@ -2,6 +2,8 @@
 
 ## 6.7.0 - unreleased
 
+-   Add `AHK++ > General > verboseLogging` to toggle verbose AHK v1 logs in output channels. todo toggle AHK v2 logs as well
+
 ## 6.6.0 - 2025-03-21 🎩
 
 All changes in 6.6.0 are exclusive to AHK v1.

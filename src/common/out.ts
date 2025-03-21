@@ -1,17 +1,28 @@
 import * as vscode from 'vscode';
+import { ConfigKey, Global } from './global';
 
 /** Logs messages to IDE output channel */
 // Name of this class is referenced in docs, update if changed
 export class Out {
     private static outputChannel: vscode.OutputChannel;
 
+    public static verbose(value: Error | string) {
+        if (Global.getConfig<boolean>(ConfigKey.verboseLogging)) {
+            Out.log(value, false);
+        }
+    }
+
     /**
      * Logs the given value without focusing the output view.
      * Prepends all logs with `new Date().toISOString()`.
      */
     // Name of this func is referenced in docs, update if changed
-    public static debug(value: Error | string) {
+    public static info(value: Error | string) {
         Out.log(value, false);
+    }
+
+    public static warn(value: Error | string) {
+        Out.log(value, true);
     }
 
     /**
@@ -20,7 +31,7 @@ export class Out {
      * @param value The value to log
      * @param focus whether to focus the output view. Defaults to true.
      */
-    public static log(value: Error | string, focus = true) {
+    private static log(value: Error | string, focus: boolean) {
         if (value instanceof Error) {
             console.trace(value);
             value = value.message;

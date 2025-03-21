@@ -32,20 +32,20 @@ export class DebugDispatcher extends EventEmitter {
 
     /** Start executing the given program. */
     public async start(args: LaunchRequestArguments) {
-        Out.debug(`DebugDispatcher.start#args`);
-        Out.debug(`\t${JSON.stringify(args)}`);
+        Out.verbose(`DebugDispatcher.start#args`);
+        Out.verbose(`\t${JSON.stringify(args)}`);
         /** Default to AHK v1 if type not provided */
         const isAhk2 = args.type === 'ahk2';
         const interpreterPathKey = isAhk2
             ? ConfigKey.interpreterPathV2
             : ConfigKey.interpreterPathV1;
         const runtime = Global.getConfig<string>(interpreterPathKey);
-        Out.debug(`DebugDispatcher.start#runtime`);
-        Out.debug(`\t${runtime}`);
+        Out.verbose(`DebugDispatcher.start#runtime`);
+        Out.verbose(`\t${runtime}`);
         if (!existsSync(runtime)) {
             // Exact text is referenced in changelog, update changelog when updating this value
-            Out.log(`AutoHotkey interpreter not found`);
-            Out.debug(
+            Out.warn(`AutoHotkey interpreter not found`);
+            Out.verbose(
                 `Please update v${isAhk2 ? 2 : 1}: File > interpreterPath`,
             );
             this.end();
@@ -114,11 +114,11 @@ export class DebugDispatcher extends EventEmitter {
             args.program = await RunnerService.getPathByActive();
         }
         const programName = getFileNameOnly(args.program);
-        Out.debug(`DebugDispatcher.start#programName`);
-        Out.debug(`\t${programName}`);
+        Out.info(`DebugDispatcher.start#programName`);
+        Out.info(`\t${programName}`);
 
         //* Spawn AHK process
-        Out.debug(`DebugDispatcher.start: Spawning process`);
+        Out.info(`DebugDispatcher.start: Spawning process`);
         const ahkProcess = spawn(
             runtime,
             ['/ErrorStdOut', `/debug=localhost:${port}`, programName],

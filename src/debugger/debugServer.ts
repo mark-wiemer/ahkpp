@@ -31,7 +31,7 @@ export class DebugServer extends EventEmitter {
                 });
             })
             .on('error', (err: Error) => {
-                Out.log(err.message);
+                Out.warn(err.message);
                 throw err;
             });
 
@@ -82,7 +82,7 @@ export class DebugServer extends EventEmitter {
                     }
                 })
                 .catch((err: Error) => {
-                    Out.log(err);
+                    Out.warn(err);
                 });
         }
     }

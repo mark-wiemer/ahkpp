@@ -39,7 +39,7 @@ export class DebugSession extends LoggingDebugSession {
     private dispatcher: DebugDispatcher;
 
     public constructor() {
-        Out.debug('DebugSession.constructor');
+        Out.verbose('DebugSession.constructor');
         super();
 
         // this debugger uses zero-based lines and columns

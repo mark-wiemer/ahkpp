@@ -285,10 +285,16 @@
                             ],
                             "default": "always",
                             "description": "%ahk++.config.general.showOutput%"
+                        },
+                        "verboseLogging": {
+                            "type": "boolean",
+                            "default": true,
+                            "description": "%ahk++.config.general.verboseLogging%"
                         }
                     },
                     "default": {
-                        "showOutput": "always"
+                        "showOutput": "always",
+                        "verboseLogging": true
                     },
                     "additionalProperties": {
                         "type": "string"

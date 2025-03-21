@@ -13,7 +13,7 @@ export const exec = (
     new Promise((resolve, reject) => {
         child_process.exec(command, options, (error) => {
             if (error) {
-                Out.log(error.message);
+                Out.warn(error.message);
                 reject(error);
                 return;
             }
