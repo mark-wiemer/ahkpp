@@ -120,8 +120,11 @@ This setting fixes [issue #205](https://github.com/mark-wiemer/ahkpp/issues/205)
 
 Known issues with this feature:
 
--   It does not account for `#include <dir>` directives which change the base path of inclusion
--   If a file is renamed, links to functions declared in that file may fail. Restarting the extension should solve this issue.
+-   It does not account for `#include <dir>` directives which change the base path of inclusion ([#628](https://github.com/mark-wiemer/ahkpp/issues/628))
+
+Related issues:
+
+-   Functions declared in user or standard libraries are not found unless they're located in the workspace or referenced by `#include path/to/libFile.ahk`. `#include <lib>` is not recognized by AHK++. ([#629](https://github.com/mark-wiemer/ahkpp/issues/629))
 
 ## Other IDE settings
 

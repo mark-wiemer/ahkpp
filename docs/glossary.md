@@ -12,3 +12,4 @@ Links are to the AHK v2 definition of the related term. Links are only provided 
 | [Function](https://www.autohotkey.com/docs/v2/Concepts.htm#functions) | an AHK function, usually in the context of "function ref" or "function definition" |
 | [Method](https://www.autohotkey.com/docs/v2/Concepts.htm#methods)     | an AHK function attached to an object                                              |
 | Reference                                                             | a function call or definition                                                      |
+| Directive                                                             | e.g. "a `#include` directive", pronounced "a hashtag-include directive"            |
