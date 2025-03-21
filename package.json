@@ -77,7 +77,7 @@
         "test:e2e:ci": "npm run test:e2e -- -i --fgrep @ignoreCI --forbid-only",
         "pretest:grammar": "npm run compile:grammar",
         "test:grammar": "vscode-tmgrammar-snap language/samples/*.{ahk1,ahk2}",
-        "pretest:unit": "node src/build.mjs --mode=unit-test",
+        "pretest:unit": "npm run clean:out && node src/build.mjs --mode=unit-test",
         "test:unit": "mocha",
         "test:unit:ci": "npm run test:unit -- --forbid-only",
         "validate": "npm run format && npm run test && npm run package",
