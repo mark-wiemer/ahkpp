@@ -1,5 +1,7 @@
 # Changelog
 
+## 6.7.0 - unreleased
+
 ## 6.6.0 - 2025-03-21 🎩
 
 All changes in 6.6.0 are exclusive to AHK v1.
