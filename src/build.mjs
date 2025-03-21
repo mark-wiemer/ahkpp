@@ -1,6 +1,7 @@
 import { build } from 'esbuild';
 import minimist from 'minimist';
 
+/* eslint-disable-next-line no-undef */
 const args = minimist(process.argv.slice(2));
 const isUnitTest = args.mode === 'unit-test';
 const isProd = args.mode === 'production';
@@ -16,6 +17,7 @@ const buildOptions = {
     sourcemap: !isProd && !isUnitTest,
 };
 
+/* eslint-disable-next-line no-undef */
 console.log(`Building AHK++ in ${args.mode ?? 'development'} mode`);
 
 if (isUnitTest) {
