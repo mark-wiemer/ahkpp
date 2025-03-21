@@ -45,7 +45,7 @@ export class DebugDispatcher extends EventEmitter {
         if (!existsSync(runtime)) {
             // Exact text is referenced in changelog, update changelog when updating this value
             Out.warn(`AutoHotkey interpreter not found`);
-            Out.verbose(
+            Out.warn(
                 `Please update v${isAhk2 ? 2 : 1}: File > interpreterPath`,
             );
             this.end();
