@@ -58,7 +58,7 @@
 
 ### New features
 
--   Hovering over a filename in an `#include` directive now provides a link to that document in your IDE
+-   Hovering over a filename in a `#include` directive now provides a link to that document in your IDE
     -   If the file doesn't exist, the underline doesn't appear
     -   Does not work for `#include <lib>` syntax yet.
 

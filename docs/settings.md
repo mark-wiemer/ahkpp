@@ -122,6 +122,10 @@ Known issues with this feature:
 
 -   It does not account for `#include <dir>` directives which change the base path of inclusion ([#628](https://github.com/mark-wiemer/ahkpp/issues/628))
 
+Related issues:
+
+-   Functions declared in user or standard libraries are not found unless they're located in the workspace or referenced by `#include path/to/libFile.ahk`. `#include <lib>` is not recognized by AHK++. ([#629](https://github.com/mark-wiemer/ahkpp/issues/629))
+
 ## Other IDE settings
 
 It's always good to explore your IDE! There are a million settings to learn,
