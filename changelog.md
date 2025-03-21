@@ -4,10 +4,10 @@
 
 All changes in 6.6.0 are exclusive to AHK v1.
 
+-   Add experimental `funcDefSearch` setting that improves function definition resolution. For known issues, see [`settings.md`](./docs/settings.md). ([Issue #205](https://github.com/mark-wiemer/ahkpp/issues/205))
 -   Improve extension performance when loading AHK v1 scripts ([PR #615](https://github.com/mark-wiemer/ahkpp/pull/615))
 -   Change `Method` to `Function` in document symbols and internal references. This changes the document outline slightly, but should not change most theme icons and is more correct. ([PR #620](https://github.com/mark-wiemer/ahkpp/pull/620))
 -   Have scripts referenced by `#include` bypass the `exclude` setting ([PR #623](https://github.com/mark-wiemer/ahkpp/pull/623))
--   Add experimental `funcDefSearch` setting that improves function definition resolution. For known issues, see [`settings.md`](./docs/settings.md). ([PR #623](https://github.com/mark-wiemer/ahkpp/pull/623))
 
 ## 6.5.0 - 2025-02-23 💞
 
