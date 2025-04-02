@@ -14,7 +14,7 @@ import getPort from 'get-port';
 import { spawn } from 'child_process';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
-import { debug, error, info, warn } from '../common/log';
+import { debug, error, info } from '../common/log';
 import { Global, ConfigKey } from '../common/global';
 import { getFileNameOnly } from './debugDispatcher.utils';
 

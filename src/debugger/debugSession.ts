@@ -11,7 +11,7 @@ import { DebugProtocol } from '@vscode/debugprotocol';
 import { DebugDispatcher } from './debugDispatcher';
 import { Continue } from './struct/command';
 import { VscodeScope } from './struct/scope';
-import { debug } from 'src/common/log';
+import { debug } from '../common/log';
 
 /**
  * This interface describes the mock-debug specific launch attributes

@@ -32,7 +32,7 @@ export async function pathsToBuild(
         let dir: Dir;
         try {
             dir = await promises.opendir(rootPath);
-        } catch (e) {
+        } catch {
             return paths;
         }
         for await (const dirent of dir) {

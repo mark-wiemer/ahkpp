@@ -4,7 +4,7 @@ import { resolveIncludedPath } from '../common/utils';
 import { stat } from 'fs/promises';
 import { getFuncDefByName } from '../parser/parser.utils';
 import { ConfigKey, Global } from '../common/global';
-import { debug } from 'src/common/log';
+import { debug } from '../common/log';
 
 export class DefProvider implements vscode.DefinitionProvider {
     public async provideDefinition(
