@@ -14,8 +14,9 @@ import getPort from 'get-port';
 import { spawn } from 'child_process';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
-import { Out } from '../common/out';
+import { debug, error, info, warn } from '../common/log';
 import { Global, ConfigKey } from '../common/global';
+import { getFileNameOnly } from './debugDispatcher.utils';
 
 /** An AHK runtime debugger, ref https://xdebug.org/docs/dbgp */
 export class DebugDispatcher extends EventEmitter {
@@ -32,22 +33,20 @@ export class DebugDispatcher extends EventEmitter {
 
     /** Start executing the given program. */
     public async start(args: LaunchRequestArguments) {
-        Out.verbose(`DebugDispatcher.start#args`);
-        Out.verbose(`\t${JSON.stringify(args)}`);
+        debug(`DebugDispatcher.start#args`);
+        debug(`\t${JSON.stringify(args)}`);
         /** Default to AHK v1 if type not provided */
         const isAhk2 = args.type === 'ahk2';
         const interpreterPathKey = isAhk2
             ? ConfigKey.interpreterPathV2
             : ConfigKey.interpreterPathV1;
         const runtime = Global.getConfig<string>(interpreterPathKey);
-        Out.verbose(`DebugDispatcher.start#runtime`);
-        Out.verbose(`\t${runtime}`);
+        debug(`DebugDispatcher.start#runtime`);
+        debug(`\t${runtime}`);
         if (!existsSync(runtime)) {
             // Exact text is referenced in changelog, update changelog when updating this value
-            Out.warn(`AutoHotkey interpreter not found`);
-            Out.warn(
-                `Please update v${isAhk2 ? 2 : 1}: File > interpreterPath`,
-            );
+            error(`AutoHotkey interpreter not found`);
+            error(`Please update v${isAhk2 ? 2 : 1}: File > interpreterPath`);
             this.end();
             return;
         }
@@ -114,16 +113,18 @@ export class DebugDispatcher extends EventEmitter {
             args.program = await RunnerService.getPathByActive();
         }
         const programName = getFileNameOnly(args.program);
-        Out.info(`DebugDispatcher.start#programName`);
-        Out.info(`\t${programName}`);
+        const commandLineArgs = [
+            '/ErrorStdOut',
+            `/debug=localhost:${port}`,
+            programName,
+        ];
+        const cwd = resolve(args.program, '..');
 
-        //* Spawn AHK process
-        Out.info(`DebugDispatcher.start: Spawning process`);
-        const ahkProcess = spawn(
-            runtime,
-            ['/ErrorStdOut', `/debug=localhost:${port}`, programName],
-            { cwd: `${resolve(args.program, '..')}` },
+        info(
+            `Starting debug session: ${runtime} ${commandLineArgs.join(' ')} in ${cwd}`,
         );
+        //* Spawn AHK process
+        const ahkProcess = spawn(runtime, commandLineArgs, { cwd: cwd });
         ahkProcess.stderr.on('data', (err) => {
             this.emit('output', err.toString('utf8'));
             this.end();
@@ -355,14 +356,3 @@ export class DebugDispatcher extends EventEmitter {
         }
     }
 }
-
-/**
- * Returns the user-friendly "name" of the file instead of its path
- * @param path slash-delimited path (backslash, forward slash, or mixed)
- * @returns last segment of the path
- * @example ('c:\\Users\\mark\\myScript.ahk') => 'myScript.ahk'
- */
-const getFileNameOnly = (path: string): string => {
-    const splitPath = path.split(/\\\\|\//);
-    return splitPath[splitPath.length - 1];
-};
