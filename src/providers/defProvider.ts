@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 import { Parser } from '../parser/parser';
 import { resolveIncludedPath } from '../common/utils';
-import { Out } from '../common/out';
 import { stat } from 'fs/promises';
 import { getFuncDefByName } from '../parser/parser.utils';
 import { ConfigKey, Global } from '../common/global';
+import { debug } from '../common/log';
 
 export class DefProvider implements vscode.DefinitionProvider {
     public async provideDefinition(
@@ -14,21 +14,21 @@ export class DefProvider implements vscode.DefinitionProvider {
         vscode.Location | vscode.Location[] | vscode.LocationLink[] | null
     > {
         const funcName = 'provideDefinition';
-        Out.verbose(funcName);
+        debug(funcName);
 
         const docPath = document.uri.path;
         const { text } = document.lineAt(position.line);
         const fileLink = await tryGetFileLink(docPath, text);
         if (fileLink) {
-            Out.verbose(`${funcName} returning fileLink`);
+            debug(`${funcName} returning fileLink`);
             return fileLink;
         }
-        Out.verbose(`${funcName} after tryGetFileLink`);
+        debug(`${funcName} after tryGetFileLink`);
 
         const word = document.getText(
             document.getWordRangeAtPosition(position),
         );
-        Out.verbose(`${funcName} word: ${word}`);
+        debug(`${funcName} word: ${word}`);
 
         // get function definition
         if (
@@ -36,14 +36,12 @@ export class DefProvider implements vscode.DefinitionProvider {
                 document.lineAt(position.line).text,
             )
         ) {
-            Out.verbose(
-                `${funcName} calling getFuncDefByName for word: ${word}`,
-            );
+            debug(`${funcName} calling getFuncDefByName for word: ${word}`);
             const newSearch = Global.getConfig<boolean>(
                 ConfigKey.funcDefSearch,
             );
             const funcDef = getFuncDefByName(docPath, word, newSearch);
-            Out.verbose(`${funcName} funcDef.name: ${funcDef?.name}`);
+            debug(`${funcName} funcDef.name: ${funcDef?.name}`);
             if (funcDef) {
                 return new vscode.Location(
                     vscode.Uri.parse(funcDef.uriString),
@@ -132,16 +130,16 @@ export async function tryGetFileLink(
     text: string,
 ): Promise<vscode.Location | undefined> {
     const funcName = 'tryGetFileLink';
-    Out.verbose(`${funcName}('${docPath}', '${text}')`);
+    debug(`${funcName}('${docPath}', '${text}')`);
 
     /** @example 'c:/path/to/included.ahk' */
     const resolvedPath = resolveIncludedPath(docPath, text);
-    Out.verbose(`${funcName} resolvedPath: ${resolvedPath}`);
+    debug(`${funcName} resolvedPath: ${resolvedPath}`);
     if (!resolvedPath) return undefined;
 
     const fsStat = await stat(resolvedPath);
     const isFile = fsStat.isFile();
-    Out.verbose(`${funcName} isFile: ${isFile}`);
+    debug(`${funcName} isFile: ${isFile}`);
     return fsStat.isFile()
         ? new vscode.Location(
               vscode.Uri.file(resolvedPath),

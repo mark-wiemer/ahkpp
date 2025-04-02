@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import * as Net from 'net';
 import * as xml2js from 'xml2js';
-import { Out } from '../common/out';
+import { error, warn } from '../common/log';
 
 /**
  * Exchange dbgp protocol with ahk debug proxy.
@@ -31,7 +31,7 @@ export class DebugServer extends EventEmitter {
                 });
             })
             .on('error', (err: Error) => {
-                Out.warn(err.message);
+                error(err.message);
                 throw err;
             });
 
@@ -82,7 +82,7 @@ export class DebugServer extends EventEmitter {
                     }
                 })
                 .catch((err: Error) => {
-                    Out.warn(err);
+                    warn(err);
                 });
         }
     }

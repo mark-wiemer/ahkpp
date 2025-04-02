@@ -2,7 +2,7 @@
 
 ## 6.7.0 - unreleased
 
--   Add `AHK++ > General > verboseLogging` to toggle verbose AHK v1 logs in output channels. todo toggle AHK v2 logs as well
+-   Add `AHK++ > General > logLevel` for logs in output channels ([#625](https://github.com/mark-wiemer/ahkpp/issues/625), [#635](https://github.com/mark-wiemer/ahkpp/issues/635))
 
 ## 6.6.0 - 2025-03-21 🎩
 

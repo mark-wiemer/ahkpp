@@ -53,4 +53,4 @@ If debugging starts but suddenly stops silently, you may have a syntax error. Tr
 
 ## For contributors
 
-Debuggers are hard to work with. We recommend adding `Out.debug` statements, re-packaging the extension, re-installing it, and restarting extensions. Then you can work with the `demos/manualTests/debugger.ahk*` files. Trying to start a debugger while in a debug session is difficult. Trying to debug a debugger at all is also difficult. Good luck, be patient, and be ready to read a lot of docs.
+Debuggers are hard to work with. Trying to start a debugger while in a debug session is difficult. Trying to debug a debugger at all is also difficult. Instead, we recommend adding `log` calls, re-packaging the extension, re-installing it, and restarting extensions. Then you can work with the `demos/manualTests/debugger.ahk*` files. Good luck, be patient, and be ready to read a lot of docs.

@@ -1,6 +1,6 @@
-import { Out } from 'src/common/out';
+import { debug } from '../common/log';
 import { DebugSession } from './debugSession';
 
-Out.verbose('Starting DebugAdapter');
+debug('Starting DebugAdapter');
 
 DebugSession.run(DebugSession);

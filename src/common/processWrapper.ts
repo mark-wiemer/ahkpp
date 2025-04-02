@@ -1,5 +1,5 @@
 import * as child_process from 'child_process';
-import { Out } from './out';
+import { error as logError } from './log';
 
 /**
  * Wrapper for Node's `child_process.exec`, includes logging.
@@ -13,7 +13,7 @@ export const exec = (
     new Promise((resolve, reject) => {
         child_process.exec(command, options, (error) => {
             if (error) {
-                Out.warn(error.message);
+                logError(error.message);
                 reject(error);
                 return;
             }

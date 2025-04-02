@@ -49,7 +49,9 @@ These steps shouldn't be necessary for most issues, and may be difficult to exec
 
 ### Debug logs
 
-Using `Ctrl+Shift+U` to open the output view, you can select either of the AHK++ channels to see all debug logs. You're welcome to map these logs to `Out.debug` and `console.log` calls in the source code. Please include your findings if you [open a bug](https://github.com/mark-wiemer/ahkpp/issues/new/choose).
+If you're having issues, you can restart AHK++ in debug mode for more logs. Set `AHK++.general.logLevel` to `debug` to see all logs. Then restart the extension using `F1 > Developer: Restart Extension Host`.
+
+Using `Ctrl+Shift+U` to open the output view, you can select either of the AHK++ channels to see all debug logs. You're welcome to map these logs to calls in the source code. Please include your findings if you [open a bug](https://github.com/mark-wiemer/ahkpp/issues/new/choose).
 
 ### Full uninstall and reinstall
 

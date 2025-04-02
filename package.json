@@ -272,6 +272,7 @@
                 },
                 "AHK++.general": {
                     "type": "object",
+                    "markdownDescription": "%ahk++.config.general%",
                     "properties": {
                         "showOutput": {
                             "type": "string",
@@ -286,15 +287,23 @@
                             "default": "always",
                             "description": "%ahk++.config.general.showOutput%"
                         },
-                        "verboseLogging": {
-                            "type": "boolean",
-                            "default": true,
-                            "description": "%ahk++.config.general.verboseLogging%"
+                        "logLevel": {
+                            "type": "string",
+                            "enum": [
+                                "debug",
+                                "info",
+                                "warn",
+                                "error",
+                                "critical",
+                                "none"
+                            ],
+                            "default": "info",
+                            "description": "%ahk++.config.general.logLevel%"
                         }
                     },
                     "default": {
                         "showOutput": "always",
-                        "verboseLogging": true
+                        "logLevel": "info"
                     },
                     "additionalProperties": {
                         "type": "string"
