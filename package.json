@@ -272,6 +272,7 @@
                 },
                 "AHK++.general": {
                     "type": "object",
+                    "markdownDescription": "%ahk++.config.general%",
                     "properties": {
                         "showOutput": {
                             "type": "string",
@@ -296,7 +297,7 @@
                                 "critical",
                                 "none"
                             ],
-                            "default": true,
+                            "default": "info",
                             "description": "%ahk++.config.general.logLevel%"
                         }
                     },

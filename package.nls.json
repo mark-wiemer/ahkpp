@@ -18,6 +18,7 @@
     "ahk++.config.exclude": "[Glob patterns](<https://en.wikipedia.org/wiki/Glob_(programming)>) for excluding files and folders from completion suggestions. Applies even when files are opened. Scripts included with `#Include` are never excluded.",
     "ahk++.config.experimental": "New features with known or likely issues. Please [report any issues](https://github.com/mark-wiemer/ahkpp/issues/new/choose).",
     "ahk++.config.experimental.funcDefSearch": "Get function info and definitions based on included and local library files only. When false, reads from the entire workspace. Changes take effect after restart.",
+    "ahk++.config.general": "General settings that apply to both AHK v1 and v2. For more details, see [settings.md](https://github.com/mark-wiemer/ahkpp/blob/main/docs/settings.md)",
     "ahk++.config.general.showOutput": "Automatically show output view when running a script. View can always be toggled with F1 > 'View: Toggle Output' (`Ctrl+Shift+U`)",
     "ahk++.config.general.showOutput.always": "Always open the output view when running a script",
     "ahk++.config.general.showOutput.never": "Never automatically show the output view",
