@@ -21,7 +21,7 @@ interface Exclude {
 export async function pathsToBuild(
     rootDirPath: string,
     excludeConfig: string[],
-    log: (val: string) => void = () => {},
+    warn: (val: string) => void = () => {},
 ): Promise<string[]> {
     const funcName = 'pathsToBuild';
     const paths: string[] = [];
@@ -29,25 +29,25 @@ export async function pathsToBuild(
         return paths;
     }
     const exclude = parseExcludeConfig(excludeConfig);
-    const folderStr = exclude.folder.map((re) => re.toString()).join('\n');
-    log(`${funcName}.exclude.folder: ${folderStr}`);
-    const file = exclude.file.map((re) => re.toString()).join('\n');
-    log(`${funcName}.exclude.file: ${file}`);
+    // const folderStr = exclude.folder.map((re) => re.toString()).join('\n');
+    // debug(`${funcName}.exclude.folder: ${folderStr}`);
+    // const file = exclude.file.map((re) => re.toString()).join('\n');
+    // debug(`${funcName}.exclude.file: ${file}`);
 
     const pathsToBuildInner = async (rootPath: string) => {
-        log(`${funcName} checking root ` + rootPath);
+        // debug(`${funcName} checking root ` + rootPath);
         let dir: Dir;
         try {
             dir = await promises.opendir(rootPath);
         } catch (e) {
-            log(`${funcName} error opening root ` + rootPath);
-            log(e);
+            warn(`${funcName} error opening root ` + rootPath);
+            warn(e);
             return paths;
         }
-        log(`${funcName} opened root ` + rootPath);
+        // debug(`${funcName} opened root ` + rootPath);
         for await (const dirent of dir) {
             const path = resolve(rootPath, dirent.name);
-            log('Checking ' + path);
+            // debug('Checking ' + path);
             if (
                 dirent.isDirectory() &&
                 !exclude.folder.some((re) => re.test(path))
@@ -58,10 +58,10 @@ export async function pathsToBuild(
                 dirent.name.match(/\.(ahk|ah1|ahk1|ext)$/i) &&
                 !exclude.file.some((re) => re.test(path))
             ) {
-                log('Adding ' + path);
+                // debug('Adding ' + path);
                 paths.push(path);
             } else {
-                log('Ignoring ' + path);
+                // debug('Ignoring ' + path);
             }
         }
         return paths;

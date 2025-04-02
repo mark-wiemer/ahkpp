@@ -286,15 +286,23 @@
                             "default": "always",
                             "description": "%ahk++.config.general.showOutput%"
                         },
-                        "verboseLogging": {
-                            "type": "boolean",
+                        "logLevel": {
+                            "type": "string",
+                            "enum": [
+                                "debug",
+                                "info",
+                                "warn",
+                                "error",
+                                "critical",
+                                "none"
+                            ],
                             "default": true,
-                            "description": "%ahk++.config.general.verboseLogging%"
+                            "description": "%ahk++.config.general.logLevel%"
                         }
                     },
                     "default": {
                         "showOutput": "always",
-                        "verboseLogging": true
+                        "logLevel": "info"
                     },
                     "additionalProperties": {
                         "type": "string"

@@ -49,6 +49,7 @@ export enum ConfigKey {
     indentCodeAfterLabel = 'v1.formatter.indentCodeAfterLabel',
     interpreterPathV1 = 'v1.file.interpreterPath',
     interpreterPathV2 = 'v2.file.interpreterPath',
+    logLevel = 'general.logLevel',
     maximumParseLength = 'v1.intellisense.maximumParseLength',
     preserveIndent = 'v1.formatter.preserveIndent',
     showOutput = 'general.showOutput',
@@ -56,7 +57,6 @@ export enum ConfigKey {
     templateSnippetNameV2 = 'v2.file.templateSnippetName',
     trimExtraSpaces = 'v1.formatter.trimExtraSpaces',
     useMpress = 'compiler.useMpress',
-    verboseLogging = 'general.verboseLogging',
 }
 
 /** Also in submodule */

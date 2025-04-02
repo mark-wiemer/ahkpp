@@ -11,7 +11,7 @@ import { DebugProtocol } from '@vscode/debugprotocol';
 import { DebugDispatcher } from './debugDispatcher';
 import { Continue } from './struct/command';
 import { VscodeScope } from './struct/scope';
-import { Out } from 'src/common/out';
+import { debug } from 'src/common/log';
 
 /**
  * This interface describes the mock-debug specific launch attributes
@@ -39,7 +39,7 @@ export class DebugSession extends LoggingDebugSession {
     private dispatcher: DebugDispatcher;
 
     public constructor() {
-        Out.verbose('DebugSession.constructor');
+        debug('DebugSession.constructor');
         super();
 
         // this debugger uses zero-based lines and columns
