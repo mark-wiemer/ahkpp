@@ -1,6 +1,6 @@
 # Changelog
 
-## 6.7.0 - unreleased
+## 6.7.0 - 2025-04-01 🤡
 
 -   Add `AHK++ > General > logLevel` for logs in output channels ([#625](https://github.com/mark-wiemer/ahkpp/issues/625), [#635](https://github.com/mark-wiemer/ahkpp/issues/635))
 
