@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.7.1 - unreleased
+
+-   Make "Configuration changed" log debug-level instead of info-level ([#625 (comment)](https://github.com/mark-wiemer/ahkpp/issues/625#issuecomment-2772599772))
+
 ## 6.7.0 - 2025-04-01 🤡
 
 -   Add `AHK++ > General > logLevel` for logs in output channels ([#625](https://github.com/mark-wiemer/ahkpp/issues/625), [#635](https://github.com/mark-wiemer/ahkpp/issues/635))
