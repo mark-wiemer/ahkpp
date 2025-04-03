@@ -2,6 +2,17 @@
 
 If AHK++ isn't behaving as you expect, here are some things you can try.
 
+## AHK language version mismatch
+
+If you only use one version of AHK (e.g. only AHK v1 or only AHK v2), we recommend manually configuring the file association of `.ahk` files. This allows AHK++ to correctly process scripts according to your preferred AHK version.
+
+1. Open a `.ahk` file
+1. F1 > "Change Language Mode" (Ctrl+K, M)
+1. Configure file association for ".ahk"
+1. Choose your preferred version
+
+All files should now be updated. Unfortunately, this isn't a VS Code setting, so you may have to redo this step if you change profiles, reinstall VS Code, etc.
+
 ## AHK v2: Validate your interpreter
 
 For AHK v2, the language server may not behave correctly if it fails to identify a valid path to an interpreter like `AutoHotkey.exe`. The status bar at the bottom left of your IDE should show the current interpreter or an option to "Select AHK v2 Interpreter".
