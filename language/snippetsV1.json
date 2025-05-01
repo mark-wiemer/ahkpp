@@ -282,7 +282,7 @@
     },
     "CoordMode": {
         "prefix": "CoordMode",
-        "body": "CoordMode, ${1:ToolTip|Pixel|Mouse [}, ${2:Screen|Relative]}",
+        "body": "CoordMode, ${1:ToolTip|Pixel|Mouse|Caret|Menu [}, ${2:Screen|Window|Client]}",
         "description": "Sets coordinate mode for various commands to be relative to either the active window or the screen."
     },
     "Critical": {
