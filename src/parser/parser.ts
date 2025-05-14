@@ -4,7 +4,7 @@ import { CodeUtil } from '../common/codeUtil';
 import { Script, FuncDef, FuncRef, Label, Block, Variable } from './model';
 import { scriptCache, pathsToBuild } from './parser.utils';
 import { resolveIncludedPath } from '../common/utils';
-import { debug, warn } from '../common/log';
+import { debug } from '../common/log';
 
 const startBlockComment = / *\/\*/;
 // todo does endBlockComment work on lines like `; */` ?
@@ -39,8 +39,10 @@ const buildPaths = async (
             debug(`buildPaths opened` + document);
             await Parser.buildScript(document, options);
         } catch (e) {
-            warn(`${funcName} error building ${path}`);
-            warn(e);
+            // Issues are common here, this is still experimental
+            // https://github.com/mark-wiemer/ahkpp/issues/628
+            debug(`${funcName} error building ${path}`);
+            debug(e);
         }
     }
 };
@@ -177,8 +179,8 @@ export class Parser {
         scriptCache.set(docPath, script);
 
         // we can build included paths at the end because we don't store
-        // definition locations of all function calls
-        // in the cache, we search and find them as needed based on user action
+        // definition locations of all function calls in the cache,
+        // we search and find them as needed based on user action
         debug(`Building included paths:`);
         debug('\t' + (includedPaths.join('\n\t') || '(none)'));
         await buildPaths(includedPaths, { usingCache: true });

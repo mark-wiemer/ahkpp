@@ -71,8 +71,8 @@ export const resolveIncludedPath = (
         basePath,
         parentGoodPath,
     );
-    const absolutePath = isAbsolute(includedPath)
-        ? normalize(includedPath)
+    const absolutePath = isAbsolute(normalizedPath)
+        ? normalizedPath
         : join(parentGoodPath, normalizedPath);
     return absolutePath;
 };
