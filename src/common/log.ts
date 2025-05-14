@@ -46,16 +46,10 @@ export const critical = (value: Error | string) =>
 
 /**
  * Logs message if provided log level is valid for configured log level.
- * Logs warning if configured log level is invalid.
  */
 const log = (value: Error | string, thisLevel: LogLevel) => {
     const configLevel: LogLevel | undefined = logLevelRecord[configLevelStr];
-    if (configLevel === undefined) {
-        logInner(`Invalid setting AHK++.general.logLevel: "${configLevelStr}"`);
-        getOutputChannel().show(false);
-        return;
-    }
-    if (configLevel === LogLevel.None) {
+    if (configLevel === undefined || configLevel === LogLevel.None) {
         return;
     }
     if (thisLevel >= configLevel) {
