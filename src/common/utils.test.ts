@@ -49,6 +49,22 @@ suite(resolveIncludedPath.name, () => {
     ][] = [
         ['relative file', ['/c:/main.ahk', 'a.ahk'], 'c:\\a.ahk'],
         ['absolute file', ['/c:/users/main.ahk', 'd:/b.ahk'], 'd:\\b.ahk'],
+        [
+            'A_ScriptDir',
+            ['/c:/users/main.ahk', '%A_ScriptDir%/AutoXYWH.ahk'],
+            'c:\\users\\AutoXYWH.ahk',
+        ],
+        [
+            'A_WorkingDir',
+            ['/c:/users/main.ahk', '%A_WorkingDir%/AutoXYWH.ahk'],
+            'c:\\users\\AutoXYWH.ahk',
+        ],
+        [
+            'A_LineFile',
+            ['/c:/users/main.ahk', '%A_LineFile%/../other.ahk'],
+            // Starting with a forward slash still works :)
+            '\\c:\\users\\other.ahk',
+        ],
         ['with single dot', ['/c:/main.ahk', './c.ahk'], 'c:\\c.ahk'],
         ['with double dot', ['/c:/users/main.ahk', '../d.ahk'], 'c:\\d.ahk'],
     ];
