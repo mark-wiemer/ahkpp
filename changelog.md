@@ -7,6 +7,7 @@
 -   Fix excessive logs when `#include` files aren't found by AHK++ ([#641](https://github.com/mark-wiemer/ahkpp/issues/641), [#646](https://github.com/mark-wiemer/ahkpp/issues/646), [#649](https://github.com/mark-wiemer/ahkpp/issues/649), and [#657](https://github.com/mark-wiemer/ahkpp/issues/646))
     -   Logic to detect these files has improved but still has at least one known issue: [#628](https://github.com/mark-wiemer/ahkpp/issues/628)
     -   When a file isn't found, the log is now `debug` level instead of `warn` level to reduce noise
+-   Improve AHK v1 snippet for `CoordMode` ([PR #651](https://github.com/mark-wiemer/ahkpp/pull/651))
 
 ## 6.7.0 - 2025-04-01 🤡
 
