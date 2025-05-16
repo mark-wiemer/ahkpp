@@ -1,6 +1,6 @@
 # Changelog
 
-## 6.7.1 - unreleased
+## 6.7.1 - 2025-05-16 🎓
 
 -   Make "Configuration changed" log debug-level instead of info-level ([#625 (comment)](https://github.com/mark-wiemer/ahkpp/issues/625#issuecomment-2772599772))
 -   Remove "Invalid setting" log if `logLevel` setting was not found ([#644](https://github.com/mark-wiemer/ahkpp/issues/644))
