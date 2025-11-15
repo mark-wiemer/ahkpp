@@ -1210,7 +1210,7 @@
         "del-cli": "^6.0.0",
         "esbuild": "0.25.0",
         "eslint": "^9.9.0",
-        "js-yaml": "^4.1.0",
+        "js-yaml": "^4.1.1",
         "minimist": "^1.2.8",
         "mocha": "11.1.0",
         "prettier": "3.3.3",
