@@ -11,6 +11,10 @@
     <div><a href="docs/troubleshooting.md">Troubleshooting</a> | <a href="https://github.com/mark-wiemer/ahkpp/issues/new/choose">Open a bug</a> | <a href="https://marketplace.visualstudio.com/items?itemName=mark-wiemer.vscode-autohotkey-plus-plus&ssr=false#review-details">Leave a review</a></div>
 </div>
 
+
+> [!NOTE]
+> AHK++ will go into maintenance mode on January 1, 2027. Critical bugs and security issues will still be addressed, but no new features will be added. See [the announcement](https://github.com/mark-wiemer/ahkpp/discussions/686) for more details.
+
 ## Install
 
 AHK++ is available for: [VS Code](https://code.visualstudio.com) | [Theia IDE](https://theia-ide.org) | [VSCodium](https://vscodium.com) | [any other IDE that supports \*.vsix extensions](https://github.com/mark-wiemer/ahkpp/releases)
