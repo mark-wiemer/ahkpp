@@ -20,25 +20,6 @@ AHK++ is available for: [VS Code](https://code.visualstudio.com) | [Theia IDE](h
 
 Download from a trusted source: [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=mark-wiemer.vscode-autohotkey-plus-plus) | [Open VSX Registry](https://open-vsx.org/extension/mark-wiemer/vscode-autohotkey-plus-plus) | [GitHub releases](https://github.com/mark-wiemer/ahkpp/releases)
 
-## AHK v2 full support is here! 🥂
-
-AHK++ 6 incorporates [AutoHotkey v2 Language Support by thqby](https://marketplace.visualstudio.com/items?itemName=thqby.vscode-autohotkey2-lsp), providing full support for AHK v2, including:
-
--   Running, debugging, and stopping v1 and v2 scripts without changing settings
--   Full syntax highlighting for v2 scripts
--   "Open help" (`Ctrl+F1`) opens language-specific help (and includes your text selection)
--   Unique icons for AHK v1 (blue) and v2 (green)
--   Rich IntelliSense support with snippets, hover text, and suggestions
--   Formatting files with many customized options
-
-For all changes, including breaking changes, see [the changelog](./changelog.md#600---2024-09-01-)
-
-As always, please [🐛 report any issues](https://github.com/mark-wiemer/ahkpp/issues/new/choose)
-
-💚 Special thanks again to [thqby](https://github.com/thqby), as this would not have been possible without thqby's open-source [AutoHotkey v2 Language Support](https://marketplace.visualstudio.com/items?itemName=thqby.vscode-autohotkey2-lsp)!
-
----
-
 ## Commands
 
 With AHK++, you can compile, debug, and run your scripts with keyboard shortcuts. You can also run a selection as a standalone script.
