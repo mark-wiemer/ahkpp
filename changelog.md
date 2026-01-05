@@ -1,5 +1,14 @@
 # Changelog
 
+## 6.7.2 - 2026-01-04 🧼
+
+No user-facing changes in this release, but there may be minor performance improvements due to internal dependency upgrades.
+
+- Update internal dependencies
+- Cleanup readme
+
+Reminder: AHK++ will go into maintenance mode on January 1, 2027. Critical bugs and security issues will still be addressed, but no new features will be added. See [the announcement](https://github.com/mark-wiemer/ahkpp/discussions/686) for more details.
+
 ## 6.7.1 - 2025-05-16 🎓
 
 -   Make "Configuration changed" log debug-level instead of info-level ([#625 (comment)](https://github.com/mark-wiemer/ahkpp/issues/625#issuecomment-2772599772))
