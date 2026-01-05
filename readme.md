@@ -38,7 +38,11 @@ With AHK++, you can compile, debug, and run your scripts with keyboard shortcuts
 1. Click the debug button in the editor title menu (at the top right of the editor) or press `Ctrl+Alt+F9`.
 2. The debugger supports breakpoints, stack tracing, and variable watching
 
-    ![Debug](image/debug.gif)
+   <details><summary>Demo GIF</summary>
+
+   ![Debug](image/debug.gif)
+
+   </details>
 
 ### Debug features
 
