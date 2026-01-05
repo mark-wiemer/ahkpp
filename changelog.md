@@ -4,8 +4,8 @@
 
 No user-facing changes in this release, but there may be minor performance improvements due to internal dependency upgrades.
 
-- Update internal dependencies
-- Cleanup readme
+-   Update internal dependencies
+-   Cleanup readme
 
 Reminder: AHK++ will go into maintenance mode on January 1, 2027. Critical bugs and security issues will still be addressed, but no new features will be added. See [the announcement](https://github.com/mark-wiemer/ahkpp/discussions/686) for more details.
 
