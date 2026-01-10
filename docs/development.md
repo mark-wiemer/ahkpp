@@ -59,6 +59,14 @@ Unless otherwise specified, commit messages don't matter.
 
 When the tag is pushed, changes will automatically be published by the [deploy workflow](https://github.com/mark-wiemer/ahkpp/actions/workflows/deploy.yml).
 
+#### Manual publish
+
+In case automatic publish to any registry fails, you can locally publish. Use the same VSIX, either from your local machine or downloading from the GitHub release.
+
+Visual Studio Marketplace: Go to the same publisher view as for validating the deployment, then upload the VSIX.
+
+<!-- todo Open VSX Marketplace -->
+
 ### Validating deployment
 
 1. [Deploy workflow](https://github.com/mark-wiemer/ahkpp/actions/workflows/deploy.yml)
