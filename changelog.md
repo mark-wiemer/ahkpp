@@ -4,8 +4,9 @@
 
 No user-facing changes in this release.
 
-- Update readme to use CommonMark syntax RE the maintenance mode announcement
-- Hide the "above-the-fold" debug GIF by default to reduce auto-playing, unpausable animations
+-   Update internal dependencies
+-   Update readme to use CommonMark syntax RE the maintenance mode announcement
+-   Hide the "above-the-fold" debug GIF by default to reduce auto-playing, unpausable animations
 
 ## 6.7.2 - 2026-01-04 🧼
 
