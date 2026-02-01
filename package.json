@@ -1212,7 +1212,7 @@
         "eslint": "^9.9.0",
         "js-yaml": "^4.1.1",
         "minimist": "^1.2.8",
-        "mocha": "11.6.0",
+        "mocha": "11.7.0",
         "prettier": "3.3.3",
         "sinon": "^18.0.1",
         "sort-package-json": "^1.57.0",
@@ -1230,7 +1230,7 @@
         "theme": "dark"
     },
     "overrides": {
-        "mocha": "11.6.0"
+        "mocha": "11.7.0"
     },
     "__metadata": {
         "id": "cf96e3c7-3b07-4403-acc9-2b6299ba7877",
