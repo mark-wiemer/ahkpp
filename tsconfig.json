@@ -8,7 +8,6 @@
         "sourceMap": true,
         "rootDirs": ["src"],
         "esModuleInterop": true,
-        "ignoreDeprecations": "5.0",
         "paths": {
             "mocha": ["./node_modules/@types/mocha"]
         },
