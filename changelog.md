@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 6.7.4 - 2026-08-07 👋
 
 -   Add docs for `WinGetAlwaysOnTop` in AHK v2
 -   Use `AHKPP_DEBUG` instead of `DEBUG` global variable ([#701](https://github.com/mark-wiemer/ahkpp/issues/701))
