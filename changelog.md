@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+-   Fix "bet" to "be" typo in docs for "or" operator
+-   Many internal dependency upgrades to fix potential security issues
+
 ## 6.7.3 - 2026-01-13 🤫
 
 No user-facing changes in this release.
