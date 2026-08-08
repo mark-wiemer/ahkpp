@@ -55,13 +55,14 @@ const buildScriptV2 = (searchText: string, helpPath: string) => `
 SetWinDelay(10)
 SetKeyDelay(0)
 searchText := "${searchText}"
-if (not WinExist("AutoHotkey v2 Help", ""))
+helpWindow := "ahk_class HH Parent"
+if (not WinExist(helpWindow))
 {
     Run "${helpPath}"
-    WinWait "AutoHotkey v2 Help"
+    WinWait helpWindow
 }
-WinActivate
-WinWaitActive
+WinActivate helpWindow
+WinWaitActive helpWindow
 StrReplace(searchText, "#", "{#}")
 Send "!s"
 Sleep 200
