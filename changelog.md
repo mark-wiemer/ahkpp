@@ -3,7 +3,8 @@
 ## Unreleased
 
 -   Add docs for `WinGetAlwaysOnTop` in AHK v2
--   Use `AHKPP_DEBUG` instead of `DEBUG` global variable ([issue #701](https://github.com/mark-wiemer/ahkpp/issues/701))
+-   Use `AHKPP_DEBUG` instead of `DEBUG` global variable ([#701](https://github.com/mark-wiemer/ahkpp/issues/701))
+-   Fix "Open AutoHotkey Help" for non-English users ([[#727](https://github.com/mark-wiemer/ahkpp/issues/727)])
 -   Fix typo in docs for "or" operator ("bet" to "be")
 -   Update internal dependencies
 
