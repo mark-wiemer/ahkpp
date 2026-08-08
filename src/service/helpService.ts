@@ -5,6 +5,7 @@ import { existsSync } from 'fs';
 import * as vscode from 'vscode';
 import * as child_process from 'child_process';
 import { isV1 } from '../common/codeUtil';
+import { findInterpreterPath } from '../common/utils';
 
 /**
  * Returns the text to use as a search.
@@ -31,16 +32,24 @@ const getSearchText = (
     return '';
 };
 
-const buildScriptV1 = (searchText: string, helpPath: string) => `
+const buildScriptV1 = (
+    searchText: string,
+    helpPath: string,
+    launchHelp = true,
+) => `
 SetWinDelay 10
 SetKeyDelay 0
 searchText := "${searchText.replaceAll('"', '""')}" ; Escape double quotes 
 searchText := StrReplace(searchText, "#", "{#}")
-IfWinNotExist, AutoHotkey Help
+${
+    launchHelp
+        ? `IfWinNotExist, AutoHotkey Help
 {
     Run ${helpPath}
-    WinWait AutoHotkey Help
+}`
+        : ''
 }
+WinWait AutoHotkey Help
 WinActivate
 WinWaitActive
 Send, !s
@@ -51,16 +60,24 @@ Send +{end}%searchText%{enter}
 ExitApp
 `;
 
-const buildScriptV2 = (searchText: string, helpPath: string) => `
+const buildScriptV2 = (
+    searchText: string,
+    helpPath: string,
+    launchHelp = true,
+) => `
 SetWinDelay(10)
 SetKeyDelay(0)
 searchText := "${searchText}"
 helpWindow := "ahk_class HH Parent"
-if (not WinExist(helpWindow))
+${
+    launchHelp
+        ? `if (not WinExist(helpWindow))
 {
     Run "${helpPath}"
-    WinWait helpWindow
+}`
+        : ''
 }
+WinWait helpWindow
 WinActivate helpWindow
 WinWaitActive helpWindow
 StrReplace(searchText, "#", "{#}")
@@ -81,31 +98,46 @@ export async function openHelp() {
     const helpPath = isV1()
         ? Global.getConfig<string>(ConfigKey.helpPathV1)
         : Global.getConfig<string>(ConfigKey.helpPathV2);
-    const interpreterPath = Global.getConfig<string>(
+    const configuredInterpreterPath = Global.getConfig<string>(
         isV1() ? ConfigKey.interpreterPathV1 : ConfigKey.interpreterPathV2,
     );
+    const storeAlias = isV1() ? 'AutoHotkeyV1.exe' : 'AutoHotkeyV2.exe';
+    const interpreterPath = findInterpreterPath(
+        configuredInterpreterPath,
+        storeAlias,
+    );
     const buildFunc = isV1() ? buildScriptV1 : buildScriptV2;
-    if (!existsSync(helpPath)) {
+    const useStoreHelp =
+        !existsSync(helpPath) && interpreterPath === storeAlias;
+    if (!existsSync(helpPath) && !useStoreHelp) {
         vscode.window.showErrorMessage(
             `Help path "${helpPath}" does not exist`,
         );
         return;
     }
-    if (!existsSync(interpreterPath)) {
+    if (!interpreterPath) {
         vscode.window.showErrorMessage(
-            `Interpreter path "${interpreterPath}" does not exist`,
+            `Interpreter path "${configuredInterpreterPath}" does not exist`,
         );
         return;
+    }
+    if (useStoreHelp) {
+        const launcherPath = `C:\\Program Files\\AutoHotkey\\UX\\LaunchHelpV${
+            isV1() ? 1 : 2
+        }.ahk`;
+        child_process.spawn(interpreterPath, [launcherPath], {
+            detached: true,
+        });
     }
     try {
         // Using this as its own file is difficult with esbuild
         child_process.execSync(`"${interpreterPath}" /ErrorStdOut *`, {
-            input: buildFunc(searchText, helpPath),
+            input: buildFunc(searchText, helpPath, !useStoreHelp),
         });
     } catch {
         // If user selects value starting with `"`, we get here
         child_process.execSync(`"${interpreterPath}" /ErrorStdOut *`, {
-            input: buildFunc('', helpPath),
+            input: buildFunc('', helpPath, !useStoreHelp),
         });
     }
 }

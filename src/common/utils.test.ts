@@ -1,6 +1,30 @@
 import { suite, test } from 'mocha';
 import assert from 'assert';
-import { getIncludedPath, resolveIncludedPath } from './utils';
+import {
+    executableExists,
+    findInterpreterPath,
+    getIncludedPath,
+    resolveIncludedPath,
+} from './utils';
+
+suite(executableExists.name, () => {
+    test('accepts an existing executable', () =>
+        assert.strictEqual(executableExists(process.execPath), true));
+
+    test('rejects a missing executable', () =>
+        assert.strictEqual(
+            executableExists('definitely-not-an-autohotkey-executable.exe'),
+            false,
+        ));
+});
+
+suite(findInterpreterPath.name, () => {
+    test('prefers the configured executable', () =>
+        assert.strictEqual(
+            findInterpreterPath(process.execPath, 'AutoHotkeyV2.exe'),
+            process.execPath,
+        ));
+});
 
 suite(getIncludedPath.name, () => {
     const tests: [

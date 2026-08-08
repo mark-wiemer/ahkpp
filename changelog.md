@@ -3,6 +3,7 @@
 ## Unreleased
 
 -   Fix setting interpreter path ([#571](https://github.com/mark-wiemer/ahkpp/issues/571))
+-   Add support for Windows Store edition ([#496](https://github.com/mark-wiemer/ahkpp/issues/496))
 
 ## 6.7.4 - 2026-08-07 👋
 
