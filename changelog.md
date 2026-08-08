@@ -5,6 +5,7 @@
 -   Add docs for `WinGetAlwaysOnTop` in AHK v2
 -   Fix typo in docs for "or" operator ("bet" to "be")
 -   Update internal dependencies
+-   Use `AHKPP_DEBUG` instead of `DEBUG` global variable ([issue #701](https://github.com/mark-wiemer/ahkpp/issues/701))
 
 ## 6.7.3 - 2026-01-13 🤫
 
