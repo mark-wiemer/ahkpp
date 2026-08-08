@@ -8,9 +8,8 @@
         "sourceMap": true,
         "rootDirs": ["src"],
         "esModuleInterop": true,
-        "baseUrl": ".",
         "paths": {
-            "mocha": ["node_modules/@types/mocha"]
+            "mocha": ["./node_modules/@types/mocha"]
         },
         "skipLibCheck": true
     },
