@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+-   Fix setting interpreter path ([#571](https://github.com/mark-wiemer/ahkpp/issues/571))
+
 ## 6.7.4 - 2026-08-07 👋
 
 -   Add docs for `WinGetAlwaysOnTop` in AHK v2
