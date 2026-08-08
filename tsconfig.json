@@ -9,6 +9,7 @@
         "rootDirs": ["src"],
         "esModuleInterop": true,
         "baseUrl": ".",
+        "ignoreDeprecations": "6.0",
         "paths": {
             "mocha": ["node_modules/@types/mocha"]
         },
