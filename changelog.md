@@ -2,8 +2,8 @@
 
 ## Unreleased
 
--   Fix "bet" to "be" typo in docs for "or" operator
--   Many internal dependency upgrades to fix potential security issues
+-   Fix typo in docs for "or" operator ("bet" to "be")
+-   Update internal dependencies
 
 ## 6.7.3 - 2026-01-13 🤫
 
