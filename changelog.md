@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+-   Add docs for `WinGetAlwaysOnTop` in AHK v2
 -   Fix typo in docs for "or" operator ("bet" to "be")
 -   Update internal dependencies
 
