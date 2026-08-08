@@ -1,9 +1,9 @@
-Copyright 2020-2024 [Mark Wiemer](https://markwiemer.com).
+Copyright 2020-2026 [Mark Wiemer](https://markwiemer.com).
 Portions copyright:
 
--   2019-2022 [Weijan Chen](https://github.com/cweijan/autohotkey-plus),
--   2020-2024 [thqby](https://github.com/thqby/vscode-autohotkey2-lsp),
--   2022-2023 [Lexikos](https://github.com/Lexikos/vscode-auto-select).
+-   2019-2022 [Weijan Chen](https://github.com/cweijan/autohotkey-plus)
+-   2020-2024 [thqby](https://github.com/thqby/vscode-autohotkey2-lsp)
+-   2022-2023 [Lexikos](https://github.com/Lexikos/vscode-auto-select)
 -   2023-2024 [GroggyOtter](https://github.com/GroggyOtter/ahkv2_definition_rewrite)
 
 ---
