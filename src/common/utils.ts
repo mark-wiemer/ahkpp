@@ -1,6 +1,36 @@
 //* Utilities not requiring the vscode API
 
+import { execFileSync } from 'child_process';
+import { lstatSync } from 'fs';
 import { isAbsolute, join, normalize } from 'path';
+
+export const executableExists = (path: string): boolean => {
+    try {
+        lstatSync(path);
+        return true;
+    } catch {
+        if (process.platform !== 'win32' || /[\\/]/.test(path)) {
+            return false;
+        }
+    }
+
+    try {
+        execFileSync('where.exe', [path], { stdio: 'ignore' });
+        return true;
+    } catch {
+        return false;
+    }
+};
+
+export const findInterpreterPath = (
+    configuredPath: string,
+    storeAlias: string,
+): string | undefined => {
+    if (executableExists(configuredPath)) {
+        return configuredPath;
+    }
+    return executableExists(storeAlias) ? storeAlias : undefined;
+};
 
 // #region `#include` utilities
 /**

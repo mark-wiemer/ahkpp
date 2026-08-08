@@ -13,10 +13,10 @@ import { VarScope } from './struct/scope';
 import getPort from 'get-port';
 import { spawn } from 'child_process';
 import { resolve } from 'path';
-import { existsSync } from 'fs';
 import { debug, error, info } from '../common/log';
 import { Global, ConfigKey } from '../common/global';
 import { getFileNameOnly } from './debugDispatcher.utils';
+import { findInterpreterPath } from '../common/utils';
 
 /** An AHK runtime debugger, ref https://xdebug.org/docs/dbgp */
 export class DebugDispatcher extends EventEmitter {
@@ -40,10 +40,14 @@ export class DebugDispatcher extends EventEmitter {
         const interpreterPathKey = isAhk2
             ? ConfigKey.interpreterPathV2
             : ConfigKey.interpreterPathV1;
-        const runtime = Global.getConfig<string>(interpreterPathKey);
+        const configuredRuntime = Global.getConfig<string>(interpreterPathKey);
+        const runtime = findInterpreterPath(
+            configuredRuntime,
+            isAhk2 ? 'AutoHotkeyV2.exe' : 'AutoHotkeyV1.exe',
+        );
         debug(`DebugDispatcher.start#runtime`);
         debug(`\t${runtime}`);
-        if (!existsSync(runtime)) {
+        if (!runtime) {
             // Exact text is referenced in changelog, update changelog when updating this value
             error(`AutoHotkey interpreter not found`);
             error(`Please update v${isAhk2 ? 2 : 1}: File > interpreterPath`);
