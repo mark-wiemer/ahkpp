@@ -17,11 +17,11 @@ jobs:
       matrix:
         # AHK is built for Windows only, so we only build on Windows
         os: [windows-latest]
-        node-version: [22.x]
+        node-version: [22.x, 26.x]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Install Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
