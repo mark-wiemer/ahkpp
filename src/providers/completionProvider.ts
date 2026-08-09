@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { Parser } from '../parser/parser';
 import { SnippetString } from 'vscode';
 import { FuncDef } from '../parser/model';
+import { hasMatchingCompletionItem } from './completionProvider.utils';
 
 type SimpleFuncDef = Pick<
     FuncDef,
@@ -105,11 +106,14 @@ export const provideCompletionItemsInner = (
         .concat(variables.map(completionItemForVariable));
 
 export class CompletionProvider implements vscode.CompletionItemProvider {
+    /**
+     * Returns completion items, or undefined if no items match current word.
+     */
     // TODO add tests
     public async provideCompletionItems(
         document: vscode.TextDocument,
         position: vscode.Position,
-    ): Promise<vscode.CompletionItem[]> {
+    ): Promise<vscode.CompletionItem[] | undefined> {
         // If the cursor is just after a dot, don't suggest anything.
         // Default suggestions will still apply.
         const preChar = document.getText(
@@ -123,7 +127,7 @@ export class CompletionProvider implements vscode.CompletionItemProvider {
         // Suggest all variables in the current file
         const funcDefs = await Parser.getAllFuncDefs();
         const script = await Parser.buildScript(document, { usingCache: true });
-        return provideCompletionItemsInner(
+        const completionItems = provideCompletionItemsInner(
             funcDefs.map((m) => ({
                 ...m,
                 variables: m.variables.map((v) => v.name),
@@ -132,5 +136,15 @@ export class CompletionProvider implements vscode.CompletionItemProvider {
             position.line,
             script.variables.map((v) => v.name),
         );
+        const wordRange = document.getWordRangeAtPosition(position);
+        const prefix = wordRange
+            ? document.getText(new vscode.Range(wordRange.start, position))
+            : '';
+        const completionLabels = completionItems.map((item) =>
+            typeof item.label === 'string' ? item.label : item.label.label,
+        );
+        return hasMatchingCompletionItem(completionLabels, prefix)
+            ? completionItems
+            : undefined;
     }
 }

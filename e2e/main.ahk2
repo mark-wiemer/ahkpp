@@ -1,5 +1,5 @@
 #Requires AutoHotkey v2.0
 
 ; Exclude pattern: excluded.ahk
-;* Should not suggest "MyExcludedFunc" in completion
+;* Should suggest "MyExcludedFunc" in completion based on exclude pattern
 MyExclu

@@ -3,3 +3,8 @@
 SendMode, Input
 SetBatchLines, -1
 SetWorkingDir, %A_ScriptDir%
+
+; To ensure word-based suggestions don't kick in,
+; we add a similarly-named function
+MyExclusionControl() {
+}
