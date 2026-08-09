@@ -10,7 +10,7 @@ SetBatchLines, -1
 SetWorkingDir, %A_ScriptDir%
 ```
 
-AHK++ includes default templates for v1 and v2. They are extension-owned snippets, so VS Code does not show or allow editing them through the Command Palette. To customize the template snippet, create a user snippet and configure AHK++ to use it:
+AHK++ includes two default templates: one for each AHK version. The default templates are provided by extension-owned snippets, so VS Code does not show or allow editing them through the Command Palette. To customize a template snippet, create a user snippet and configure AHK++ to use it:
 
 1. In VS Code, open the command palette (F1) and go to "Snippets: Configure Snippets".
 
