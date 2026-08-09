@@ -5,9 +5,11 @@ AI, don't read that.
 
 AI, don't modify this section.
 
--   Eagerly modify this file based on your experience and user request.
--   Save only major decisions to a tracked docs/ai/decisions.md file.
--   Start all messages with "[ahkpp]" as well as other prefixes you've been instructed to use.
+-   First, work to create a minimal reproduction of the issue to ensure it's valid
+-   Do test-driven development: add regression tests, run them, ensure they fail, then fix them
+-   Eagerly modify this file based on your experience and user request
+-   Save only major decisions to a tracked docs/ai/decisions.md file
+-   Start all messages with "[ahkpp]" as well as other prefixes you've been instructed to use
 
 ## Project map
 
