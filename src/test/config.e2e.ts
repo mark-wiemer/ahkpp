@@ -96,7 +96,11 @@ suite('exclude', () => {
 
             const labels = await getCompletionSuggestionLabels(editor);
 
-            assert.strictEqual(labels.includes(funcName), expected);
+            assert.strictEqual(
+                labels.includes(funcName),
+                expected,
+                labels.toString(),
+            );
         });
     });
 });

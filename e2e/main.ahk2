@@ -1,7 +1,5 @@
 #Requires AutoHotkey v2.0
 
 ; Exclude pattern: excluded.ahk
-;* Should not suggest the excluded func in completion
-; Do not write func by name here,
-; as it would be included in word-based suggestions
+;* Should suggest "MyExcludedFunc" in completion based on exclude pattern
 MyExclu
