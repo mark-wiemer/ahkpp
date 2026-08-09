@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as assert from 'assert';
 import { provideCompletionItemsInner } from './completionProvider';
+import { getCompletionSuggestionLabels, showDocument } from '../test/utils';
 
 // TODO outer
 // parsing vs no parsing
@@ -349,4 +350,24 @@ suite('provideCompletionItemsInner', () => {
             assert.deepEqual(provideCompletionItemsInner(...args), expected),
         ),
     );
+});
+
+suite('CompletionProvider', () => {
+    test('keeps word-based suggestions available when no IntelliSense item matches', async () => {
+        const word = 'wordBasedFallbackUnique';
+        const prefix = word.slice(0, -6);
+        const document = await vscode.workspace.openTextDocument({
+            content: `; ${word}\n${prefix}`,
+            language: 'ahk',
+        });
+        const editor = await showDocument(document);
+        editor.selection = new vscode.Selection(
+            new vscode.Position(1, prefix.length),
+            new vscode.Position(1, prefix.length),
+        );
+
+        const labels = await getCompletionSuggestionLabels(editor);
+
+        assert.ok(labels.includes(word));
+    });
 });
