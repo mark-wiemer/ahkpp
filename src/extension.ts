@@ -61,10 +61,6 @@ export function activate(context: vscode.ExtensionContext) {
             'ahk',
             new InlineDebugAdapterFactory(),
         ),
-        vscode.debug.registerDebugAdapterDescriptorFactory(
-            'ahk2',
-            new InlineDebugAdapterFactory(),
-        ),
         createEditorListener(),
         vscode.commands.registerCommand('ahk++.compile', () =>
             RunnerService.compile(false),
