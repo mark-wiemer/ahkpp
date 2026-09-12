@@ -57,7 +57,7 @@ repository:
             name: support.function.ahk
           '2':
             name: entity.name.function.label.ahk
-        match: (?i:(Gosub)\s*,?\s*(\w+))
+        match: (?i:(Gosub)(?:\s*,\s*|\s+)(\w+))
         name: golabel.ahk
         example: Gosub label
       - captures:

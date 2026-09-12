@@ -1,0 +1,4 @@
+; [Issue #750](https://github.com/mark-wiemer/ahkpp/issues/750)
+Gosub label
+Gosub,label
+GosubLabel
