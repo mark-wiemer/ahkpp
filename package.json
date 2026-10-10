@@ -102,24 +102,24 @@
             {
                 "command": "ahk++.compile",
                 "enablement": "(editorLangId == ahk || editorLangId == ahk2) && shellExecutionSupported",
-                "title": "Compile AHK Script",
+                "title": "%ahk++.command.compile%",
                 "category": "AHK++"
             },
             {
                 "command": "ahk++.compilerGui",
                 "enablement": "(editorLangId == ahk || editorLangId == ahk2) && shellExecutionSupported",
-                "title": "Compile AHK Script (GUI)",
+                "title": "%ahk++.command.compilerGui%",
                 "category": "AHK++"
             },
             {
                 "command": "ahk++.openHelp",
                 "enablement": "(editorLangId == ahk || editorLangId == ahk2) && shellExecutionSupported",
-                "title": "Open AutoHotkey Help",
+                "title": "%ahk++.command.openHelp%",
                 "category": "AHK++"
             },
             {
                 "command": "ahk++.debug",
-                "title": "Debug AHK Script",
+                "title": "%ahk++.command.debug%",
                 "enablement": "(editorLangId == ahk || editorLangId == ahk2) && shellExecutionSupported",
                 "category": "AHK++",
                 "icon": "$(debug-alt)"
@@ -195,13 +195,13 @@
             },
             {
                 "command": "ahk++.switchAhkVersion",
-                "title": "Switch AHK Version",
+                "title": "%ahk++.command.switchAhkVersion%",
                 "enablement": "editorLangId == ahk || editorLangId == ahk2",
                 "category": "AHK++"
             },
             {
                 "command": "ahk++.selectSyntaxes",
-                "title": "Select AHK v2 Syntaxes",
+                "title": "%ahk++.command.selectSyntaxes%",
                 "enablement": "editorLangId == ahk2",
                 "category": "AHK++"
             },
