@@ -13,7 +13,7 @@
 
 ## Maintenance mode announcement
 
-AHK++ will go into maintenance mode on January 1, 2027. Critical bugs and security issues will still be addressed, but no new features will be added. See [the announcement](https://github.com/mark-wiemer/ahkpp/discussions/686) for more details.
+AHK++ is now in maintenance mode. Critical bugs and security issues will still be addressed, but no new features will be added. See [the November 2026 announcement](https://github.com/mark-wiemer/ahkpp/discussions/769) for more details.
 
 ## Install
 
